@@ -19,7 +19,7 @@ function EventDetails({ user, attendees }) {
 
     return (
         <div>
-            <h2>{event.name}</h2>
+            <h2>{event.title}</h2>
             <p>Organized by:</p>
             <p>Starts: {event.start_date}</p>
             <p>Ends: {event.end_date}</p>

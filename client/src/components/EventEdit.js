@@ -4,7 +4,7 @@ import { useHistory, useParams } from "react-router-dom";
 function EventEdit({ onUpdateEvent, onDeleteEvent }) {
     const { eventId } = useParams()
     const [event, setEvent] = useState([])
-    const [name, setName] = useState(event.name);
+    const [title, setTitle] = useState(event.title);
     const [startDate, setStartDate] = useState(event.start_date);
     const [endDate, setEndDate] = useState(event.end_date);
     const [websiteLink, setWebsiteLink] = useState(event.website_link);
@@ -16,7 +16,7 @@ function EventEdit({ onUpdateEvent, onDeleteEvent }) {
         .then((event) => {
             console.log(event);
             setEvent(event);
-            setName(event.name)
+            setTitle(event.title)
             setStartDate(event.start_date)
             setEndDate(event.end_date)
             setWebsiteLink(event.website_link)
@@ -27,7 +27,7 @@ function EventEdit({ onUpdateEvent, onDeleteEvent }) {
     function handleSubmit(e) {
         e.preventDefault();
         const updatedEvent = {
-            name: name,
+            title: title,
             start_date: startDate,
             end_date: endDate,
             website_link: websiteLink,
@@ -47,12 +47,12 @@ function EventEdit({ onUpdateEvent, onDeleteEvent }) {
             <h2>Edit Event</h2>
             <form onSubmit={handleSubmit}>
                 <div>
-                    <label>Event Name</label>
+                    <label>Event Title</label>
                     <input
                         type="text"
-                        name="name"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
+                        name="title"
+                        value={title}
+                        onChange={(e) => setTitle(e.target.value)}
                     />
                 </div>
                 <div>

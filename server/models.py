@@ -14,6 +14,7 @@ class User(db.Model, SerializerMixin):
     id = db.Column(Integer, primary_key=True)
     first_name = db.Column(String)
     last_name = db.Column(String)
+    type = db.Column(String)
     username = db.Column(String, unique=True, nullable=False)
     password = db.Column(String, nullable=False)
 
@@ -60,7 +61,8 @@ class Event(db.Model, SerializerMixin):
     serialize_rules = ('-user.events', '-attendees.event',)
 
     id = db.Column(Integer, primary_key=True)
-    name = db.Column(String, nullable=False)
+    title = db.Column(String, nullable=False)
+    type = db.Column(String)
     start_date = db.Column(Date, nullable=False)
     end_date = db.Column(Date, nullable=True)
     website_link = db.Column(String)
@@ -72,10 +74,7 @@ class Event(db.Model, SerializerMixin):
     # VALIDATIONS TO IMPLEMENT
     # Name must be present
     # Date validation. No end date means end date is start date.
-
-    # STRETCH
-    # Add Event types (festival, retreat, local meetup)
-        # Validation: limit what event type can be created beased on user type
+    # Validation: limit what event type can be created beased on user type
 
 
 class Attendee(db.Model, SerializerMixin):

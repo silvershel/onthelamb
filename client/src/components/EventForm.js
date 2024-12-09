@@ -8,7 +8,7 @@ function EventForm({ user, onAttend, onCreateEvent }) {
     
     const formik = useFormik({
         initialValues: {
-            name: "",
+            title: "",
             start_date: "",
             end_date: "",
             website_link: "",
@@ -17,7 +17,7 @@ function EventForm({ user, onAttend, onCreateEvent }) {
         },
 
         validationSchema: Yup.object({
-            name: Yup.string().required("Event name is required"),
+            title: Yup.string().required("Event title is required"),
             start_date: Yup.string().required("Start date is required"),
             end_date: Yup.string().required("End date is required"),
             website_link: Yup.string().required("Event website is required."),
@@ -27,7 +27,7 @@ function EventForm({ user, onAttend, onCreateEvent }) {
 
         onSubmit: (values) => {
             const newEvent = {
-                name: values.name,
+                title: values.title,
                 start_date: values.start_date,
                 end_date: values.end_date,
                 website_link: values.website_link,
@@ -53,15 +53,15 @@ function EventForm({ user, onAttend, onCreateEvent }) {
             <h2>Create Event</h2>
             <form onSubmit={formik.handleSubmit}>
                 <div>
-                    <label>Event Name</label>
+                    <label>Event Title</label>
                     <input
                         type="text"
-                        id="name"
-                        name="name"
-                        value={formik.values.name}
+                        id="title"
+                        name="title"
+                        value={formik.values.title}
                         onChange={formik.handleChange}
                     />
-                    <p>{formik.errors.name}</p>
+                    <p>{formik.errors.title}</p>
                 </div>
                 <div>
                     <label>Start Date</label>

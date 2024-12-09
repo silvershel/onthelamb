@@ -5,7 +5,7 @@ function EventPreview({ event }) {
 
     return (
         <div>
-            <h2>{event.name}</h2>
+            <h2>{event.title}</h2>
             <p>{event.start_date} – {event.end_date}</p>
             <Link to={`/events/${event.id}`}>
                 <button>View Details</button>

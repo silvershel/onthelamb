@@ -6,13 +6,14 @@ from config import app, db, api
 from models import User, Event, Attendee
 from datetime import datetime
 
-# Views go here!        
+
 class Signup(Resource):
     def post(self):
         data = request.get_json()
         
         first_name = data.get('first_name')
         last_name = data.get('last_name')
+        type = data.get('type')
         username = data.get('username')
         password = data.get('password')
 
@@ -29,6 +30,7 @@ class Signup(Resource):
         new_user = User(
             first_name = first_name,
             last_name = last_name,
+            type = type,
             username = username,
             password = password
         )
@@ -41,6 +43,7 @@ class Signup(Resource):
             response = {
                 'id': new_user.id,
                 'first_name': new_user.first_name,
+                'type': new_user.type,
                 'last_name': new_user.last_name,
                 'username': new_user.username,
             }
@@ -63,6 +66,7 @@ class CheckSession(Resource):
                         'id': user.id,
                         'first_name': user.first_name,
                         'last_name': user.last_name,
+                        'type': user.type,
                         'username': user.username,
                     }
 
@@ -94,6 +98,7 @@ class Login(Resource):
                 'id': user.id,
                 'first_name': user.first_name,
                 'last_name': user.last_name,
+                'type': user.type,
                 'username': user.username,
             }
 
@@ -121,7 +126,8 @@ class Events(Resource):
             for event in events:
                 event_data = {
                     'id': event.id,
-                    'name': event.name,
+                    'title': event.title,
+                    'type': event.type,
                     'start_date': event.start_date.isoformat(),
                     'end_date': event.end_date.isoformat(),
                     'website_link': event.website_link,
@@ -137,7 +143,8 @@ class Events(Resource):
     def post(self):
         data = request.get_json()
         
-        name = data.get('name')
+        title = data.get('title')
+        type = data.get('type')
         start_date_str = data.get('start_date')
         end_date_str = data.get('end_date')
         website_link = data.get('website_link')
@@ -146,11 +153,12 @@ class Events(Resource):
         start_date = datetime.strptime(start_date_str, '%Y-%m-%d').date() if start_date_str else None
         end_date = datetime.strptime(end_date_str, '%Y-%m-%d').date() if end_date_str else None
 
-        if not name or not start_date or not end_date:
+        if not title or not start_date or not end_date:
             return {'message': 'Missing required fields'}, 400
         
         new_event = Event(
-            name = name,
+            title = title,
+            type = type,
             start_date = start_date,
             end_date = end_date,
             website_link = website_link,
@@ -163,7 +171,8 @@ class Events(Resource):
 
             response = {
                 'id': new_event.id,
-                'name': new_event.name,
+                'title': new_event.title,
+                'type': new_event.type,
                 'start_date': new_event.start_date.isoformat(),
                 'end_date': new_event.end_date.isoformat(),
                 'website_link': new_event.website_link,
@@ -183,7 +192,8 @@ class EventById(Resource):
         if event:
             event_data = {
                 'id': event.id,
-                'name': event.name,
+                'title': event.title,
+                'type': event.type,
                 'start_date': event.start_date.isoformat(),
                 'end_date': event.end_date.isoformat(),
                 'website_link': event.website_link,
@@ -202,8 +212,10 @@ class EventById(Resource):
         if not event:
             return {'message': 'Event not found'}, 404
         
-        if 'name' in data:
-            event.name = data['name']
+        if 'title' in data:
+            event.title = data['title']
+        if 'type' in data:
+            event.type = data['type']
         if 'start_date' in data:
             event.start_date = datetime.strptime(data['start_date'], '%Y-%m-%d').date()
         if 'end_date' in data:
@@ -216,7 +228,8 @@ class EventById(Resource):
 
             response = {
                 'id': event.id,
-                'name': event.name,
+                'title': event.title,
+                'type': event.type,
                 'start_date': event.start_date.isoformat(),
                 'end_date': event.end_date.isoformat(),
                 'website_link': event.website_link,
@@ -338,24 +351,6 @@ class AttendeeById(Resource):
         db.session.commit()
         return {'message': 'Attendee deleted'}, 200
 
-# get all attendees for a specific event
-
-class AllAttendeesByEvent(Resource):
-    def get(self, event_id):
-        event = Event.query.get(event_id)
-        attendees_by_event = Attendee.query.filter(Attendee.event_id == event.id).all()
-        attendee_list = []
-
-        for attendee in attendees_by_event:
-            attendee_data = {
-                'comment': attendee.comment,
-                'user_id': attendee.user_id,
-                'event_id': attendee.event_id,
-            }
-            attendee_list.append(attendee_data)
-
-        return jsonify(attendee_list)
-
 
 api.add_resource(CheckSession, '/check_session', endpoint='check_session')
 api.add_resource(Signup, '/signup', endpoint='signup')
@@ -365,9 +360,7 @@ api.add_resource(Events, '/events', endpoint='events')
 api.add_resource(EventById, '/events/<int:event_id>', endpoint='event')
 api.add_resource(Attendees, '/attendees', endpoint='attendees')
 api.add_resource(AttendeeById, '/attendees/<int:attendee_id>', endpoint='attendee')
-api.add_resource(AllAttendeesByEvent, '/attendeesbyevent/<int:event_id>', endpoint='attendeesbyevent')
 
-# imported with project template
 @app.route('/')
 def index():
     return '<h1>Project Server</h1>'
