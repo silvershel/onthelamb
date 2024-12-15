@@ -6,6 +6,7 @@ function EventList({ user, events }) {
     return (
         <div>
             <h1>All Events</h1>
+            <p>Filter by: All | Attending | Near Me</p>
             {events.length > 0 ? (
                 events.map((event) => (
                     <EventPreview key={event.id} user={user} event={event} />

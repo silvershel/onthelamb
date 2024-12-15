@@ -52,6 +52,7 @@ function App() {
         })
         .catch((error) => console.error('Error fetching events:', error));
     }, [])
+	
 
 	function handleLogout() {
 		setUser(null);

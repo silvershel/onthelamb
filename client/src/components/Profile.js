@@ -8,16 +8,15 @@ function Profile({ user, events }) {
 
     return(
         <div>
-            <h1>Welcome, {user.first_name}!</h1>
-            {/* <p>First Name: {user.first_name}</p> */}
-            {/* <p>Last Name: {user.last_name}</p> */}
-            {/* <Link to={`/profile/edit`}>
+            <h1>Welcome, {user.username}!</h1>
+            <p>Name: {user.name}</p>
+            <Link to={`/profile/edit`}>
                 <button>Edit Profile</button>
-            </Link> */}
+            </Link>
             <Link to={`/create`}>
                 <button>Create Event</button>
             </Link>
-            <h1>{user.first_name}'s Events</h1>
+            <h1>{user.name}'s Events</h1>
             <div>
                 {userEvents.length > 0 ? (
                     userEvents.map((event) => (

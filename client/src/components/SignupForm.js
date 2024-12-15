@@ -6,15 +6,13 @@ import * as Yup from "yup";
 function SignupForm({ style, onSignup }) {
     const formik = useFormik({
         initialValues: {
-            first_name: "",
-            last_name: "",
+            name: "",
             username: "",
             password: "",
         },
 
         validationSchema: Yup.object({
-            first_name: Yup.string().required("First name is required"),
-            last_name: Yup.string().required("Last name is required"),
+            name: Yup.string().required("Name is required"),
             username: Yup.string().required("Username is required"),
             password: Yup.string().required("Password is required"),
         }),
@@ -26,8 +24,7 @@ function SignupForm({ style, onSignup }) {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                    first_name: values.first_name,
-                    last_name: values.last_name,
+                    name: values.name,
                     username: values.username,
                     password: values.password,
                 }),
@@ -52,26 +49,15 @@ function SignupForm({ style, onSignup }) {
             <h1>Sign Up</h1>
             <form onSubmit={formik.handleSubmit}>
                 <div>
-                    <label>First Name:</label>
+                    <label>Name:</label>
                     <input 
                         type="text"
-                        id="first_name"
-                        name="first_name"
+                        id="name"
+                        name="name"
                         onChange={formik.handleChange}
                         value={formik.values.first_name}
                     />
                     <p>{formik.errors.first_name}</p>
-                </div>
-                <div>
-                    <label>Last Name:</label>
-                    <input 
-                        type="text"
-                        id="last_name"
-                        name="last_name"
-                        onChange={formik.handleChange}
-                        value={formik.values.last_name}
-                    />
-                    <p>{formik.errors.last_name}</p>
                 </div>
                 <div>
                     <label>Username:</label>

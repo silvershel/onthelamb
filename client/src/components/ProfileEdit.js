@@ -7,11 +7,7 @@ function ProfileEdit() {
             <h1>Edit Profile</h1>
             <form>
                 <div>
-                    <label>First Name:</label>
-                    <input type="text"/>
-                </div>
-                <div>
-                    <label>Last Name:</label>
+                    <label>Name:</label>
                     <input type="text"/>
                 </div>
                 <button>Submit</button>
