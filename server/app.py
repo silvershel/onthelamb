@@ -203,6 +203,7 @@ class Events(Resource):
         event_type = data.get('event_type')
         start_date_str = data.get('start_date')
         end_date_str = data.get('end_date')
+        description = data.get('description'),
         website_link = data.get('website_link')
         user_id = data.get('user_id')
 
@@ -217,6 +218,7 @@ class Events(Resource):
             event_type = event_type,
             start_date = start_date,
             end_date = end_date,
+            description = description,
             website_link = website_link,
             user_id = user_id
         )
@@ -227,10 +229,11 @@ class Events(Resource):
 
             response = {
                 'id': new_event.id,
-                'title': new_event.title,
                 'event_type': new_event.event_type,
+                'title': new_event.title,
                 'start_date': new_event.start_date.isoformat(),
                 'end_date': new_event.end_date.isoformat(),
+                'description': new_event.description,
                 'website_link': new_event.website_link,
                 'user_id': new_event.user_id
             }
@@ -261,14 +264,16 @@ class EventById(Resource):
         if not event:
             return {'message': 'Event not found'}, 404
         
+        if 'event_type' in data:
+            event.title = data['event_type']
         if 'title' in data:
             event.title = data['title']
-        if 'type' in data:
-            event.event_type = data['event_type']
         if 'start_date' in data:
             event.start_date = datetime.strptime(data['start_date'], '%Y-%m-%d').date()
         if 'end_date' in data:
             event.end_date = datetime.strptime(data['end_date'], '%Y-%m-%d').date()
+        if 'description' in data:
+            event.description = data['description']
         if 'website_link' in data:
             event.website_link = data['website_link']
 
@@ -277,10 +282,11 @@ class EventById(Resource):
 
             response = {
                 'id': event.id,
-                'title': event.title,
                 'event_type': event.event_type,
+                'title': event.title,
                 'start_date': event.start_date.isoformat(),
                 'end_date': event.end_date.isoformat(),
+                'description': event.description,
                 'website_link': event.website_link,
                 'user_id': event.user_id
             }

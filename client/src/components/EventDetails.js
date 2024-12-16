@@ -19,7 +19,7 @@ function EventDetails({ currentUser }) {
 
     function showEditEventButton() {
         if (currentUser.id === event.user_id) {
-            return <Link to={`/events/${event.username}/edit`}>
+            return <Link to={`/events/${event.id}/edit`}>
                 <button>Edit Event</button>
             </Link>
         } else {
@@ -27,9 +27,20 @@ function EventDetails({ currentUser }) {
         }
     }
 
-    // function showAttendEventButton(){
-    //     if (currentUser.id === event.attendees.user.id) (null) : (button)
-    // }
+    function userAttending() {
+        return event.attendees && event.attendees.some(attendee => attendee.user.id === currentUser.id);
+    }
+
+    function showAttendEventButton() {
+        if (!userAttending()) {
+            return (
+                <Link to={`/events/${event.id}/attend`}>
+                    <button>Attend Event</button>
+                </Link>
+            );
+        }
+        return null;
+    }
 
     function showAttendeesList() {
         if (event.attendees && event.attendees.length > 0) {
@@ -65,9 +76,7 @@ function EventDetails({ currentUser }) {
             <p>Starts: {event.start_date}</p>
             <p>Ends: {event.end_date}</p>
             <p >Website: {event.website_link}</p>
-            <Link to={`/events/${event.id}/attend`}>
-                <button>Attend Event</button>
-            </Link>
+            {showAttendEventButton()}
             {showEditEventButton()}
             
             <h2>Attendees</h2>

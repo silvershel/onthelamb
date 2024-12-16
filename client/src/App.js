@@ -7,7 +7,7 @@ import LoginForm from "./components/LoginForm";
 import SignupForm from "./components/SignupForm";
 import EventDetails from "./components/EventDetails";
 import EventEdit from "./components/EventEdit";
-import EventForm from "./components/EventForm";
+import EventCreate from "./components/EventCreate";
 import EventList from "./components/EventList";
 import Profile from "./components/Profile";
 import ProfileEdit from "./components/ProfileEdit";
@@ -68,7 +68,15 @@ function App() {
 		  .then((r) => r.json())
 		  .then((newEvent) => {
 			console.log(newEvent);
-			setEvents((prevEvents) => [...prevEvents, newEvent]);
+			setEvents((prevEvents) => [...prevEvents, newEvent])
+			const newAttendee = {
+                comment: "hello",
+                user_id: newEvent.user_id,
+                event_id: newEvent.id
+            }
+            
+            console.log(newAttendee);
+            handleCreateAttendee(newAttendee);
 		  })
 		  .catch((error) => {
 			console.error('Error creating new event:', error);
@@ -197,22 +205,22 @@ function App() {
 					<Redirect to="/" />
 				</Route>
 				<Route path="/" exact>
-					<EventList currentUser={currentUser} events={events} />
+					<EventList currentUser={currentUser} events={events} onAttend={handleCreateAttendee} />
 				</Route>
 				<Route path="/events" exact>
-					<EventList currentUser={currentUser} events={events} />
+					<EventList currentUser={currentUser} events={events} onAttend={handleCreateAttendee} />
 				</Route>
 				<Route path="/events/:eventId" exact>
-					<EventDetails currentUser={currentUser} attendees={attendees} />
+					<EventDetails currentUser={currentUser} attendees={attendees} onAttend={handleCreateAttendee} />
 				</Route>
-				<Route path="/events/:eventId/attend" exact>
+				{/* <Route path="/events/:eventId/attend" exact>
 					<AttendForm currentUser={currentUser} onAttend={handleCreateAttendee} />
-				</Route>
+				</Route> */}
 				<Route path="/events/:eventId/edit" exact>
 					<EventEdit onUpdateEvent={handleUpdateEvent} onDeleteEvent={handleDeleteEvent} />
 				</Route>
 				<Route path="/create" exact>
-					<EventForm currentUser={currentUser} onAttend={handleCreateAttendee} onCreateEvent={handleCreateEvent} />
+					<EventCreate currentUser={currentUser} onCreateEvent={handleCreateEvent} />
 				</Route>
 				<Route path="/users/:username" exact>
 					<Profile currentUser={currentUser} events={events} />

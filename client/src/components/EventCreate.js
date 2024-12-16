@@ -3,48 +3,43 @@ import { useHistory } from "react-router-dom";
 import { useFormik } from 'formik';
 import * as Yup from "yup";
 
-function EventForm({ currentUser, onAttend, onCreateEvent }) {
-    const history = useHistory()
+function EventCreate({ currentUser, onCreateEvent }) {
+    const navigate = useHistory()
     
     const formik = useFormik({
         initialValues: {
+            event_type: "",
             title: "",
+            // address: "", use google api to convert to latitude and longitude.
             start_date: "",
             end_date: "",
+            description: "",
             website_link: "",
-            // attending: false,
-            // comment: "",
         },
 
         validationSchema: Yup.object({
-            title: Yup.string().required("Event title is required"),
-            start_date: Yup.string().required("Start date is required"),
-            end_date: Yup.string().required("End date is required"),
-            website_link: Yup.string().required("Event website is required."),
-            // attending: Yup.boolean().optional(),
-            // comment: Yup.string().required("Please leave a comment.")
+            event_type: Yup.string().required("Please select an event type."),
+            title: Yup.string().required("Event title is required."),
+            start_date: Yup.string().required("Start date is required."),
+            end_date: Yup.string().required("End date is required."),
+            description: Yup.string().required("Please include a description."), 
+            website_link: Yup.string().required("Please include a website link."),
         }),
 
         onSubmit: (values) => {
             const newEvent = {
+                event_type: values.event_type,
                 title: values.title,
                 start_date: values.start_date,
                 end_date: values.end_date,
+                description: values.description,
                 website_link: values.website_link,
                 user_id: currentUser.id,
             };
             console.log(newEvent)
             onCreateEvent(newEvent);
 
-            // const newAttendee = {
-            //     comment: values.comment,
-            //     user_id: values.currentUser_id,
-            //     event_id: newEvent.id,
-            // }
-            // console.log(newAttendee)
-            // onAttend(newAttendee)
-
-            history.push('/profile')
+            navigate.push(`/users/${currentUser.username}`)
         }
     });
 
@@ -52,6 +47,20 @@ function EventForm({ currentUser, onAttend, onCreateEvent }) {
         <div>
             <h2>Create Event</h2>
             <form onSubmit={formik.handleSubmit}>
+                <div>
+                    <label>Event Type</label>
+                    <select id="event_type" name="event_type" value={formik.values.event_type} onChange={formik.handleChange} >
+                        <option value="" disabled>Select an option:</option>
+                        <option value="local meetup">Local Meetup</option>
+                        <option value="festival">Festival</option>
+                        <option value="retreat">Retreat</option>
+                        <option value="popup">Popup</option>
+                        <option value="trunk show">Trunk Show</option>
+                    </select>
+                    {formik.errors.event_type && formik.touched.event_type && (
+                        <p>{formik.errors.event_type}</p>
+                    )}
+                </div>
                 <div>
                     <label>Event Title</label>
                     <input
@@ -86,6 +95,17 @@ function EventForm({ currentUser, onAttend, onCreateEvent }) {
                     <p>{formik.errors.end_date}</p>
                 </div>
                 <div>
+                    <label>Description</label>
+                    <input
+                        type="description"
+                        id="description"
+                        name="description"
+                        value={formik.values.description}
+                        onChange={formik.handleChange}
+                    />
+                    <p>{formik.errors.description}</p>
+                </div>
+                <div>
                     <label>Event Website</label>
                     <input
                         type="text"
@@ -96,28 +116,6 @@ function EventForm({ currentUser, onAttend, onCreateEvent }) {
                     />
                     <p>{formik.errors.website_link}</p>
                 </div>
-                {/* <div>
-                    <label>Attending?</label>
-                    <input
-                        type="checkbox"
-                        id="attending"
-                        name="attending"
-                        checked={formik.values.attending}
-                        onChange={formik.handleChange}
-                    />
-                    <p>{formik.errors.attending}</p>
-                </div>
-                <div>
-                    <label>Comment</label>
-                    <textarea
-                        id="comment"
-                        name="comment"
-                        value={formik.values.comment}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                    />
-                    <p>{formik.errors.comment}</p>
-                </div> */}
                 {formik.errors.apiError ? (
                         <div>{formik.errors.apiError}</div>
                     ) : null}
@@ -127,4 +125,4 @@ function EventForm({ currentUser, onAttend, onCreateEvent }) {
     );
 }
 
-export default EventForm;
+export default EventCreate;

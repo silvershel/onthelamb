@@ -1,29 +1,36 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import EventPreview from "./EventPreview";
 
 function EventList({ currentUser, events }) {
-    // const [nearbyEvents, setNearbyEvents] = useState([])
+    const [filter, setFilter] = useState("all");
+    const [filteredEvents, setFilteredEvents] = useState(events);
 
-    // const myEvents === events.map((event) => {
-    //    if (currentUser.id === event.user.user_id) (
-    //      return <EventPreview key={event.id} event={event}/>
-    //    )}
+    useEffect(() => {
+        FilterEvents(filter);
+    }, [events, filter]);
 
-    function onFilterSelect(e) {
-        const selection = e.target.value;
+    function FilterEvents(selection) {
+        let eventsList = [];
 
         if (selection === "my events") {
-            // return my events;
-        } else if (selection === "distance") {
-            // return by distance;
+            eventsList = events.filter(event => event.user_id === currentUser.id);
+        } else if (selection === "attending") {
+            eventsList = events.filter(event => 
+                event.attendees.filter(attendee => attendee.user.id === currentUser.id).length > 0
+              );
         } else {
-            // return all events;
+            eventsList = events
         }
+        setFilteredEvents(eventsList);
+    }
+
+    function onFilterSelect(e) {
+        setFilter(e.target.value);
     }
 
     function showEventList() {
-        if (events.length > 0) {
-            return events.map((event) => (
+        if (filteredEvents.length > 0) {
+            return filteredEvents.map((event) => (
                 <EventPreview key={event.id} event={event}/>
             ));
           } else {
@@ -33,8 +40,14 @@ function EventList({ currentUser, events }) {
 
     return (
         <div>
-            <h1>All Events</h1>
-            <p>Filter by: All | Attending | Near Me</p>
+            <h1>Events</h1>
+            <select onChange={onFilterSelect} value={filter}>
+                <option value="all">All Events</option>
+                <option value="my events">My Events</option>
+                <option value="attending">Attending</option>
+                {/* <option value="near me">Near Me</option> */}
+            </select>
+            
             {showEventList()}
         </div>
     )
