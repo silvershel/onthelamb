@@ -134,8 +134,8 @@ class Users(Resource):
                         
         
 class UserById(Resource):
-    def get(self, user_id):
-        user = User.query.get(user_id)
+    def get(self, username):
+        user = User.query.filter_by(username = username).first()
 
         if not user:
             return {'message': 'User not found'}, 404
@@ -425,7 +425,7 @@ api.add_resource(Signup, '/signup', endpoint='signup')
 api.add_resource(Login, '/login', endpoint='login')
 api.add_resource(Logout, '/logout', endpoint='logout')
 api.add_resource(Users, '/users', endpoint='users')
-api.add_resource(UserById, '/users/<int:user_id>', endpoint='user')
+api.add_resource(UserById, '/users/<username>', endpoint='user')
 api.add_resource(Events, '/events', endpoint='events')
 api.add_resource(EventById, '/events/<int:event_id>', endpoint='event')
 api.add_resource(Attendees, '/attendees', endpoint='attendees')

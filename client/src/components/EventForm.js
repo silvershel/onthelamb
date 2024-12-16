@@ -3,7 +3,7 @@ import { useHistory } from "react-router-dom";
 import { useFormik } from 'formik';
 import * as Yup from "yup";
 
-function EventForm({ user, onAttend, onCreateEvent }) {
+function EventForm({ currentUser, onAttend, onCreateEvent }) {
     const history = useHistory()
     
     const formik = useFormik({
@@ -31,14 +31,14 @@ function EventForm({ user, onAttend, onCreateEvent }) {
                 start_date: values.start_date,
                 end_date: values.end_date,
                 website_link: values.website_link,
-                user_id: user.id,
+                user_id: currentUser.id,
             };
             console.log(newEvent)
             onCreateEvent(newEvent);
 
             // const newAttendee = {
             //     comment: values.comment,
-            //     user_id: values.user_id,
+            //     user_id: values.currentUser_id,
             //     event_id: newEvent.id,
             // }
             // console.log(newAttendee)

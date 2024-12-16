@@ -1,7 +1,7 @@
 import React from "react";
 import { Link, useHistory } from "react-router-dom";
 
-function NavBar({ onLogout }) {
+function NavBar({ currentUser, onLogout }) {
 	const navigate = useHistory()
 
 	function handleLogout(e) {
@@ -21,7 +21,7 @@ function NavBar({ onLogout }) {
 		if (selection === "dashboard") {
 			navigate.push("/");
 		} else if (selection === "view") {
-			navigate.push("/profile");
+			navigate.push(`/users/${currentUser.username}`);
 			resetSelect();
 		} else if (selection === "edit") {
 			navigate.push("/profile/edit");

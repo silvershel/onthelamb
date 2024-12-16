@@ -10,6 +10,10 @@ function ProfileEdit() {
                     <label>Name:</label>
                     <input type="text"/>
                 </div>
+                <div>
+                    <label>Bio:</label>
+                    <input type="text"/>
+                </div>
                 <button>Submit</button>
             </form>
         </div>

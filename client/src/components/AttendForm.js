@@ -3,7 +3,7 @@ import { useParams, useHistory } from "react-router-dom";
 import { useFormik } from 'formik';
 import * as Yup from "yup";
 
-function AttendForm({ user, onAttend }) {
+function AttendForm({ currentUser, onAttend }) {
     const { eventId } = useParams()
     const history = useHistory()
 
@@ -20,7 +20,7 @@ function AttendForm({ user, onAttend }) {
             const newAttendee = {
                 comment: values.comment,
                 event_id: eventId,
-                user_id: user.id
+                user_id: currentUser.id
             };
             console.log(newAttendee);
             onAttend(newAttendee);
@@ -34,13 +34,7 @@ function AttendForm({ user, onAttend }) {
             <form onSubmit={formik.handleSubmit}>
                 <div>
                     <label>Comment:</label>
-                    <input 
-                        type="text"
-                        id="comment"
-                        name="comment"
-                        value={formik.values.comment}
-                        onChange={formik.handleChange}
-                    />
+                    <input type="text" id="comment" name="comment" value={formik.values.comment} onChange={formik.handleChange} />
                     <p>{formik.errors.comment}</p>
                 </div>
                 <button>Submit</button>

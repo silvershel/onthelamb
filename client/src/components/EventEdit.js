@@ -22,7 +22,7 @@ function EventEdit({ onUpdateEvent, onDeleteEvent }) {
             setWebsiteLink(event.website_link)
         })
         .catch((error) => console.error('Error fetching event:', error));
-    }, [])
+    }, [eventId])
 
     function handleSubmit(e) {
         e.preventDefault();

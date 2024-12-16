@@ -20,7 +20,7 @@ const containerStyle = {
 };
 
 function App() {
-	const [user, setUser] = useState(null)
+	const [currentUser, setCurrentUser] = useState(null)
 	const [events, setEvents] = useState([])
 	const [attendees, setAttendees] = useState([])
 
@@ -28,7 +28,7 @@ function App() {
 		fetch("/check_session")
 		.then((r) => {
 		if (r.ok) {
-			r.json().then((user) => setUser(user));
+			r.json().then((currentUser) => setCurrentUser(currentUser));
 		}
 		});
 	}, [])
@@ -40,7 +40,7 @@ function App() {
             console.log(attendees);
             setAttendees(attendees);
         })
-        .catch((error) => console.error('Error fetching events:', error));
+        .catch((error) => console.error('Error fetching attendees:', error));
     }, [])
 
 	useEffect(() => {
@@ -51,11 +51,10 @@ function App() {
             setEvents(events);
         })
         .catch((error) => console.error('Error fetching events:', error));
-    }, [])
-	
+    }, [])	
 
 	function handleLogout() {
-		setUser(null);
+		setCurrentUser(null);
 	};
 
 	function handleCreateEvent(newEvent) {
@@ -167,15 +166,15 @@ function App() {
         });
     }
 
-	if (!user) {
+	if (!currentUser) {
 		return (
 			<Router>
 				<Switch>
 					<Route path="/login" exact>
-						<LoginForm style={containerStyle} onLogin={setUser}/>
+						<LoginForm style={containerStyle} onLogin={setCurrentUser}/>
 					</Route>
 					<Route path="/signup" exact>
-						<SignupForm style={containerStyle} onSignup={setUser} />
+						<SignupForm style={containerStyle} onSignup={setCurrentUser} />
 					</Route>
 					<Route path="/" exact>
 						<Redirect to="/login" />
@@ -189,7 +188,7 @@ function App() {
 	return (
 		<Router>
 		<div style={containerStyle}>
-			<NavBar onLogout={handleLogout}/>
+			<NavBar currentUser={currentUser} onLogout={handleLogout}/>
 			<Switch>
 				<Route path="/login" exact>
 					<Redirect to="/" />
@@ -198,48 +197,25 @@ function App() {
 					<Redirect to="/" />
 				</Route>
 				<Route path="/" exact>
-					<EventList 
-						user={user} 
-						events={events} 
-					/>
+					<EventList currentUser={currentUser} events={events} />
 				</Route>
 				<Route path="/events" exact>
-					<EventList 
-						user={user} 
-						events={events} 
-					/>
+					<EventList currentUser={currentUser} events={events} />
 				</Route>
 				<Route path="/events/:eventId" exact>
-					<EventDetails
-						attendees={attendees} 
-						user={user} 
-					/>
+					<EventDetails currentUser={currentUser} attendees={attendees} />
 				</Route>
 				<Route path="/events/:eventId/attend" exact>
-					<AttendForm 
-						user={user}
-						onAttend={handleCreateAttendee}
-					/>
+					<AttendForm currentUser={currentUser} onAttend={handleCreateAttendee} />
 				</Route>
 				<Route path="/events/:eventId/edit" exact>
-					<EventEdit 
-						user={user} 
-						onUpdateEvent={handleUpdateEvent} 
-						onDeleteEvent={handleDeleteEvent}
-					/>
+					<EventEdit onUpdateEvent={handleUpdateEvent} onDeleteEvent={handleDeleteEvent} />
 				</Route>
 				<Route path="/create" exact>
-					<EventForm 
-						user={user} 
-						onAttend={handleCreateAttendee}
-						onCreateEvent={handleCreateEvent}
-					/>
+					<EventForm currentUser={currentUser} onAttend={handleCreateAttendee} onCreateEvent={handleCreateEvent} />
 				</Route>
-				<Route path="/profile" exact>
-					<Profile 
-						user={user} 
-						events={events}
-					/>
+				<Route path="/users/:username" exact>
+					<Profile currentUser={currentUser} events={events} />
 				</Route>
 				<Route path="/profile/edit" exact component={ProfileEdit} />
 				<Route path="*" component={ErrorPage} />
@@ -250,11 +226,3 @@ function App() {
 }
 
 export default App;
-
-// ROUTES TO UPDATE
-// "/users/${username}" - Profile
-	// shows basic profile and list of all that user's events
-	// if logged-in user, buttons appear to edit profile and manage events
-// "/users/${username}/edit" - ProfileEdit
-
-// "/events/${username}" - EventList (or UserEventList?)

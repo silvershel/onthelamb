@@ -124,6 +124,8 @@ class UserSchema(ma.SQLAlchemyAutoSchema):
         load_instance = True
         exclude = ('password',)
 
+    id = fields.Integer()
+
 class AttendeeSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = Attendee
@@ -141,7 +143,7 @@ class EventSchema(ma.SQLAlchemyAutoSchema):
         model = Event
         load_instance = True
         # Specified field order for returning data in Postman
-        field_order = ['id', 'title', 'event_type', 'start_date', 'end_date', 'website_link', 'user', 'attendees', 'vendors']
+        field_order = ['id', 'title', 'event_type', 'start_date', 'end_date', 'website_link', 'user_id', 'user', 'attendees', 'vendors']
 
     # Defining the fields to have more control over serialization
     id = fields.Integer()
@@ -150,6 +152,7 @@ class EventSchema(ma.SQLAlchemyAutoSchema):
     start_date = fields.DateTime()
     end_date = fields.DateTime()
     website_link = fields.String()
+    user_id = fields.Integer()
 
     user = ma.Nested('UserSchema')
     attendees = ma.Nested('AttendeeSchema', many=True)
