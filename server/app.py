@@ -326,12 +326,10 @@ class Attendees(Resource):
     def post(self):
         data = request.get_json()
         
-        comment = data.get('comment')
         user_id = data.get('user_id')
         event_id = data.get('event_id')
         
         new_attendee = Attendee(
-            comment = comment,
             user_id = user_id,
             event_id = event_id
         )
@@ -342,7 +340,6 @@ class Attendees(Resource):
             
             response = {
                 'id': new_attendee.id,
-                'comment': new_attendee.comment,
                 'user_id': new_attendee.user_id,
                 'event_id': new_attendee.event_id,
             }

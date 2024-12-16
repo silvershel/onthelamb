@@ -130,6 +130,9 @@ class AttendeeSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = Attendee
         load_instance = True
+    
+    user_id = fields.Integer()
+    event_id = fields.Integer()
     user = ma.Nested(UserSchema)
 
 class VendorSchema(ma.SQLAlchemyAutoSchema):

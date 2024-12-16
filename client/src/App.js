@@ -20,9 +20,9 @@ const containerStyle = {
 };
 
 function App() {
-	const [currentUser, setCurrentUser] = useState(null)
-	const [events, setEvents] = useState([])
-	const [attendees, setAttendees] = useState([])
+	const [currentUser, setCurrentUser] = useState(null);
+	const [events, setEvents] = useState([]);
+	const [attendees, setAttendees] = useState([]);
 
 	useEffect(() => {
 		fetch("/check_session")
@@ -147,7 +147,7 @@ function App() {
 		})
         .then((r) => r.json())
 		.then((updatedAttendee) => {
-			setEvents((prevAttendees) => 
+			setAttendees((prevAttendees) => 
 				prevAttendees.map((attendee) =>
 					attendee.id === updatedAttendee.id ? updatedAttendee : attendee
 				)
@@ -157,13 +157,14 @@ function App() {
 			console.error("Error updating attendee:", error);
 		});
     }
-
+	
 	function handleDeleteAttendee(attendeeId) {
         fetch(`/attendees/${attendeeId}`, {
             method: 'DELETE',
         })
         .then(r => {
             if (r.ok) {
+				console.log("Attendee deleted.")
 				setAttendees((prevAttendees) => prevAttendees.filter(attendee => attendee.id !== attendeeId));
             } else {
                 console.error("Unable to delete attendee.");
@@ -211,11 +212,8 @@ function App() {
 					<EventList currentUser={currentUser} events={events} onAttend={handleCreateAttendee} />
 				</Route>
 				<Route path="/events/:eventId" exact>
-					<EventDetails currentUser={currentUser} attendees={attendees} onAttend={handleCreateAttendee} />
+					<EventDetails currentUser={currentUser} onAttend={handleCreateAttendee} onDeleteAttend={handleDeleteAttendee} />
 				</Route>
-				{/* <Route path="/events/:eventId/attend" exact>
-					<AttendForm currentUser={currentUser} onAttend={handleCreateAttendee} />
-				</Route> */}
 				<Route path="/events/:eventId/edit" exact>
 					<EventEdit onUpdateEvent={handleUpdateEvent} onDeleteEvent={handleDeleteEvent} />
 				</Route>

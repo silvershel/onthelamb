@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 
-function EventDetails({ currentUser }) {
-    const [event, setEvent] = useState([])
-    const [user, setUser] = useState([])
-    const { eventId } = useParams()
+function EventDetails({ currentUser, onAttend, onDeleteAttend }) {
+    const [event, setEvent] = useState([]);
+    const [user, setUser] = useState([]);
+    const { eventId } = useParams();
 
     useEffect(() => {
         fetch(`/events/${eventId}`)
@@ -12,10 +12,43 @@ function EventDetails({ currentUser }) {
         .then((event) => {
             console.log(event);
             setEvent(event);
-            setUser(event.user)
+            setUser(event.user);
         })
         .catch((error) => console.error('Error fetching event:', error));
     }, [eventId])
+
+    function userAttending() {
+        return event.attendees && event.attendees.some(attendee => attendee.user_id === currentUser.id);
+    }
+
+    function onAttendClick() {
+        const newAttendee = {
+            comment: "hello from EventDetails",
+            event_id: event.id,
+            user_id: currentUser.id
+        };
+        console.log(newAttendee);
+        onAttend(newAttendee);
+    }
+
+    function onDeleteAttendClick() {
+        const attendeeToRemove = event.attendees.find(attendee => attendee.user_id === currentUser.id);
+        if (attendeeToRemove) {
+            onDeleteAttend(attendeeToRemove.id);
+        }
+    }
+
+    function showAttendEventButton() {
+        if (!userAttending()) {
+            return (
+                <button onClick={onAttendClick}>Attend</button>
+            );
+        } else {
+            return (
+                <button onClick={onDeleteAttendClick}>Remove Attendance</button>
+            );
+        }   
+    }
 
     function showEditEventButton() {
         if (currentUser.id === event.user_id) {
@@ -25,21 +58,6 @@ function EventDetails({ currentUser }) {
         } else {
             return null
         }
-    }
-
-    function userAttending() {
-        return event.attendees && event.attendees.some(attendee => attendee.user.id === currentUser.id);
-    }
-
-    function showAttendEventButton() {
-        if (!userAttending()) {
-            return (
-                <Link to={`/events/${event.id}/attend`}>
-                    <button>Attend Event</button>
-                </Link>
-            );
-        }
-        return null;
     }
 
     function showAttendeesList() {
