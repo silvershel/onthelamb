@@ -12,7 +12,6 @@ import EventList from "./components/EventList";
 import Profile from "./components/Profile";
 import ProfileEdit from "./components/ProfileEdit";
 import ErrorPage from "./components/ErrorPage";
-import AttendForm from "./components/AttendForm";
 
 // styles
 const containerStyle = {
@@ -110,6 +109,7 @@ function App() {
         })
         .then(r => {
             if (r.ok) {
+				console.log("Event deleted.")
 				setEvents((prevEvents) => prevEvents.filter(event => event.id !== eventId));
             } else {
                 console.error("Unable to delete event.");
@@ -136,27 +136,6 @@ function App() {
 			console.error('Error creating new attendee:', error);
 		  });
 	  };
-
-	function handleUpdateAttendee(attendeeId, updatedAttendee) {
-        fetch(`/attendee/${attendeeId}`, {
-            method: 'PATCH',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify(updatedAttendee),
-		})
-        .then((r) => r.json())
-		.then((updatedAttendee) => {
-			setAttendees((prevAttendees) => 
-				prevAttendees.map((attendee) =>
-					attendee.id === updatedAttendee.id ? updatedAttendee : attendee
-				)
-			);
-		})
-		.catch((error) => {
-			console.error("Error updating attendee:", error);
-		});
-    }
 	
 	function handleDeleteAttendee(attendeeId) {
         fetch(`/attendees/${attendeeId}`, {
@@ -212,7 +191,7 @@ function App() {
 					<EventList currentUser={currentUser} events={events} onAttend={handleCreateAttendee} />
 				</Route>
 				<Route path="/events/:eventId" exact>
-					<EventDetails currentUser={currentUser} onAttend={handleCreateAttendee} onDeleteAttend={handleDeleteAttendee} />
+					<EventDetails currentUser={currentUser} attendees={attendees} onAttend={handleCreateAttendee} onDeleteAttend={handleDeleteAttendee} />
 				</Route>
 				<Route path="/events/:eventId/edit" exact>
 					<EventEdit onUpdateEvent={handleUpdateEvent} onDeleteEvent={handleDeleteEvent} />

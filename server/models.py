@@ -96,7 +96,6 @@ class Attendee(db.Model, SerializerMixin):
     serialize_rules = ('user.attendees', 'event.attendees',)
 
     id = db.Column(Integer, primary_key=True)
-    comment = db.Column(String)
     user_id = db.Column(Integer, ForeignKey('users.id'), nullable=False)
     event_id = db.Column(Integer, ForeignKey('events.id'), nullable=False)
 

@@ -125,7 +125,6 @@ if __name__ == '__main__':
                 attendee = Attendee(
                     user_id=user.id,
                     event_id=event.id,
-                    comment=fake.sentence()
                 )
                 attendees.append(attendee)
 

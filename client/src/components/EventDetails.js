@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 
-function EventDetails({ currentUser, onAttend, onDeleteAttend }) {
+function EventDetails({ currentUser, attendees, onAttend, onDeleteAttend }) {
     const [event, setEvent] = useState([]);
     const [user, setUser] = useState([]);
     const { eventId } = useParams();
@@ -15,7 +15,7 @@ function EventDetails({ currentUser, onAttend, onDeleteAttend }) {
             setUser(event.user);
         })
         .catch((error) => console.error('Error fetching event:', error));
-    }, [eventId])
+    }, [eventId, attendees])
 
     function userAttending() {
         return event.attendees && event.attendees.some(attendee => attendee.user_id === currentUser.id);

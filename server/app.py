@@ -358,35 +358,7 @@ class AttendeeById(Resource):
         
         attendee_schema = AttendeeSchema()
         attendee_data = attendee_schema.dump(attendee)
-        return attendee_data, 200
-    
-     
-    def patch(self, attendee_id):
-        data = request.get_json()
-
-        attendee = Attendee.query.get(attendee_id)
-
-        if not attendee:
-            return {'message': 'Attendee not found'}, 404
-        
-        if 'comment' in data:
-            attendee.comment = data['comment']
-
-        try:
-            db.session.commit()
-            response = {
-                "id": attendee.id,
-                "comment": attendee.comment, 
-                "user_id": attendee.user_id,
-                "event_id": attendee.event_id
-            }
-
-            return response, 200
-        
-        except Exception as e:
-            db.session.rollback()
-            return {'error': str(e)}, 422
-        
+        return attendee_data, 200       
 
     def delete(self, attendee_id):
         attendee = Attendee.query.get(attendee_id)
