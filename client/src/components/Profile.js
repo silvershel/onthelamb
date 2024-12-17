@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
+import { useAppContext } from "../contexts/AppContext";
 import { Link, useParams } from "react-router-dom";
 import EventPreview from "./EventPreview";
 
-function Profile({ currentUser, events }) {
+function Profile() {
+    const { currentUser, events } = useAppContext();
     const { username } = useParams()
     const [user, setUser] = useState([])
 

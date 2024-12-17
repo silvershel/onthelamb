@@ -1,9 +1,13 @@
 import React from "react";
+import { useAppContext } from "../contexts/AppContext";
+import { useEvents } from '../hooks/UseEvents';
 import { useHistory } from "react-router-dom";
 import { useFormik } from 'formik';
 import * as Yup from "yup";
 
-function EventCreate({ currentUser, onCreateEvent }) {
+function EventCreate() {
+    const { createEvent } = useEvents();
+    const { currentUser } = useAppContext();
     const navigate = useHistory()
     
     const formik = useFormik({
@@ -37,7 +41,7 @@ function EventCreate({ currentUser, onCreateEvent }) {
                 user_id: currentUser.id,
             };
             console.log(newEvent)
-            onCreateEvent(newEvent);
+            createEvent(newEvent);
 
             navigate.push(`/users/${currentUser.username}`)
         }

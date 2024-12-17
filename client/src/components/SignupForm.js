@@ -1,9 +1,11 @@
 import React from "react";
+import { useAppContext } from "../contexts/AppContext";
 import { Link } from "react-router-dom";
 import { useFormik } from 'formik';
 import * as Yup from "yup";
 
-function SignupForm({ style, onSignup }) {
+function SignupForm({ style }) {
+    const { setCurrentUser } = useAppContext();
     const formik = useFormik({
         initialValues: {
             name: "",
@@ -32,7 +34,7 @@ function SignupForm({ style, onSignup }) {
                 .then((r) => {
                     setSubmitting(false);
                     if (r.ok) {
-                        r.json().then((user) => onSignup(user));
+                        r.json().then((user) => setCurrentUser(user));
                     } else {
                         r.json().then((err) => setErrors({ apiError: err.errors }));
                     }

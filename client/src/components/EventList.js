@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
+import { useAppContext } from "../contexts/AppContext";
 import EventPreview from "./EventPreview";
 
-function EventList({ currentUser, events }) {
+function EventList() {
+    const { currentUser, events } = useAppContext();
     const [filter, setFilter] = useState("all");
     const [filteredEvents, setFilteredEvents] = useState(events);
 

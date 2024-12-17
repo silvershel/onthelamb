@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
+import { useEvents } from '../hooks/UseEvents';
 import { useHistory, useParams } from "react-router-dom";
 
-function EventEdit({ onUpdateEvent, onDeleteEvent }) {
+function EventEdit() {
+    const { updateEvent, deleteEvent } = useEvents();
     const { eventId } = useParams()
     const [event, setEvent] = useState([])
     const [type, setType] = useState(event.event_type)
@@ -39,12 +41,12 @@ function EventEdit({ onUpdateEvent, onDeleteEvent }) {
             website_link: websiteLink,
         };
         console.log(updatedEvent);
-        onUpdateEvent(event.id, updatedEvent)
+        updateEvent(event.id, updatedEvent)
         navigate.push(`/events/${event.id}`);
     }
 
     function handleDelete() {
-        onDeleteEvent(event.id);
+        deleteEvent(event.id);
         navigate.push("/");
     }
 

@@ -1,14 +1,17 @@
 import React from "react";
 import { Link, useHistory } from "react-router-dom";
+import { useAppContext } from "../contexts/AppContext";
 
-function NavBar({ currentUser, onLogout }) {
+
+function NavBar() {
+	const { currentUser, setCurrentUser } = useAppContext();
 	const navigate = useHistory()
 
 	function handleLogout(e) {
 		fetch("/logout", { method: "DELETE" })
 		.then((r) => {
 			if (r.ok) {
-				onLogout();
+				setCurrentUser(null);
 				resetSelect();
 				navigate.push("/login");
 			}

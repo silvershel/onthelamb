@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from "react";
+import { useAttendees } from "../hooks/UseAttendees";
+import { useAppContext } from "../contexts/AppContext";
 import { Link, useParams } from "react-router-dom";
 
-function EventDetails({ currentUser, attendees, onAttend, onDeleteAttend }) {
+function EventDetails() {
+    const { createAttendee, deleteAttendee } = useAttendees();
+    const { currentUser, attendees } = useAppContext();
     const [event, setEvent] = useState([]);
     const [user, setUser] = useState([]);
     const { eventId } = useParams();
@@ -28,13 +32,13 @@ function EventDetails({ currentUser, attendees, onAttend, onDeleteAttend }) {
             user_id: currentUser.id
         };
         console.log(newAttendee);
-        onAttend(newAttendee);
+        createAttendee(newAttendee);
     }
 
     function onDeleteAttendClick() {
         const attendeeToRemove = event.attendees.find(attendee => attendee.user_id === currentUser.id);
         if (attendeeToRemove) {
-            onDeleteAttend(attendeeToRemove.id);
+            deleteAttendee(attendeeToRemove.id);
         }
     }
 
