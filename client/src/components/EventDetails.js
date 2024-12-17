@@ -3,7 +3,7 @@ import { useAttendees } from "../hooks/UseAttendees";
 import { useAppContext } from "../contexts/AppContext";
 import { Link, useParams } from "react-router-dom";
 
-function EventDetails() {
+function EventDetails({ onAttend, onDeleteAttend }) {
     const { createAttendee, deleteAttendee } = useAttendees();
     const { currentUser, attendees } = useAppContext();
     const [event, setEvent] = useState([]);

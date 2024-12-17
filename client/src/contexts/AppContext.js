@@ -1,8 +1,8 @@
 import React, { createContext, useState, useEffect } from "react";
 
-const AppContext = createContext();
+export const AppContext = createContext();
 
-const AppProvider = ({ children }) => {
+export const AppProvider = ({ children }) => {
     const [currentUser, setCurrentUser] = useState(null);
     const [events, setEvents] = useState([]);
     const [attendees, setAttendees] = useState([]);
@@ -17,7 +17,6 @@ const AppProvider = ({ children }) => {
             .catch((error) => console.error("Error fetching user:", error));
     }, []);
 
-    // Fetch events on mount
     useEffect(() => {
         fetch("/events")
             .then((r) => r.json())
@@ -28,7 +27,6 @@ const AppProvider = ({ children }) => {
             .catch((error) => console.error("Error fetching events:", error));
     }, []);
 
-    // Fetch attendees on mount
     useEffect(() => {
         fetch("/attendees")
             .then((r) => r.json())
@@ -58,5 +56,3 @@ const AppProvider = ({ children }) => {
 export const useAppContext = () => {
     return React.useContext(AppContext);
 };
-
-export {AppContext, AppProvider};
