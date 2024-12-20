@@ -1,20 +1,17 @@
 import React from "react";
 import { useAppContext } from "../contexts/AppContext";
-import { useEvents } from '../hooks/UseEvents';
 import { useHistory } from "react-router-dom";
 import { useFormik } from 'formik';
 import * as Yup from "yup";
 
 function EventCreate() {
-    const { createEvent } = useEvents();
-    const { currentUser } = useAppContext();
+    const { currentUser, createEvent } = useAppContext();
     const navigate = useHistory()
     
     const formik = useFormik({
         initialValues: {
             event_type: "",
             title: "",
-            // address: "", use google api to convert to latitude and longitude.
             start_date: "",
             end_date: "",
             description: "",
@@ -31,17 +28,26 @@ function EventCreate() {
         }),
 
         onSubmit: (values) => {
+            // const formattedStartDate = new Date(values.start_date).toISOString().split('T')[0];  // "YYYY-MM-DD"
+            // const formattedEndDate = new Date(values.end_date).toISOString().split('T')[0];  // "YYYY-MM-DD"
+
             const newEvent = {
                 event_type: values.event_type,
                 title: values.title,
+                // address: {
+                //     street: values.address.street,
+                //     city: values.address.city,
+                //     state: values.address.state,
+                //     zip: values.address.zip,
+                // },
                 start_date: values.start_date,
                 end_date: values.end_date,
                 description: values.description,
                 website_link: values.website_link,
                 user_id: currentUser.id,
-            };
-            console.log(newEvent)
+            }
             createEvent(newEvent);
+            // console.log(newEvent);
 
             navigate.push(`/users/${currentUser.username}`)
         }
@@ -101,7 +107,7 @@ function EventCreate() {
                 <div>
                     <label>Description</label>
                     <input
-                        type="description"
+                        type="type"
                         id="description"
                         name="description"
                         value={formik.values.description}
@@ -120,7 +126,7 @@ function EventCreate() {
                     />
                     <p>{formik.errors.website_link}</p>
                 </div>
-                {formik.errors.apiError ? (
+                    {formik.errors.apiError ? (
                         <div>{formik.errors.apiError}</div>
                     ) : null}
                 <button type="submit">Save</button>

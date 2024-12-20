@@ -1,28 +1,17 @@
-import React, { useState, useEffect } from "react";
-import { useAttendees } from "../hooks/UseAttendees";
-import { useAppContext } from "../contexts/AppContext";
+import React, { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
+import { useAppContext } from "../contexts/AppContext";
 
-function EventDetails({ onAttend, onDeleteAttend }) {
-    const { createAttendee, deleteAttendee } = useAttendees();
-    const { currentUser, attendees } = useAppContext();
-    const [event, setEvent] = useState([]);
-    const [user, setUser] = useState([]);
+function EventDetails() {
+    const { currentUser, fetchEvent, event, createAttendee, deleteAttendee } = useAppContext();
     const { eventId } = useParams();
 
     useEffect(() => {
-        fetch(`/events/${eventId}`)
-        .then((r) => r.json())
-        .then((event) => {
-            console.log(event);
-            setEvent(event);
-            setUser(event.user);
-        })
-        .catch((error) => console.error('Error fetching event:', error));
-    }, [eventId, attendees])
+        fetchEvent(eventId);
+    }, [eventId]);
 
-    function userAttending() {
-        return event.attendees && event.attendees.some(attendee => attendee.user_id === currentUser.id);
+    const userAttending = () => {
+        return event.attendees && event.attendees.some((attendee) => attendee.user_id === currentUser.id);
     }
 
     function onAttendClick() {
@@ -36,76 +25,59 @@ function EventDetails({ onAttend, onDeleteAttend }) {
     }
 
     function onDeleteAttendClick() {
-        const attendeeToRemove = event.attendees.find(attendee => attendee.user_id === currentUser.id);
-        if (attendeeToRemove) {
-            deleteAttendee(attendeeToRemove.id);
-        }
-    }
-
-    function showAttendEventButton() {
-        if (!userAttending()) {
-            return (
-                <button onClick={onAttendClick}>Attend</button>
-            );
-        } else {
-            return (
-                <button onClick={onDeleteAttendClick}>Remove Attendance</button>
-            );
-        }   
-    }
-
-    function showEditEventButton() {
-        if (currentUser.id === event.user_id) {
-            return <Link to={`/events/${event.id}/edit`}>
-                <button>Edit Event</button>
-            </Link>
-        } else {
-            return null
-        }
-    }
-
-    function showAttendeesList() {
-        if (event.attendees && event.attendees.length > 0) {
-            return event.attendees.map((attendee) => (
-              <div key={attendee.id}>
-                <p>{attendee.user.username}</p>
-              </div>
-            ));
-          } else {
-            return <p>No one attending yet.</p>;
-          }
-    }
-
-    function showVendorsList() {
-        if (event.vendors && event.vendors.length > 0) {
-            return event.vendors.map((vendor) => (
-              <div key={vendor.id}>
-                <p>{vendor.user.username}</p>
-              </div>
-            ));
-          } else {
-            return <p>No vendors have been assigned.</p>;
-          }
+        const attendee = event.attendees.find(attendee => attendee.user_id === currentUser.id);
+        deleteAttendee(attendee.id);
     }
 
 
     return (
         <div>
             <h2>{event.title}</h2>
-            <Link to={`/users/${user.username}`}>
-                <p>Organized by: {user.username}</p>
-            </Link>
+            <p>Organized by: <Link to={`/users/${event.user?.username}`}>{event.user?.username}</Link></p>
             <p>Starts: {event.start_date}</p>
             <p>Ends: {event.end_date}</p>
-            <p >Website: {event.website_link}</p>
-            {showAttendEventButton()}
-            {showEditEventButton()}
+            <p>Website: {event.website_link}</p>
+            <a href={event.website_link}>{event.website_link}</a>
+            
+            <div>
+                {!userAttending() ? (
+                    <button onClick={onAttendClick}>Attend</button>
+                ) : (
+                    <button onClick={onDeleteAttendClick}>Remove Attendance</button>
+                )}
+            </div>
+
+            <div>
+                {currentUser.id === event.user_id ? (
+                    <Link to={`/events/${event.id}/edit`}>
+                        <button>Edit Event</button>
+                    </Link>
+                ) : (
+                    null
+                )}
+            </div>
             
             <h2>Attendees</h2>
-            {showAttendeesList()}
+            {event.attendees && event.attendees.length > 0 ? (
+                event.attendees.map((attendee) => (
+                    <div key={attendee.id}>
+                      <p>{attendee.user.username}</p>
+                    </div>
+                  ))
+            ) : (
+                <p>No one attending yet.</p>
+            )}
 
             <h2>Vendors</h2>
-            {showVendorsList()}
+            {event.vendors && event.vendors.length > 0 ? (
+                event.vendors.map((vendor) => (
+                    <div key={vendor.id}>
+                      <p>{vendor.user.username}</p>
+                    </div>
+                  ))
+            ) : (
+                <p>No vendors have been assigned.</p>
+            )}
         </div>
     )
 }

@@ -1,66 +1,68 @@
-import React, { useState, useEffect } from "react";
-import { useEvents } from '../hooks/UseEvents';
+import React, { useEffect } from "react";
 import { useHistory, useParams } from "react-router-dom";
+import { useAppContext } from "../contexts/AppContext";
+import { useFormik } from 'formik';
+import * as Yup from "yup";
 
 function EventEdit() {
-    const { updateEvent, deleteEvent } = useEvents();
+    const { currentUser, event, fetchEvent, updateEvent, deleteEvent } = useAppContext();
     const { eventId } = useParams()
-    const [event, setEvent] = useState([])
-    const [type, setType] = useState(event.event_type)
-    const [title, setTitle] = useState(event.title);
-    const [startDate, setStartDate] = useState(event.start_date);
-    const [endDate, setEndDate] = useState(event.end_date);
-    const [description, setDescription] = useState(event.description);
-    const [websiteLink, setWebsiteLink] = useState(event.website_link);
     const navigate = useHistory()
 
     useEffect(() => {
-        fetch(`/events/${eventId}`)
-        .then((r) => r.json())
-        .then((event) => {
-            console.log(event);
-            setEvent(event);
-            setType(event.event_type)
-            setTitle(event.title)
-            setStartDate(event.start_date)
-            setEndDate(event.end_date)
-            setDescription(event.description)
-            setWebsiteLink(event.website_link)
-        })
-        .catch((error) => console.error('Error fetching event:', error));
+        fetchEvent(eventId)
     }, [eventId])
 
-    function handleSubmit(e) {
-        e.preventDefault();
-        const updatedEvent = {
-            event_type: type,
-            title: title,
-            start_date: startDate,
-            end_date: endDate,
-            description: description,
-            website_link: websiteLink,
-        };
-        console.log(updatedEvent);
-        updateEvent(event.id, updatedEvent)
-        navigate.push(`/events/${event.id}`);
-    }
+     const formik = useFormik({
+            initialValues: {
+                event_type: event.event_type,
+                title: event.title,
+                start_date: event.start_date,
+                end_date: event.end_date,
+                description: event.description,
+                website_link: event.website_link,
+            },
+    
+            validationSchema: Yup.object({
+                event_type: Yup.string().required("Please select an event type."),
+                title: Yup.string().required("Event title is required."),
+                start_date: Yup.string().required("Start date is required."),
+                end_date: Yup.string().required("End date is required."),
+                description: Yup.string().required("Please include a description."), 
+                website_link: Yup.string().required("Please include a website link."),
+            }),
+    
+            onSubmit: (values) => {
+                const updatedEvent = {
+                    event_type: values.event_type,
+                    title: values.title,
+                    start_date: values.start_date,
+                    end_date: values.end_date,
+                    description: values.description,
+                    website_link: values.website_link,
+                    user_id: currentUser.id,
+                };
+                updateEvent(event.id, updatedEvent);
+                navigate.push(`/events/${eventId}`)
+            }
+        });
 
     function handleDelete() {
-        deleteEvent(event.id);
+        deleteEvent(eventId);
         navigate.push("/");
     }
 
     return (
         <div>
             <h2>Edit {event.title}</h2>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={formik.handleSubmit}>
                 <div>
                     <label>Event Type</label>
                     <select 
                         id="event_type" 
                         name="event_type" 
-                        value={type} 
-                        onChange={(e) => setType(e.target.value)} >
+                        value={formik.values.event_type}
+                        onChange={formik.handleChange} >
                         <option value="local meetup">Local Meetup</option>
                         <option value="festival">Festival</option>
                         <option value="retreat">Retreat</option>
@@ -73,26 +75,26 @@ function EventEdit() {
                     <input
                         type="text"
                         name="title"
-                        value={title}
-                        onChange={(e) => setTitle(e.target.value)}
+                        value={formik.values.title}
+                        onChange={formik.handleChange}
                     />
                 </div>
                 <div>
                     <label>Start Date</label>
                     <input
                         type="date"
-                        name="startDate"
-                        value={startDate}
-                        onChange={(e) => setStartDate(e.target.value)}
+                        name="start_date"
+                        value={formik.values.start_date}
+                        onChange={formik.handleChange}
                     />
                 </div>
                 <div>
                     <label>End Date</label>
                     <input
                         type="date"
-                        name="endDate"
-                        value={endDate}
-                        onChange={(e) => setEndDate(e.target.value)}
+                        name="end_date"
+                        value={formik.values.end_date}
+                        onChange={formik.handleChange}
                     />
                 </div>
                 <div>
@@ -100,22 +102,22 @@ function EventEdit() {
                     <input
                         type="description"
                         name="description"
-                        value={description}
-                        onChange={(e) => setDescription(e.target.value)}
+                        value={formik.values.description}
+                        onChange={formik.handleChange}
                     />
                 </div>
                 <div>
                     <label>Event Website</label>
                     <input
                         type="text"
-                        name="websiteLink"
-                        value={websiteLink}
-                        onChange={(e) => setWebsiteLink(e.target.value)}
+                        name="website_link"
+                        value={formik.values.website_link}
+                        onChange={formik.handleChange}
                     />
                 </div>
                 <button type="submit">Save Edits</button>
-                <button onClick={handleDelete} type="submit">Delete Event</button>
             </form>
+            <button onClick={handleDelete}>Delete Event</button>
         </div>
     );
 }

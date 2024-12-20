@@ -4,19 +4,8 @@ import { useAppContext } from "../contexts/AppContext";
 
 
 function NavBar() {
-	const { currentUser, setCurrentUser } = useAppContext();
+	const { currentUser, logout} = useAppContext();
 	const navigate = useHistory()
-
-	function handleLogout(e) {
-		fetch("/logout", { method: "DELETE" })
-		.then((r) => {
-			if (r.ok) {
-				setCurrentUser(null);
-				resetSelect();
-				navigate.push("/login");
-			}
-		});
-	};
 
 	function handleSelectChange(e) {
 		const selection = e.target.value;
@@ -27,13 +16,15 @@ function NavBar() {
 			navigate.push(`/users/${currentUser.username}`);
 			resetSelect();
 		} else if (selection === "edit") {
+			// this will need to get updated to "/profile/${currentUser.username}/edit"
 			navigate.push("/profile/edit");
 			resetSelect();
 		} else if (selection === "create") {
 			navigate.push("/create");
 			resetSelect();
 		} else if (selection === "logout") {
-		  	handleLogout();
+			navigate.push("/login");
+		  	logout();
 		}
 	  }
 

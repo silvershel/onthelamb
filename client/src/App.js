@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from "react";
 import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
 
 // components
@@ -21,38 +21,57 @@ const containerStyle = {
   textAlign: 'center'
 };
 
-function App() {
+function Routes() {
 	const { currentUser } = useAppContext();
   
+	if (!currentUser) {
+		return (
+			<Router>
+				<div style={containerStyle}>
+					<Switch>
+						<Route path="/login" exact component={LoginForm} />
+						<Route path="/signup" exact component={SignupForm}/>
+						<Route path="/" exact>
+							<Redirect to="/login" />
+						</Route>
+						<Route path="*" component={ErrorPage} />
+					</Switch>				
+				</div>				
+			</Router>
+	  	);
+	} 
+
 	return (
-	  <AppProvider>
 		<Router>
-		  <div style={{ textAlign: "center" }}>
-			<Switch>
-			  {!currentUser ? (
-				<>
-				  <Route path="/login" exact component={LoginForm} />
-				  <Route path="/signup" exact component={SignupForm} />
-				  <Route path="/" exact>
-					<Redirect to="/login" />
-				  </Route>
-				</>
-			  ) : (
-				<>
-				  <Route path="/events" exact component={EventList} />
-				  <Route path="/events/:eventId" exact component={EventDetails} />
-				  <Route path="/events/:eventId/edit" exact component={EventEdit} />
-				  <Route path="/create" exact component={EventCreate} />
-				  <Route path="/profile" exact component={Profile} />
-				  <Route path="/profile/edit" exact component={ProfileEdit} />
-				  <Route path="*" component={ErrorPage} />
-				</>
-			  )}
-			</Switch>
-		  </div>
+			<div style={containerStyle}>
+				<NavBar currentUser={currentUser} />
+				<Switch>
+					<Route path="/login" exact>
+						<Redirect to="/" />
+					</Route>
+					<Route path="/signup" exact>
+						<Redirect to="/" />
+					</Route>
+					<Route path="/" exact component={EventList} />
+					<Route path="/events" exact component={EventList} />
+					<Route path="/events/:eventId" exact component={EventDetails} />
+					<Route path="/events/:eventId/edit" exact component={EventEdit} />
+					<Route path="/create" exact component={EventCreate} />
+					<Route path="/users/:username" exact component={Profile} />
+					<Route path="/profile/edit" exact component={ProfileEdit} />
+					<Route path="*" component={ErrorPage} />
+				</Switch>
+			</div>
 		</Router>
-	  </AppProvider>
 	);
   }
-
-export default App;
+  
+  function App() {
+	return (
+		<AppProvider>
+			<Routes />
+		</AppProvider>
+	);
+  }
+  
+  export default App;

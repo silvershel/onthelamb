@@ -77,7 +77,7 @@ class CheckSession(Resource):
                     user_data = UserSchema.dumps(user)
                     return user_data, 200
             else:
-                return {'message': 'No user in session.'}, 404
+                return None, 200
 
         except Exception as e:
             return {'error': str(e)}, 500
@@ -203,7 +203,7 @@ class Events(Resource):
         event_type = data.get('event_type')
         start_date_str = data.get('start_date')
         end_date_str = data.get('end_date')
-        description = data.get('description'),
+        description = data.get('description')
         website_link = data.get('website_link')
         user_id = data.get('user_id')
 

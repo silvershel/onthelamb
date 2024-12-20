@@ -1,11 +1,12 @@
 import React from "react";
-import { useAppContext } from "../contexts/AppContext";
 import { Link } from "react-router-dom";
+import { useAppContext } from "../contexts/AppContext";
 import { useFormik } from 'formik';
 import * as Yup from "yup";
 
 function LoginForm({ style }) {
-    const { setCurrentUser } = useAppContext();
+    const { login } = useAppContext();
+    
     const formik = useFormik({
         initialValues: {
             username: "",
@@ -17,29 +18,13 @@ function LoginForm({ style }) {
             password: Yup.string().required("Password is required"),
         }),
 
-        onSubmit: (values, { setSubmitting, setErrors }) => {
-            fetch("/login", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    username: values.username,
-                    password: values.password,
-                }),
-            })
-                .then((r) => {
-                    setSubmitting(false);
-                    if (r.ok) {
-                        r.json().then((user) => setCurrentUser(user));
-                    } else {
-                        r.json().then((err) => setErrors({ apiError: err.errors }));
-                    }
-                })
-                .catch(() => {
-                    setSubmitting(false);
-                    setErrors({ apiError: "Something went wrong. Please try again later." });
-                });
+        onSubmit: (values) => {
+            const user = {
+                username: values.username,
+                password: values.password,
+            }
+            // console.log(user);
+            login(user);            
         },
     });
 

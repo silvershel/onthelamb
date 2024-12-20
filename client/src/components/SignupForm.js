@@ -1,11 +1,12 @@
 import React from "react";
-import { useAppContext } from "../contexts/AppContext";
 import { Link } from "react-router-dom";
+import { useAppContext } from "../contexts/AppContext";
 import { useFormik } from 'formik';
 import * as Yup from "yup";
 
 function SignupForm({ style }) {
     const { setCurrentUser } = useAppContext();
+    
     const formik = useFormik({
         initialValues: {
             name: "",
@@ -19,7 +20,7 @@ function SignupForm({ style }) {
             password: Yup.string().required("Password is required"),
         }),
 
-        onSubmit: (values, { setSubmitting, setErrors }) => {
+        onSubmit: (values) => {
             fetch("/signup", {
                 method: "POST",
                 headers: {
@@ -31,18 +32,8 @@ function SignupForm({ style }) {
                     password: values.password,
                 }),
             })
-                .then((r) => {
-                    setSubmitting(false);
-                    if (r.ok) {
-                        r.json().then((user) => setCurrentUser(user));
-                    } else {
-                        r.json().then((err) => setErrors({ apiError: err.errors }));
-                    }
-                })
-                .catch(() => {
-                    setSubmitting(false);
-                    setErrors({ apiError: "Something went wrong. Please try again later." });
-                });
+                .then((user) => setCurrentUser(user))
+                .catch((error) => console.error('Signup form error:', error));
         },
     });
 
@@ -88,7 +79,7 @@ function SignupForm({ style }) {
                         <div>{formik.errors.apiError}</div>
                     ) : null}
                 </div>
-                <button>Sign Up</button>
+                <button type="submit">Sign Up</button>
                 <p>Already have an account? <Link to="/login">Log In</Link></p>
             </form>
         </div>
