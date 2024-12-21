@@ -19,6 +19,7 @@ if __name__ == '__main__':
         User.query.delete()
         Event.query.delete()
         Attendee.query.delete()
+        Vendor.query.delete()
         db.session.commit()
 
         # Seed Users
@@ -45,6 +46,9 @@ if __name__ == '__main__':
         )
         db.session.add(test_user_shepherd)
         db.session.commit()
+
+        # Stored test users for reference
+        test_users = [test_user_sheep, test_user_shepherd]
 
         users = []
         used_usernames = set()
@@ -80,20 +84,21 @@ if __name__ == '__main__':
 
         # events specific to test users 1 and 2
         for i in range(6):
-            event_type = rc(['festival', 'retreat', 'local meetup', 'popup'])
-            event_title = f"{fake.company()} {event_type}"
+            for test_user in test_users:
+                event_type = rc(['festival', 'retreat', 'local meetup', 'popup'])
+                event_title = f"{fake.company()} {event_type}"
 
-            event = Event(
-                title = event_title,
-                start_date = fake.future_date(end_date=True),
-                end_date = fake.future_date(end_date=True),
-                user_id = rc(["1", "2"]),
-                website_link = fake.url(),
-                description = fake.sentence(),
-                event_type = event_type,
-                address = fake.address()
-            )
-            events.append(event)
+                event = Event(
+                    title=event_title,
+                    start_date=fake.future_date(end_date=True),
+                    end_date=fake.future_date(end_date=True),
+                    user_id=test_user.id,
+                    website_link=fake.url(),
+                    description=fake.sentence(),
+                    event_type=event_type,
+                    address=fake.address()
+                )
+                events.append(event)
 
         # events for all users
         for i in range(10):
@@ -120,19 +125,18 @@ if __name__ == '__main__':
         # Seed Attendees
         attendees = []
         for event in events:
-            for i in range(randint(3, 10)):
+            attendees_for_event = []
+            attendees_for_event.append(Attendee(user_id=event.user_id, event_id=event.id))
+
+            for i in range(randint(1, 3)):
                 user = rc(users)
-                attendee = Attendee(
-                    user_id=user.id,
-                    event_id=event.id,
-                )
-                attendees.append(attendee)
+                attendees_for_event.append(Attendee(user_id=user.id, event_id=event.id))
+
+            attendees.extend(attendees_for_event)
 
         db.session.add_all(attendees)
         db.session.commit()
         print(f"Created {len(attendees)} attendees.")
-
-        print("Seeding complete.")
 
         # Seed Vendors
         vendors = []

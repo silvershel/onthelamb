@@ -28,9 +28,6 @@ function EventCreate() {
         }),
 
         onSubmit: (values) => {
-            // const formattedStartDate = new Date(values.start_date).toISOString().split('T')[0];  // "YYYY-MM-DD"
-            // const formattedEndDate = new Date(values.end_date).toISOString().split('T')[0];  // "YYYY-MM-DD"
-
             const newEvent = {
                 event_type: values.event_type,
                 title: values.title,
@@ -45,6 +42,8 @@ function EventCreate() {
                 description: values.description,
                 website_link: values.website_link,
                 user_id: currentUser.id,
+                attendees: {},
+                vendors: {}
             }
             createEvent(newEvent);
             // console.log(newEvent);
@@ -65,7 +64,6 @@ function EventCreate() {
                         <option value="festival">Festival</option>
                         <option value="retreat">Retreat</option>
                         <option value="popup">Popup</option>
-                        <option value="trunk show">Trunk Show</option>
                     </select>
                     {formik.errors.event_type && formik.touched.event_type && (
                         <p>{formik.errors.event_type}</p>

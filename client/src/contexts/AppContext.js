@@ -12,38 +12,44 @@ export const AppProvider = ({ children }) => {
     const [user, setUser] = useState({});
 
     // CHECK SESSION
+    // Checks if user is in session. 
+    // If true, no action is taken.
+    // If false, setCurrentUser() is set to the fetched user.
     useEffect(() => {
         if (!currentUser) {
            fetch("/check_session")
-               .then((r) => r.json())
-               .then((user) => {
-                //    console.log(user);
-                   setCurrentUser(user);
-               })
-               .catch((error) => console.error("Error checking session:", error));
+            .then((r) => r.json())
+            .then((user) => {
+            //    console.log(user);
+                setCurrentUser(user);
+            })
+            .catch((error) => console.error("Error checking session:", error));
         }
       }, [currentUser]);
 
     // FETECH EVENTS
+    // Fetches all events and sets initial setEvents() state.
     useEffect(() => {
         fetch("/events")
-            .then((r) => r.json())
-            .then((events) => {
-                // console.log(events);
-                setEvents(events);
-            })
-            .catch((error) => console.error("Error fetching events:", error));
+        .then((r) => r.json())
+        .then((events) => {
+            console.log(events);
+            setEvents(events);
+        })
+        .catch((error) => console.error("Error fetching events:", error));
     }, []);
 
+    // Filters events based on selection in EventList.
     useEffect(() => {
         const filterEvents = () => {
             let eventsList = [];
             if (filter === "my events") {
                 eventsList = events.filter(event => event.user_id === currentUser.id);
             } else if (filter === "attending") {
-                eventsList = events.filter(event => 
-                event.attendees.some(attendee => attendee.user_id === currentUser.id)
-                );
+                eventsList = events.filter(event => {
+                    const attendees = event.attendees || {};
+                    return Object.values(attendees).some(attendee => attendee.user_id === currentUser.id);
+                });
             } else {
                 eventsList = events;
             }
@@ -54,17 +60,19 @@ export const AppProvider = ({ children }) => {
       }, [filter, events, currentUser]);
 
     // FETCH ATTENDEES
-    useEffect(() => {
-        fetch("/attendees")
-            .then((r) => r.json())
-            .then((attendees) => {
-                // console.log(attendees);
-                setAttendees(attendees);
-            })
-            .catch((error) => console.error("Error fetching attendees:", error));
-    }, []);
+    // Fetches all attendees and sets setAttendees() state.
+    // useEffect(() => {
+    //     fetch("/attendees")
+    //     .then((r) => r.json())
+    //     .then((attendees) => {
+    //         // console.log(attendees);
+    //         setAttendees(attendees);
+    //     })
+    //     .catch((error) => console.error("Error fetching attendees:", error));
+    // }, []);
 
     // LOGIN
+    // Sends post request with user details to set user in session.
     const login = (user) => {
         fetch("/login", {
             method: "POST",
@@ -85,6 +93,7 @@ export const AppProvider = ({ children }) => {
     };
 
     // LOGOUT
+    // Sends delete request to delete user from session.
     const logout = () => {
         fetch("/logout", { method: "DELETE" })
         .then((r) => {
@@ -95,6 +104,7 @@ export const AppProvider = ({ children }) => {
     };
 
     // FETCH USER
+    // Fetches user based in username and sets setUser() state.
     const fetchUser = (username) => {
         fetch(`/users/${username}`)
             .then((r) => r.json())
@@ -106,6 +116,9 @@ export const AppProvider = ({ children }) => {
     };
 
     // CREATE, UPDATE, DELETE EVENTS
+    // Fetches all events.
+    // Adds newEvent to Events list.
+    // Creates a new attendee for the user creating the event.
     const createEvent = (newEvent) => {
         fetch('/events', {
             method: 'POST',
@@ -126,16 +139,20 @@ export const AppProvider = ({ children }) => {
         .catch((error) => console.error('Error creating new event:', error));
     };
 
+    // Fetches an event by its eventId then sets the setEvent() state.
     const fetchEvent = (eventId) => {
         fetch(`/events/${eventId}`)
             .then((r) => r.json())
             .then((event) => {
-                console.log(event);
+                // console.log(event);
                 setEvent(event);
             })
             .catch((error) => console.error("Error fetching event:", error));
     };
 
+    // Fetches an event by its eventID.
+    // Updates the event in the backend via a Patch request.
+    // Sets the setEvents() state by updating the event.
     const updateEvent = (eventId, updatedEvent) => {
         fetch(`/events/${eventId}`, {
             method: 'PATCH',
@@ -144,8 +161,7 @@ export const AppProvider = ({ children }) => {
         })
         .then((r) => r.json())
         .then((updatedEvent) => {
-            console.log(updateEvent);
-            setEvent(updatedEvent);
+            console.log(updatedEvent);
             setEvents((prevEvents) =>
                 prevEvents.map((event) =>
                     event.id === updatedEvent.id ? updatedEvent : event
@@ -178,7 +194,7 @@ export const AppProvider = ({ children }) => {
         })
         .then((r) => r.json())
         .then((newAttendee) => {
-            // console.log(newAttendee);
+            console.log(newAttendee);
             setEvents((prevEvents) =>
                 prevEvents.map((event) =>
                     event.id === newAttendee.event_id

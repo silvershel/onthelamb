@@ -22,11 +22,13 @@ function EventDetails() {
         };
         console.log(newAttendee);
         createAttendee(newAttendee);
+        fetchEvent(eventId);
     }
 
     function onDeleteAttendClick() {
         const attendee = event.attendees.find(attendee => attendee.user_id === currentUser.id);
         deleteAttendee(attendee.id);
+        fetchEvent(eventId);
     }
 
 

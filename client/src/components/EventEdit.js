@@ -67,7 +67,6 @@ function EventEdit() {
                         <option value="festival">Festival</option>
                         <option value="retreat">Retreat</option>
                         <option value="popup">Popup</option>
-                        <option value="trunk show">Trunk Show</option>
                     </select>
                 </div>
                 <div>
