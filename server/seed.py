@@ -85,7 +85,7 @@ if __name__ == '__main__':
         # events specific to test users 1 and 2
         for i in range(6):
             for test_user in test_users:
-                event_type = rc(['festival', 'retreat', 'local meetup', 'popup'])
+                event_type = rc(['festival', 'retreat', 'local meetup', 'popup', 'trunk show'])
                 event_title = f"{fake.company()} {event_type}"
 
                 event = Event(
@@ -103,7 +103,7 @@ if __name__ == '__main__':
         # events for all users
         for i in range(10):
             user = rc(users)
-            event_type = rc(['festival', 'retreat', 'local meetup', 'popup'])
+            event_type = rc(['festival', 'retreat', 'local meetup', 'popup', 'trunk show'])
             event_title = f"{fake.company()} {event_type}"
 
             event = Event(

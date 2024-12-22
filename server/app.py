@@ -73,10 +73,11 @@ class CheckSession(Resource):
                 if not user:
                     return {'message': 'User not found.'}, 404
                     
-                else:
-                    user_data = UserSchema.dumps(user)
-                    return user_data, 200
+                user_data = UserSchema.dump(user)
+                return user_data, 200
+            
             else:
+                # change this to an empty object then update logic on frontend.
                 return None, 200
 
         except Exception as e:

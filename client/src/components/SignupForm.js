@@ -5,35 +5,32 @@ import { useFormik } from 'formik';
 import * as Yup from "yup";
 
 function SignupForm({ style }) {
-    const { setCurrentUser } = useAppContext();
+    const { signup } = useAppContext();
     
     const formik = useFormik({
         initialValues: {
+            user_type: "",
             name: "",
             username: "",
             password: "",
         },
 
         validationSchema: Yup.object({
+            user_type: Yup.string().required(),
             name: Yup.string().required("Name is required"),
             username: Yup.string().required("Username is required"),
             password: Yup.string().required("Password is required"),
         }),
 
         onSubmit: (values) => {
-            fetch("/signup", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
+            const newUser = {
+                    user_type: values.user_type,
                     name: values.name,
                     username: values.username,
                     password: values.password,
-                }),
-            })
-                .then((user) => setCurrentUser(user))
-                .catch((error) => console.error('Signup form error:', error));
+            }
+            console.log(newUser);
+            signup(newUser);
         },
     });
 
@@ -41,6 +38,19 @@ function SignupForm({ style }) {
         <div style={style}>
             <h1>Sign Up</h1>
             <form onSubmit={formik.handleSubmit}>
+                <div>
+                    <label>User Type:</label>
+                    <select 
+                        id="user_type" 
+                        name="user_type" 
+                        value={formik.values.user_type}
+                        onChange={formik.handleChange} >
+                        <option value="" disabled>Please select a user type: </option>
+                        <option value="sheep">Sheep</option>
+                        <option value="shepherd">Shepherd</option>
+                    </select>
+                    <p>{formik.errors.user_type}</p>
+                </div>
                 <div>
                     <label>Name:</label>
                     <input 

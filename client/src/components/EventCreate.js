@@ -31,12 +31,6 @@ function EventCreate() {
             const newEvent = {
                 event_type: values.event_type,
                 title: values.title,
-                // address: {
-                //     street: values.address.street,
-                //     city: values.address.city,
-                //     state: values.address.state,
-                //     zip: values.address.zip,
-                // },
                 start_date: values.start_date,
                 end_date: values.end_date,
                 description: values.description,
@@ -45,8 +39,8 @@ function EventCreate() {
                 attendees: {},
                 vendors: {}
             }
-            createEvent(newEvent);
             // console.log(newEvent);
+            createEvent(newEvent);
 
             navigate.push(`/users/${currentUser.username}`)
         }
@@ -60,10 +54,17 @@ function EventCreate() {
                     <label>Event Type</label>
                     <select id="event_type" name="event_type" value={formik.values.event_type} onChange={formik.handleChange} >
                         <option value="" disabled>Select an option:</option>
+
+                    {currentUser.user_type === "sheep" ? (
                         <option value="local meetup">Local Meetup</option>
-                        <option value="festival">Festival</option>
-                        <option value="retreat">Retreat</option>
-                        <option value="popup">Popup</option>
+                    ) : (
+                        ["local meetup", "festival", "retreat", "popup", "trunk show"].map((eventType) => (
+                        <option key={eventType} value={eventType}>
+                            {eventType.charAt(0).toUpperCase() + eventType.slice(1)}
+                        </option>
+                        ))
+                    )}
+
                     </select>
                     {formik.errors.event_type && formik.touched.event_type && (
                         <p>{formik.errors.event_type}</p>

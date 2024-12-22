@@ -12,23 +12,20 @@ export const AppProvider = ({ children }) => {
     const [user, setUser] = useState({});
 
     // CHECK SESSION
-    // Checks if user is in session. 
-    // If true, no action is taken.
-    // If false, setCurrentUser() is set to the fetched user.
     useEffect(() => {
-        if (!currentUser) {
-           fetch("/check_session")
-            .then((r) => r.json())
-            .then((user) => {
-            //    console.log(user);
-                setCurrentUser(user);
-            })
-            .catch((error) => console.error("Error checking session:", error));
+        if (!currentUser || !currentUser.id) {
+            fetch("/check_session")
+                .then((r) => r.json())
+                .then((user) => {
+                    console.log(user);
+                    setCurrentUser(user);
+                })
+                .catch((error) => console.error("Error checking session:", error));
         }
-      }, [currentUser]);
+    }, []);
+
 
     // FETECH EVENTS
-    // Fetches all events and sets initial setEvents() state.
     useEffect(() => {
         fetch("/events")
         .then((r) => r.json())
@@ -39,40 +36,28 @@ export const AppProvider = ({ children }) => {
         .catch((error) => console.error("Error fetching events:", error));
     }, []);
 
-    // Filters events based on selection in EventList.
+
+    // FILTER EVENTS
     useEffect(() => {
         const filterEvents = () => {
             let eventsList = [];
             if (filter === "my events") {
                 eventsList = events.filter(event => event.user_id === currentUser.id);
             } else if (filter === "attending") {
-                eventsList = events.filter(event => {
-                    const attendees = event.attendees || {};
-                    return Object.values(attendees).some(attendee => attendee.user_id === currentUser.id);
-                });
+                eventsList = events.filter(event =>
+                    // returns true for an event where an attendee.user_id === currentUser.id
+                    event.attendees.some(attendee => attendee.user_id === currentUser.id)
+                );
             } else {
                 eventsList = events;
             }
           setFilteredEvents(eventsList);
         };
-    
         filterEvents();
-      }, [filter, events, currentUser]);
+    }, [events, filter, currentUser]);
 
-    // FETCH ATTENDEES
-    // Fetches all attendees and sets setAttendees() state.
-    // useEffect(() => {
-    //     fetch("/attendees")
-    //     .then((r) => r.json())
-    //     .then((attendees) => {
-    //         // console.log(attendees);
-    //         setAttendees(attendees);
-    //     })
-    //     .catch((error) => console.error("Error fetching attendees:", error));
-    // }, []);
 
     // LOGIN
-    // Sends post request with user details to set user in session.
     const login = (user) => {
         fetch("/login", {
             method: "POST",
@@ -86,14 +71,36 @@ export const AppProvider = ({ children }) => {
         })
         .then((r) => r.json())
         .then((user) => {
-            // console.log(user);
+            console.log(user);
             setCurrentUser(user);
         })
         .catch((error) => console.error("Error logging in:", error));
     };
 
+
+    //SIGNUP
+    const signup = (newUser) => {
+            fetch("/signup", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    user_type: newUser.user_type,
+                    name: newUser.name,
+                    username: newUser.username,
+                    password: newUser.password,
+                }),
+            })
+            .then((r) => r.json())
+            .then((user) => {
+                console.log(user);
+                setCurrentUser(user);
+            })
+            .catch((error) => console.error('Signup form error:', error));
+    }
+
     // LOGOUT
-    // Sends delete request to delete user from session.
     const logout = () => {
         fetch("/logout", { method: "DELETE" })
         .then((r) => {
@@ -103,22 +110,32 @@ export const AppProvider = ({ children }) => {
         });
     };
 
+
     // FETCH USER
-    // Fetches user based in username and sets setUser() state.
     const fetchUser = (username) => {
         fetch(`/users/${username}`)
             .then((r) => r.json())
             .then((user) => {
-                // console.log(user);
+                console.log(user);
                 setUser(user);
             })
             .catch((error) => console.error("Error fetching user:", error));
     };
 
-    // CREATE, UPDATE, DELETE EVENTS
-    // Fetches all events.
-    // Adds newEvent to Events list.
-    // Creates a new attendee for the user creating the event.
+
+    // FETCH EVENT
+    const fetchEvent = (eventId) => {
+        fetch(`/events/${eventId}`)
+            .then((r) => r.json())
+            .then((event) => {
+                console.log(event);
+                setEvent(event);
+            })
+            .catch((error) => console.error("Error fetching event:", error));
+    };
+
+
+    // CREATE EVENT
     const createEvent = (newEvent) => {
         fetch('/events', {
             method: 'POST',
@@ -127,7 +144,7 @@ export const AppProvider = ({ children }) => {
         })
         .then((r) => r.json())
         .then((newEvent) => {
-            // console.log(newEvent);
+            console.log(newEvent);
             setEvents((prevEvents) => [...prevEvents, newEvent]);
 
             createAttendee({
@@ -139,20 +156,8 @@ export const AppProvider = ({ children }) => {
         .catch((error) => console.error('Error creating new event:', error));
     };
 
-    // Fetches an event by its eventId then sets the setEvent() state.
-    const fetchEvent = (eventId) => {
-        fetch(`/events/${eventId}`)
-            .then((r) => r.json())
-            .then((event) => {
-                // console.log(event);
-                setEvent(event);
-            })
-            .catch((error) => console.error("Error fetching event:", error));
-    };
 
-    // Fetches an event by its eventID.
-    // Updates the event in the backend via a Patch request.
-    // Sets the setEvents() state by updating the event.
+    // UPDATE EVENT
     const updateEvent = (eventId, updatedEvent) => {
         fetch(`/events/${eventId}`, {
             method: 'PATCH',
@@ -170,7 +175,9 @@ export const AppProvider = ({ children }) => {
         })
         .catch((error) => console.error('Error updating event:', error));
     };
+    
 
+    // DELETE EVENT
     const deleteEvent = (eventId) => {
         fetch(`/events/${eventId}`, { method: 'DELETE' })
         .then((r) => {
@@ -185,8 +192,9 @@ export const AppProvider = ({ children }) => {
         .catch((error) => console.error('Error deleting event:', error));
     };
 
-    // CREATE, DELETE ATTENDEES
-    const createAttendee = (newAttendee) => {
+
+    // CREATE ATTENDEE
+    const createAttendee = (newAttendee, eventId) => {
         fetch('/attendees', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -197,44 +205,43 @@ export const AppProvider = ({ children }) => {
             console.log(newAttendee);
             setEvents((prevEvents) =>
                 prevEvents.map((event) =>
-                    event.id === newAttendee.event_id
-                        ? {
-                            ...event,
-                            attendees: {
-                                ...event.attendees,
-                                [newAttendee.id]: newAttendee
-                            }
+                    event.id === newAttendee.event_id ?
+                        { ...event, attendees: 
+                            { ...event.attendees, [newAttendee.id]: newAttendee}
                         }
                         : event
                 )
             );
+            fetchEvent(eventId);
         })
         .catch((error) => console.error('Error creating new attendee:', error));
     };
 
-    const deleteAttendee = (attendeeId) => {
-        fetch(`/attendees/${attendeeId}`, { 
+
+    // DELETE ATTENDEE
+    const deleteAttendee = (attendeeToDelete, eventId) => {
+        fetch(`/attendees/${attendeeToDelete.id}`, { 
             method: 'DELETE' 
         })
         .then((r) => r.json())
-        .then((deletedAttendee) => {
-            console.log(deletedAttendee);
+        .then(() => {
+            console.log(attendeeToDelete);
             setEvents((prevEvents) =>
-                prevEvents.map((event) =>
-                  event.attendees.some((attendee) => attendee.id === attendeeId)
-                    ? {
-                        ...event,
-                        attendees: event.attendees.filter(
-                          (attendee) => attendee.id !== attendeeId
-                        ),
-                      }
-                    : event
+                prevEvents.map((event) => 
+                    event.id === eventId ?
+                        {
+                            ...event,
+                            attendees: event.attendees.filter((attendee) => attendee.id !== attendeeToDelete.id)
+                        }
+                        : event
                 )
             );
+            fetchEvent(eventId);
         })
         .catch((error) => console.error('Error deleting attendee:', error));
     };
 
+    
     return (
         <AppContext.Provider
             value={{
@@ -257,6 +264,7 @@ export const AppProvider = ({ children }) => {
                 setUser,
                 fetchUser,
                 login,
+                signup,
                 logout,
             }}
         >

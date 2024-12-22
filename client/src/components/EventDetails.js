@@ -7,12 +7,9 @@ function EventDetails() {
     const { eventId } = useParams();
 
     useEffect(() => {
+        // sets the event
         fetchEvent(eventId);
     }, [eventId]);
-
-    const userAttending = () => {
-        return event.attendees && event.attendees.some((attendee) => attendee.user_id === currentUser.id);
-    }
 
     function onAttendClick() {
         const newAttendee = {
@@ -21,20 +18,21 @@ function EventDetails() {
             user_id: currentUser.id
         };
         console.log(newAttendee);
-        createAttendee(newAttendee);
-        fetchEvent(eventId);
+        createAttendee(newAttendee, eventId);
     }
 
     function onDeleteAttendClick() {
-        const attendee = event.attendees.find(attendee => attendee.user_id === currentUser.id);
-        deleteAttendee(attendee.id);
-        fetchEvent(eventId);
+        const attendeeToDelete = event.attendees.find(attendee => attendee.user_id === currentUser.id);
+        deleteAttendee(attendeeToDelete, eventId);
     }
 
+    const userAttending = () => {
+        return event.attendees && event.attendees.some((attendee) => attendee.user_id === currentUser.id);
+    }
 
     return (
         <div>
-            <h2>{event.title}</h2>
+            <h1>{event.title}</h1>
             <p>Organized by: <Link to={`/users/${event.user?.username}`}>{event.user?.username}</Link></p>
             <p>Starts: {event.start_date}</p>
             <p>Ends: {event.end_date}</p>
@@ -42,10 +40,12 @@ function EventDetails() {
             <a href={event.website_link}>{event.website_link}</a>
             
             <div>
-                {!userAttending() ? (
-                    <button onClick={onAttendClick}>Attend</button>
-                ) : (
-                    <button onClick={onDeleteAttendClick}>Remove Attendance</button>
+                {event.user_id !== currentUser.id && (
+                    !userAttending() ? (
+                        <button onClick={onAttendClick}>Attend</button>
+                    ) : (
+                        <button onClick={onDeleteAttendClick}>Remove Attendance</button>
+                    )
                 )}
             </div>
 

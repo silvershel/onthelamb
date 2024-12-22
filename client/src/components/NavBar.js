@@ -4,7 +4,7 @@ import { useAppContext } from "../contexts/AppContext";
 
 
 function NavBar() {
-	const { currentUser, logout} = useAppContext();
+	const { currentUser, logout } = useAppContext();
 	const navigate = useHistory()
 
 	function handleSelectChange(e) {

@@ -4,7 +4,7 @@ import { useAppContext } from "../contexts/AppContext";
 import EventPreview from "./EventPreview";
 
 function Profile() {
-    const { events, user, fetchUser } = useAppContext();
+    const { currentUser, events, user, fetchUser } = useAppContext();
     const { username } = useParams();
 
     useEffect(() => {
@@ -35,7 +35,7 @@ function Profile() {
                 <button>Create Event</button>
             </Link>
 
-            <h1>{user.name}'s Events</h1>
+            <h1>{currentUser.id === user.id ? "My" : `${user.name}'s`} Events</h1>
             {userEvents.length > 0 ? (
                 userEvents.map(event => 
                     <EventPreview key={event.id} event={event} 

@@ -68,7 +68,7 @@ class Event(db.Model, SerializerMixin):
     serialize_rules = ('-user.events', '-attendees.event', '-vendors.event')
 
     id = db.Column(Integer, primary_key=True)
-    event_type = db.Column(Enum('local meetup', 'festival', 'retreat', 'popup', 'trunk_show', name='event_type_enum'), nullable=False)
+    event_type = db.Column(Enum('local meetup', 'festival', 'retreat', 'popup', 'trunk show', name='event_type_enum'), nullable=False)
     # stretch idea: Add option for virtual events. Consider how that might impact address info and location services.
     title = db.Column(String, nullable=False)
     address = db.Column(JSON)
