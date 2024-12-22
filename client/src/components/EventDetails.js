@@ -7,7 +7,6 @@ function EventDetails() {
     const { eventId } = useParams();
 
     useEffect(() => {
-        // sets the event
         fetchEvent(eventId);
     }, [eventId]);
 

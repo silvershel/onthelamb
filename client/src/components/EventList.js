@@ -5,6 +5,13 @@ import { useAppContext } from "../contexts/AppContext";
 function EventList() {
     const { filteredEvents, setFilter } = useAppContext();
 
+    const tinyImageStyle = {
+        width: '50px',
+        height: '50px',
+        borderRadius: '50%',
+        objectFit: 'cover',
+    }
+
     useEffect(() => {
         setFilter("all");
     }, []);
@@ -32,6 +39,7 @@ function EventList() {
                             {event.attendees && event.attendees.length > 0 ? (
                                 event.attendees.map((attendee) => (
                                     <div key={attendee.id}>
+                                        <img src={attendee.user.profile_photo} style={tinyImageStyle}/>
                                     <p>{attendee.user.username}</p>
                                     </div>
                                 ))
