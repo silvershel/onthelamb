@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+from sqlite3 import IntegrityError
 from flask import request, session, jsonify
 from flask_restful import Resource
 from config import app, db, api
@@ -16,38 +17,69 @@ from datetime import datetime
     # 500 An unexpected error.
 
 
-class Signup(Resource):
+class Login(Resource):
     def post(self):
         data = request.get_json()
-        
-        name = data.get('name')
-        user_type = data.get('user_type')
         username = data.get('username')
         password = data.get('password')
 
-        errors = {}
+        if not username or not password:
+            return {'message': 'Username and password are required'}, 400
+
+        user = User.query.filter(User.username == username).first()
+
+        if user:
+            session['username'] = user.username
+
+            response = {
+                'id': user.id,
+                'name': user.name,
+                'user_type': user.user_type,
+                'username': user.username,
+            }
+
+            return response, 200
+        
+        else:
+            return {"error": "Login unsuccessful"}, 401
+        
+
+class Signup(Resource):
+    def post(self):
+        data = request.get_json()  
+
+        user_type = data.get('user_type')
+        name = data.get('name')
+        username = data.get('username')
+        password = data.get('password')
 
         if not user_type:
-            errors['user_type'] = 'User type must be selected.'
-        if not username:
-            errors['username'] = 'Username error.'
-        if not password:
-            errors['password'] = 'Password error.'
+            return {'error': "User type is required."}, 400
         
-        if errors:
-            return {'errors': errors}, 422
-            
-        new_user = User(
-            name = name,
-            user_type = user_type,
-            username = username,
-            password = password
-        )
+        if not name:
+            return {'error': "A name is required."}, 400
 
+        if not username:
+            return {'error': "Username is required."}, 400
+        if len(username) < 6:
+            return {'error': "Username must be at least 6 characters"}, 400
+        
+        existing_user = User.query.filter_by(username=username).first()
+        if existing_user:
+            return {'error': "Username is already taken."}, 400
+        
+        new_user = User(
+                user_type = user_type,
+                name = name,
+                username = username,
+                password = password
+            )
+            
         try:
+            
             db.session.add(new_user)
             db.session.commit()
-            session['user_id'] = new_user.id
+            session['username'] = new_user.username
 
             response = {
                 'id': new_user.id,
@@ -59,16 +91,26 @@ class Signup(Resource):
             return response, 201
         
         except Exception:
-            return {'message': 'Signup error'}, 422
+            return {"message": "Signup error."}, 500
+        
+        
+class CheckUsername(Resource):
+    def get(self, username):
+        existing_user = User.query.filter_by(username=username).first()
+        
+        if existing_user:
+            return {"error": "Username already exisits."}, 400
+        
+        return {"message": "Username is available."}, 200
     
 
 class CheckSession(Resource):
     def get(self):
         try:
-            user_id = session.get('user_id')
+            username = session.get('username')
 
-            if user_id:
-                user = User.query.get(user_id)
+            if username:
+                user = User.query.filter(User.username == username).first()
 
                 if not user:
                     return {'message': 'User not found.'}, 404
@@ -84,37 +126,10 @@ class CheckSession(Resource):
             return {'error': str(e)}, 500
         
 
-class Login(Resource):
-    def post(self):
-        data = request.get_json()
-        username = data.get('username')
-        password = data.get('password')
-
-        if not username or not password:
-            return {'message': 'Username and password are required'}, 400
-
-        user = User.query.filter(User.username == username).first()
-
-        if user:
-            session['user_id'] = user.id
-
-            response = {
-                'id': user.id,
-                'name': user.name,
-                'user_type': user.user_type,
-                'username': user.username,
-            }
-
-            return response, 200
-        
-        else:
-            return {"error": "Login unsuccessful"}, 401
-        
-
 class Logout(Resource):
     def delete(self):
-        if session.get('user_id'):
-            session.pop('user_id')
+        if session.get('username'):
+            session.pop('username')
             return {}, 204
         else:
             return {'error': 'No user logged in'}, 400
@@ -134,7 +149,7 @@ class Users(Resource):
             return {'error': str(e)}, 422
                         
         
-class UserById(Resource):
+class UserByUsername(Resource):
     def get(self, username):
         user = User.query.filter_by(username = username).first()
 
@@ -147,9 +162,9 @@ class UserById(Resource):
         return user_data, 200
         
 
-    def patch(self, user_id):
+    def patch(self, username):
         data = request.get_json()
-        user = User.query.get(user_id)
+        user = User.query.filter_by(username = username).first()
 
         if not user:
             return {'message': 'User not found'}, 404
@@ -174,8 +189,8 @@ class UserById(Resource):
             db.session.rollback()
             return {'message': 'Error updating user', 'error': str(e)}, 422
         
-    def delete(self, user_id):
-        user = User.query.get(user_id)
+    def delete(self, username):
+        user = User.query.filter_by(username = username).first()
 
         if not user:
             return {'message': 'User not found'}, 404
@@ -396,12 +411,13 @@ class VendorsById(Resource):
         return vendor_data, 200
 
 
-api.add_resource(CheckSession, '/check_session', endpoint='check_session')
-api.add_resource(Signup, '/signup', endpoint='signup')
 api.add_resource(Login, '/login', endpoint='login')
+api.add_resource(Signup, '/signup', endpoint='signup')
+api.add_resource(CheckUsername, '/check_username/<username>', endpoint='check_username')
+api.add_resource(CheckSession, '/check_session', endpoint='check_session')
 api.add_resource(Logout, '/logout', endpoint='logout')
 api.add_resource(Users, '/users', endpoint='users')
-api.add_resource(UserById, '/users/<username>', endpoint='user')
+api.add_resource(UserByUsername, '/users/<username>', endpoint='user')
 api.add_resource(Events, '/events', endpoint='events')
 api.add_resource(EventById, '/events/<int:event_id>', endpoint='event')
 api.add_resource(Attendees, '/attendees', endpoint='attendees')

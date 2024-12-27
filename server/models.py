@@ -14,7 +14,7 @@ class User(db.Model, SerializerMixin):
     name = db.Column(String)
     username = db.Column(String, unique=True, nullable=False)
     password = db.Column(String, nullable=False)
-    user_type = db.Column(Enum('sheep', 'shepherd', name='user_type_enum'))
+    user_type = db.Column(Enum('Sheep', 'Shepherd', name='user_type_enum'))
     profile_photo = db.Column(String, default="https://cdn.dribbble.com/userupload/17756893/file/original-aa925a9bb546f667dd24b56715c3da7e.png?format=webp&resize=400x300&vertical=center")
     profile_data = db.Column(JSON)
     latitude = db.Column(Float)
@@ -48,18 +48,18 @@ class User(db.Model, SerializerMixin):
     #         raise ValueError("Password cannot be empty.")
     #     return _password_hash
     
-    # @validates('username')
-    # def validate_username(self, key, username):
-    #     if not username:
-    #         raise ValueError("Username must be present.")
+    @validates('username')
+    def validate_username(self, key, username):
+        if not username:
+            raise ValueError("Username must be present.")
         
-    #     existing_username = User.query.filter(User.username == username).first()
-    #     if existing_username:
-    #         raise ValueError("Username must be unique.")
+        if len(username) < 5:
+            raise ValueError("Username must be at least 6 characters.")
         
-    #     if len(username) < 6:
-    #         raise ValueError('Username must be at least 6 characters long.')
-    #     return username
+        if User.query.filter_by(username=username).first():
+            raise ValueError(f"Username '{username}' already exists")       
+        
+        return username
 
 
 class Event(db.Model, SerializerMixin):
@@ -68,7 +68,7 @@ class Event(db.Model, SerializerMixin):
     serialize_rules = ('-user.events', '-attendees.event', '-vendors.event')
 
     id = db.Column(Integer, primary_key=True)
-    event_type = db.Column(Enum('local meetup', 'festival', 'retreat', 'popup', 'trunk show', name='event_type_enum'), nullable=False)
+    event_type = db.Column(Enum('Local Meetup', 'Festival', 'Retreat', 'Popup', 'Trunk Show', name='event_type_enum'), nullable=False)
     # stretch idea: Add option for virtual events. Consider how that might impact address info and location services.
     title = db.Column(String, nullable=False)
     address = db.Column(JSON)
@@ -101,6 +101,28 @@ class Attendee(db.Model, SerializerMixin):
 
     user = db.relationship('User', back_populates='attendees')
     event = db.relationship('Event', back_populates='attendees')
+
+    @validates('user_id')
+    def validate_user_id(self, key, user_id):
+        if not user_id:
+            raise ValueError("User ID must be present.")
+        
+        if User.query.get(user_id):
+            raise ValueError(f"User already exists.")       
+        
+        return user_id
+    
+    @validates('event_id')
+    def validate_event_id(self, key, event_id):
+        if not event_id:
+            raise ValueError("Event ID must be present.")
+        
+        if Attendee.query.filter_by(user_id = self.user_id, event_id = event_id).first():
+            raise ValueError(f"User is already attending.")
+        
+        return event_id
+    
+    # WORKING ON THIS. IMPLEMENT INTO FRONT END THEN MIRROR LOGIC FOR VENDOR MODEL
 
 
 class Vendor(db.Model, SerializerMixin):

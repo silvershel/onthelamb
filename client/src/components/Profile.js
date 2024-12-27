@@ -10,11 +10,11 @@ function Profile() {
         fetchUser(username);
     }, [username]);
 
-    const userEvents = events.filter(event => user.id === event.user_id);
+    const userEvents = events.filter(event => event.user_id === user.id);
 
     return(
         <div>
-            <h1>{username}</h1>
+            <h1>{user.username}</h1>
 
             <img 
                 alt="alt text" 
@@ -26,7 +26,7 @@ function Profile() {
             <p>Name: {user.name}</p>
             <p>Bio:</p>
 
-            <Link to={`/profile/edit`}>
+            <Link to={`/profile/${user.username}/edit`}>
                 <button>Edit Profile</button>
             </Link>
 
@@ -37,7 +37,7 @@ function Profile() {
             <h1>{currentUser.id === user.id ? "My" : `${user.name}'s`} Events</h1>
             {userEvents.length > 0 ? (
                 userEvents.map(event => 
-                    <div>
+                    <div key={event.id}>
                         <h2>{event.title}</h2>
                         <Link to={`/events/${event.id}`}>
                             <button>View Details</button>                

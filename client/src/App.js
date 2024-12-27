@@ -58,7 +58,7 @@ function Routes() {
 					<Route path="/events/:eventId/edit" exact component={EventEdit} />
 					<Route path="/create" exact component={EventCreate} />
 					<Route path="/users/:username" exact component={Profile} />
-					<Route path="/profile/edit" exact component={ProfileEdit} />
+					<Route path="/profile/:username/edit" exact component={ProfileEdit} />
 					<Route path="*" component={ErrorPage} />
 				</Switch>
 			</div>

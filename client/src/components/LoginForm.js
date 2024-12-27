@@ -4,7 +4,7 @@ import { useAppContext } from "../contexts/AppContext";
 import { useFormik } from 'formik';
 import * as Yup from "yup";
 
-function LoginForm({ style }) {
+function LoginForm() {
     const { login } = useAppContext();
     
     const formik = useFormik({
@@ -29,7 +29,7 @@ function LoginForm({ style }) {
     });
 
     return (
-        <div style={style}>
+        <div>
             <h1>Log In</h1>
             <form onSubmit={formik.handleSubmit}>
                 <div>

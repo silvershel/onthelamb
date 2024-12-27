@@ -10,19 +10,134 @@ export const AppProvider = ({ children }) => {
     const [event, setEvent] = useState({});
     const [attendees, setAttendees] = useState([]);    
     const [user, setUser] = useState({});
+    const [error, setError] = useState(null);
+    // const savedUser = localStorage.getItem("currentUser");
+
+
+    // LOGIN
+    const login = (user) => {
+        fetch("/login", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                username: user.username,
+                password: user.password,
+            }),
+        })
+        .then((r) => r.json())
+        .then((user) => {
+            if (user.error) {
+                setError(user.error);
+                // return { error: user.error };
+              }
+            console.log(user);
+            setCurrentUser(user);
+            // localStorage.setItem("currentUser", JSON.stringify(user));
+        })
+        .catch((error) => {
+            console.error("Signup error:", error);
+            setError("An unexpected error during signup occurred.");
+            // return { error: 'An unexpected error occurred.' };
+          });
+    };
+
+    //SIGNUP
+    const signup = (newUser) => {
+        fetch("/signup", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                user_type: newUser.user_type,
+                name: newUser.name,
+                username: newUser.username,
+                password: newUser.password,
+            }),
+        })
+        .then((r) => r.json())
+        .then((user) => {
+            console.log(user);
+            setCurrentUser(user);
+            // localStorage.setItem("currentUser", JSON.stringify(user));
+        })
+        .catch((error) => console.error('Signup form error:', error));
+    };
+
 
     // CHECK SESSION
     useEffect(() => {
-        if (!currentUser || !currentUser.id) {
+        // const storedUser = localStorage.getItem("currentUser");
+
+
+        // if (storedUser) {
+        //     setCurrentUser(JSON.parse(storedUser));
+        // } else { 
             fetch("/check_session")
                 .then((r) => r.json())
                 .then((user) => {
                     console.log(user);
                     setCurrentUser(user);
+                    // localStorage.setItem("currentUser", JSON.stringify(user));
                 })
                 .catch((error) => console.error("Error checking session:", error));
-        }
+        // }
     }, []);
+
+
+    // LOGOUT
+    const logout = () => {
+        fetch("/logout", { method: "DELETE" })
+        .then((r) => {
+            if (r.ok) {
+                // localStorage.removeItem("currentUser");
+                setCurrentUser(null);
+            }
+        });
+    };
+
+
+    // FETCH USER
+    const fetchUser = (username) => {
+        fetch(`/users/${username}`)
+            .then((r) => r.json())
+            .then((user) => {
+                console.log(user);
+                setUser(user);
+            })
+            .catch((error) => console.error("Error fetching user:", error));
+    };
+
+
+    // UPDATE USER
+    const updateUser = (updatedUser) => {
+        fetch(`/users/${updatedUser.username}`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(updatedUser),
+        })
+        .then((r) => r.json())
+        .then((updatedUser) => {
+            console.log(updatedUser);
+            setCurrentUser(updatedUser);
+            // localStorage.setItem("currentUser", JSON.stringify(updatedUser));
+
+            setEvents((prevEvents) =>
+                prevEvents.map((event) => ({
+                    ...event,
+                    attendees: event.attendees.map((attendee) =>
+                        attendee.user_id === updatedUser.id ?
+                            { ...attendee, user: updatedUser }
+                            : attendee
+                    ),
+                }))
+            );
+
+        })
+        .catch((error) => console.error('Error updating event:', error));
+    };
 
 
     // FETECH EVENTS
@@ -57,72 +172,6 @@ export const AppProvider = ({ children }) => {
     }, [events, filter, currentUser]);
 
 
-    // LOGIN
-    const login = (user) => {
-        fetch("/login", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                username: user.username,
-                password: user.password,
-            }),
-        })
-        .then((r) => r.json())
-        .then((user) => {
-            console.log(user);
-            setCurrentUser(user);
-        })
-        .catch((error) => console.error("Error logging in:", error));
-    };
-
-
-    //SIGNUP
-    const signup = (newUser) => {
-            fetch("/signup", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    user_type: newUser.user_type,
-                    name: newUser.name,
-                    username: newUser.username,
-                    password: newUser.password,
-                }),
-            })
-            .then((r) => r.json())
-            .then((user) => {
-                console.log(user);
-                setCurrentUser(user);
-            })
-            .catch((error) => console.error('Signup form error:', error));
-    }
-
-    // LOGOUT
-    const logout = () => {
-        fetch("/logout", { method: "DELETE" })
-        .then((r) => {
-            if (r.ok) {
-                setCurrentUser(null);
-            }
-        });
-    };
-
-
-    // FETCH USER
-    const fetchUser = (username) => {
-        fetch(`/users/${username}`)
-            .then((r) => r.json())
-            .then((user) => {
-                console.log(user);
-                setUser(user);
-            })
-            .catch((error) => console.error("Error fetching user:", error));
-    };
-
-
     // FETCH EVENT
     const fetchEvent = (eventId) => {
         fetch(`/events/${eventId}`)
@@ -151,7 +200,7 @@ export const AppProvider = ({ children }) => {
                 comment: 'hello',
                 user_id: newEvent.user_id,
                 event_id: newEvent.id,
-            });
+            }, newEvent.id);
         })
         .catch((error) => console.error('Error creating new event:', error));
     };
@@ -182,6 +231,7 @@ export const AppProvider = ({ children }) => {
         fetch(`/events/${eventId}`, { method: 'DELETE' })
         .then((r) => {
             if (r.ok) {
+                console.log(`Event ${eventId} deleted.`)
                 setEvents((prevEvents) =>
                     prevEvents.filter((event) => event.id !== eventId)
                 );
@@ -245,8 +295,15 @@ export const AppProvider = ({ children }) => {
     return (
         <AppContext.Provider
             value={{
+                login,
+                signup,
+                logout,
                 currentUser,
                 setCurrentUser,
+                user,
+                setUser,
+                fetchUser,
+                updateUser,
                 events,
                 setEvents,
                 filteredEvents,
@@ -260,12 +317,6 @@ export const AppProvider = ({ children }) => {
                 setAttendees,
                 createAttendee,
                 deleteAttendee,
-                user,
-                setUser,
-                fetchUser,
-                login,
-                signup,
-                logout,
             }}
         >
             {children}

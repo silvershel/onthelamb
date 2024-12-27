@@ -4,8 +4,37 @@ import { useAppContext } from "../contexts/AppContext";
 import { useFormik } from 'formik';
 import * as Yup from "yup";
 
-function SignupForm({ style }) {
+function SignupForm() {
     const { signup } = useAppContext();
+
+    // Formik things to explore
+    // .setFieldValue('email', 'test@example.com');
+    // .setSubmitting(isSubmitting)
+    // .resetForm()
+
+
+    const checkUsername = (username) => {
+        // formik.setFieldError("username", "");
+        // formik.setStatus({usernameAvailable: ""});
+
+        fetch(`/check_username/${username}`)
+            .then((r) => r.json())
+            .then((data) => {
+                if (data.error) {
+                    formik.setFieldError("username", data.error);
+                    // formik.setStatus({usernameAvailable: ""});
+                } else {
+                    // formik.setFieldError("username", "");
+                    formik.setStatus({ usernameAvailable: data.message });
+                }
+            })
+            .catch((error) => {
+                // formik.setFieldError("username", "Error checking username.");
+                // formik.setStatus({usernameAvailable: ""});
+                console.error("Username check error:", error.message);
+            });
+    };
+
     
     const formik = useFormik({
         initialValues: {
@@ -17,8 +46,17 @@ function SignupForm({ style }) {
 
         validationSchema: Yup.object({
             user_type: Yup.string().required(),
-            name: Yup.string().required("Name is required"),
-            username: Yup.string().required("Username is required"),
+            name: Yup.string().required("A name is required"),
+            username: Yup.string()
+                .required("A username is required")
+                .min(5, "Username must be at least 5 characters.")
+                .matches(/^[a-zA-Z0-9_]+$/, 'Username can only contain letters, numbers, and underscores') // implement .matches into backend.
+                .test('check-username', 'Checking username...', function(value) {
+                    if (value) {
+                        checkUsername(value);
+                    }
+                    return true;
+                }),
             password: Yup.string().required("Password is required"),
         }),
 
@@ -30,12 +68,13 @@ function SignupForm({ style }) {
                     password: values.password,
             }
             console.log(newUser);
-            signup(newUser);
+            signup(newUser)
         },
     });
 
+
     return (
-        <div style={style}>
+        <div>
             <h1>Sign Up</h1>
             <form onSubmit={formik.handleSubmit}>
                 <div>
@@ -46,8 +85,8 @@ function SignupForm({ style }) {
                         value={formik.values.user_type}
                         onChange={formik.handleChange} >
                         <option value="" disabled>Please select a user type: </option>
-                        <option value="sheep">Sheep</option>
-                        <option value="shepherd">Shepherd</option>
+                        <option value="Sheep">Sheep</option>
+                        <option value="Shepherd">Shepherd</option>
                     </select>
                     <p>{formik.errors.user_type}</p>
                 </div>
@@ -58,20 +97,26 @@ function SignupForm({ style }) {
                         id="name"
                         name="name"
                         onChange={formik.handleChange}
-                        value={formik.values.first_name}
+                        value={formik.values.name}
                     />
-                    <p>{formik.errors.first_name}</p>
+                    <p>{formik.errors.name}</p>
                 </div>
                 <div>
-                    <label>Username:</label>
+                    <label>Username (this cannot be changed):</label>
                     <input 
                         type="text"
                         id="username"
                         name="username"
-                        onChange={formik.handleChange}
+                        onChange={(e) => {
+                            formik.handleChange(e);
+                            checkUsername(e.target.value, formik.setFieldError);
+                        }}
                         value={formik.values.username}
                     />
                     <p>{formik.errors.username}</p>
+                    {formik.status && formik.status.usernameAvailable && (
+                        <div className="success">{formik.status.usernameAvailable}</div>
+                    )}
                 </div>
                 <div>
                     <label>Password:</label>

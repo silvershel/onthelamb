@@ -25,9 +25,9 @@ if __name__ == '__main__':
         # Seed Users
         test_user_sheep = User(
             name = "Sheep Test User",
-            username = "sheep",
+            username = "Sheep",
             password = "password",
-            user_type = "sheep",
+            user_type = "Sheep",
             profile_photo = "https://cdn.dribbble.com/userupload/17756893/file/original-aa925a9bb546f667dd24b56715c3da7e.png?format=webp&resize=400x300&vertical=center",
             latitude = "38.805496",
             longitude = "-77.04344"
@@ -37,9 +37,9 @@ if __name__ == '__main__':
 
         test_user_shepherd = User(
             name = "Shepherd Test User",
-            username = "shepherd",
+            username = "Shepherd",
             password = "password",
-            user_type = "shepherd",
+            user_type = "Shepherd",
             profile_photo = "https://cdn.dribbble.com/userupload/17756893/file/original-aa925a9bb546f667dd24b56715c3da7e.png?format=webp&resize=400x300&vertical=center",
             latitude = "38.805496",
             longitude = "-77.04344"
@@ -55,7 +55,7 @@ if __name__ == '__main__':
 
         for i in range(10):
             username = fake.user_name()
-            user_type = rc(['sheep', 'shepherd'])
+            user_type = rc(['Sheep', 'Shepherd'])
             profile_photo = 'https://cdn.dribbble.com/userupload/17756893/file/original-aa925a9bb546f667dd24b56715c3da7e.png?format=webp&resize=400x300&vertical=center'
 
             while username in used_usernames:
@@ -85,7 +85,7 @@ if __name__ == '__main__':
         # events specific to test users 1 and 2
         for i in range(6):
             for test_user in test_users:
-                event_type = rc(['festival', 'retreat', 'local meetup', 'popup', 'trunk show'])
+                event_type = rc(['Festival', 'Retreat', 'Local Meetup', 'Popup', 'Trunk Show'])
                 event_title = f"{fake.company()} {event_type}"
 
                 event = Event(
@@ -103,7 +103,7 @@ if __name__ == '__main__':
         # events for all users
         for i in range(10):
             user = rc(users)
-            event_type = rc(['festival', 'retreat', 'local meetup', 'popup', 'trunk show'])
+            event_type = rc(['Festival', 'Retreat', 'Local Meetup', 'Popup', 'Trunk Show'])
             event_title = f"{fake.company()} {event_type}"
 
             event = Event(

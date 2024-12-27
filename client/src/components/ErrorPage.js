@@ -1,8 +1,8 @@
 import React from "react";
 
-function ErrorPage({ style }) {
+function ErrorPage() {
     return(
-        <div style={style}>
+        <div>
             <h1>Error!</h1>
         </div>
     )

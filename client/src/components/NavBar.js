@@ -12,14 +12,14 @@ function NavBar() {
 
 		if (selection === "dashboard") {
 			navigate.push("/");
-		} else if (selection === "view") {
+		} else if (selection === "my profile") {
 			navigate.push(`/users/${currentUser.username}`);
 			resetSelect();
-		} else if (selection === "edit") {
+		} else if (selection === "edit profile") {
 			// this will need to get updated to "/profile/${currentUser.username}/edit"
-			navigate.push("/profile/edit");
+			navigate.push(`/profile/${currentUser.username}/edit`);
 			resetSelect();
-		} else if (selection === "create") {
+		} else if (selection === "create event") {
 			navigate.push("/create");
 			resetSelect();
 		} else if (selection === "logout") {
@@ -43,9 +43,9 @@ function NavBar() {
 			</h1>
 			<select id="dropdown" onChange={handleSelectChange}>
 				<option value="dashboard">Dashboard</option>
-				<option value="view">My Profile</option>
-				<option value="edit">Edit Profile</option>
-				<option value="create">Create Event</option>
+				<option value="my profile">My Profile</option>
+				<option value="edit profile">Edit Profile</option>
+				<option value="create event">Create Event</option>
 				<option value="logout">Logout</option>
 			</select>
 		</div>

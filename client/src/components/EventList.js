@@ -32,7 +32,7 @@ function EventList() {
             
             {filteredEvents.length > 0 ? (
                 filteredEvents.map(event => (
-                    <div>
+                    <div key={event.id}>
                         <h1>{event.title}</h1>
                             <p>{event.start_date} to {event.end_date}</p>
                             <h2>Attendees</h2>

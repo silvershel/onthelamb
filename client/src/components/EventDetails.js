@@ -51,7 +51,7 @@ function EventDetails() {
             <div>
                 {currentUser.id === event.user_id ? (
                     <Link to={`/events/${event.id}/edit`}>
-                        <button>Edit Event</button>
+                        <button>Manage Event</button>
                     </Link>
                 ) : (
                     null

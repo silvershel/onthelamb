@@ -39,7 +39,7 @@ function EventCreate() {
                 attendees: {},
                 vendors: {}
             }
-            // console.log(newEvent);
+            console.log(newEvent);
             createEvent(newEvent);
 
             navigate.push(`/users/${currentUser.username}`)
@@ -55,10 +55,10 @@ function EventCreate() {
                     <select id="event_type" name="event_type" value={formik.values.event_type} onChange={formik.handleChange} >
                         <option value="" disabled>Select an option:</option>
 
-                    {currentUser.user_type === "sheep" ? (
-                        <option value="local meetup">Local Meetup</option>
+                    {currentUser.user_type === "Sheep" ? (
+                        <option value="Local Meetup">Local Meetup</option>
                     ) : (
-                        ["local meetup", "festival", "retreat", "popup", "trunk show"].map((eventType) => (
+                        ["Local Meetup", "Festival", "Retreat", "Popup", "Trunk Show"].map((eventType) => (
                         <option key={eventType} value={eventType}>
                             {eventType.charAt(0).toUpperCase() + eventType.slice(1)}
                         </option>
