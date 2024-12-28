@@ -54,7 +54,7 @@ class User(db.Model, SerializerMixin):
             raise ValueError("Username must be present.")
         
         if len(username) < 5:
-            raise ValueError("Username must be at least 6 characters.")
+            raise ValueError("Username must be at least 5 characters.")
         
         if User.query.filter_by(username=username).first():
             raise ValueError(f"Username '{username}' already exists")       
@@ -105,25 +105,26 @@ class Attendee(db.Model, SerializerMixin):
     @validates('user_id')
     def validate_user_id(self, key, user_id):
         if not user_id:
-            raise ValueError("User ID must be present.")
-        
-        if User.query.get(user_id):
-            raise ValueError(f"User already exists.")       
+            raise ValueError("User ID is required.")  
+
+        if not User.query.get(user_id):
+            raise ValueError("User does not exist.")
         
         return user_id
-    
+
     @validates('event_id')
     def validate_event_id(self, key, event_id):
         if not event_id:
-            raise ValueError("Event ID must be present.")
+            raise ValueError("Event ID is required.")
         
-        if Attendee.query.filter_by(user_id = self.user_id, event_id = event_id).first():
-            raise ValueError(f"User is already attending.")
+        if not Event.query.get(event_id):
+            raise ValueError("Event does not exist")
+        
+        if Attendee.query.filter_by(user_id=self.user_id, event_id=event_id).first():
+            raise ValueError(f"User is already attending this event.")
         
         return event_id
     
-    # WORKING ON THIS. IMPLEMENT INTO FRONT END THEN MIRROR LOGIC FOR VENDOR MODEL
-
 
 class Vendor(db.Model, SerializerMixin):
     __tablename__ = 'vendors'
@@ -137,6 +138,29 @@ class Vendor(db.Model, SerializerMixin):
 
     user = db.relationship('User', back_populates='vendors')
     event = db.relationship('Event', back_populates='vendors')
+
+    @validates('user_id')
+    def validate_user_id(self, key, user_id):
+        if not user_id:
+            raise ValueError("User ID is required.")  
+
+        if not User.query.get(user_id):
+            raise ValueError("User does not exist.")
+        
+        return user_id
+
+    @validates('event_id')
+    def validate_event_id(self, key, event_id):
+        if not event_id:
+            raise ValueError("Event ID is required.")
+        
+        if not Event.query.get(event_id):
+            raise ValueError("Event does not exist")
+        
+        if Vendor.query.filter_by(user_id=self.user_id, event_id=event_id).first():
+            raise ValueError(f"User is already vending at this event.")
+        
+        return event_id
 
 
 class UserSchema(ma.SQLAlchemyAutoSchema):
@@ -167,7 +191,7 @@ class EventSchema(ma.SQLAlchemyAutoSchema):
         model = Event
         load_instance = True
         # Specified field order for returning data in Postman
-        field_order = ['id', 'title', 'event_type', 'start_date', 'end_date', 'website_link', 'user_id', 'user', 'attendees', 'vendors']
+        field_order = ['id', 'title', 'event_type', 'start_date', 'end_date', 'website_link', 'description', 'user_id', 'user', 'attendees', 'vendors']
 
     # Defining the fields to have more control over serialization
     id = fields.Integer()
@@ -176,6 +200,7 @@ class EventSchema(ma.SQLAlchemyAutoSchema):
     start_date = fields.DateTime()
     end_date = fields.DateTime()
     website_link = fields.String()
+    description = fields.String()
     user_id = fields.Integer()
 
     user = ma.Nested('UserSchema')
