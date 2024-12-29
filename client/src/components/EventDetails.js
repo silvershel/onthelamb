@@ -51,7 +51,7 @@ function EventDetails() {
             <div>
                 {currentUser.id === event.user_id ? (
                     <Link to={`/events/${event.id}/edit`}>
-                        <button>Manage Event</button>
+                        <button class="ui button">Manage Event</button>
                     </Link>
                 ) : (
                     null
@@ -62,7 +62,8 @@ function EventDetails() {
             {event.attendees && event.attendees.length > 0 ? (
                 event.attendees.map((attendee) => (
                     <div key={attendee.id}>
-                      <p>{attendee.user.username}</p>
+                        <img class="ui avatar image" alt="" src={attendee.user.profile_photo}/>
+                        <span>{attendee.user.username}</span>
                     </div>
                   ))
             ) : (

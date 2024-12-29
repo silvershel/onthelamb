@@ -4,6 +4,7 @@ from sqlalchemy.orm import validates
 from flask_marshmallow import Marshmallow
 from marshmallow import fields
 from config import db, ma, bcrypt
+import re
 
 class User(db.Model, SerializerMixin):
     __tablename__ = 'users'
@@ -11,10 +12,10 @@ class User(db.Model, SerializerMixin):
     serialize_rules = ('-password', '-events.user', '-attendees.user', '-vendors.user')
 
     id = db.Column(Integer, primary_key=True)
+    user_type = db.Column(Enum('Sheep', 'Shepherd', name='user_type_enum'))
     name = db.Column(String)
     username = db.Column(String, unique=True, nullable=False)
     password = db.Column(String, nullable=False)
-    user_type = db.Column(Enum('Sheep', 'Shepherd', name='user_type_enum'))
     profile_photo = db.Column(String, default="https://cdn.dribbble.com/userupload/17756893/file/original-aa925a9bb546f667dd24b56715c3da7e.png?format=webp&resize=400x300&vertical=center")
     profile_data = db.Column(JSON)
     latitude = db.Column(Float)
@@ -24,11 +25,6 @@ class User(db.Model, SerializerMixin):
     attendees = db.relationship('Attendee', back_populates='user', cascade='all, delete-orphan')
     vendors = db.relationship('Vendor', back_populates='user', cascade='all, delete-orphan')
 
-
-    # VALIDATIONS
-    # Password hashing
-    # Password must be at least 8 characters, contain 1 number and 1 special character
-    # Username must be unique
 
     # @hybrid_property
     # def password_hash(self):
@@ -47,20 +43,40 @@ class User(db.Model, SerializerMixin):
     #     if _password_hash == "":
     #         raise ValueError("Password cannot be empty.")
     #     return _password_hash
+
+
+    @validates('user_type')
+    def validate_type(self, key, user_type):
+        if not user_type:
+            raise ValueError("User type is required.")
+        
+        return user_type
+    
+
+    @validates('name')
+    def validate_name(self, key, name):
+        if not name:
+            raise ValueError("Name is required.")
+        
+        return name
+
     
     @validates('username')
     def validate_username(self, key, username):
         if not username:
-            raise ValueError("Username must be present.")
+            raise ValueError("Username is required.")
         
         if len(username) < 5:
             raise ValueError("Username must be at least 5 characters.")
         
+        if not re.match(r'^[\w_]+$', username):
+            raise ValueError("Username can only contain letters, numbers, and underscores.")
+        
         if User.query.filter_by(username=username).first():
-            raise ValueError(f"Username '{username}' already exists")       
+            raise ValueError(f"Username already exists")       
         
         return username
-
+    
 
 class Event(db.Model, SerializerMixin):
     __tablename__ = 'events'
@@ -69,7 +85,6 @@ class Event(db.Model, SerializerMixin):
 
     id = db.Column(Integer, primary_key=True)
     event_type = db.Column(Enum('Local Meetup', 'Festival', 'Retreat', 'Popup', 'Trunk Show', name='event_type_enum'), nullable=False)
-    # stretch idea: Add option for virtual events. Consider how that might impact address info and location services.
     title = db.Column(String, nullable=False)
     address = db.Column(JSON)
     start_date = db.Column(Date, nullable=False)
@@ -88,7 +103,7 @@ class Event(db.Model, SerializerMixin):
     # Date validation. No end date means end date is start date
     # Start date must be current date or after
     # End date must be later than start date
-
+    
 
 class Attendee(db.Model, SerializerMixin):
     __tablename__ = 'attendees'
@@ -190,10 +205,8 @@ class EventSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = Event
         load_instance = True
-        # Specified field order for returning data in Postman
         field_order = ['id', 'title', 'event_type', 'start_date', 'end_date', 'website_link', 'description', 'user_id', 'user', 'attendees', 'vendors']
 
-    # Defining the fields to have more control over serialization
     id = fields.Integer()
     title = fields.String()
     event_type = fields.String()

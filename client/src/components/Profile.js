@@ -17,21 +17,21 @@ function Profile() {
             <h1>{user.username}</h1>
 
             <img 
-                alt="alt text" 
+                alt="" 
                 src={user.profile_photo} 
             />
             
-            <button>Edit Profile Photo</button>
+            <button class="ui button">Edit Profile Photo</button>
             
             <p>Name: {user.name}</p>
             <p>Bio:</p>
 
             <Link to={`/profile/${user.username}/edit`}>
-                <button>Edit Profile</button>
+                <button class="ui button">Edit Profile</button>
             </Link>
 
             <Link to={`/create`}>
-                <button>Create Event</button>
+                <button class="ui button">Create Event</button>
             </Link>
 
             <h1>{currentUser.id === user.id ? "My" : `${user.name}'s`} Events</h1>
@@ -40,7 +40,7 @@ function Profile() {
                     <div key={event.id}>
                         <h2>{event.title}</h2>
                         <Link to={`/events/${event.id}`}>
-                            <button>View Details</button>                
+                            <button class="ui button">View Details</button>                
                         </Link>
                     </div>
                 )

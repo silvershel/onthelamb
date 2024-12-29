@@ -10,7 +10,7 @@ export const AppProvider = ({ children }) => {
     const [event, setEvent] = useState({});
     const [attendees, setAttendees] = useState([]);    
     const [user, setUser] = useState({});
-    const [error, setError] = useState(null);
+    // const [error, setError] = useState(null);
     // const savedUser = localStorage.getItem("currentUser");
 
 
@@ -29,7 +29,7 @@ export const AppProvider = ({ children }) => {
         .then((r) => r.json())
         .then((user) => {
             if (user.error) {
-                setError(user.error);
+                // setError(user.error);
                 // return { error: user.error };
               }
             console.log(user);
@@ -38,7 +38,7 @@ export const AppProvider = ({ children }) => {
         })
         .catch((error) => {
             console.error("Signup error:", error);
-            setError("An unexpected error during signup occurred.");
+            // setError("An unexpected error during signup occurred.");
             // return { error: 'An unexpected error occurred.' };
           });
     };

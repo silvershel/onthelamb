@@ -5,13 +5,6 @@ import { useAppContext } from "../contexts/AppContext";
 function EventList() {
     const { filteredEvents, setFilter } = useAppContext();
 
-    const tinyImageStyle = {
-        width: '50px',
-        height: '50px',
-        borderRadius: '50%',
-        objectFit: 'cover',
-    }
-
     useEffect(() => {
         setFilter("all");
     }, []);
@@ -22,40 +15,49 @@ function EventList() {
     };
 
     return (
-        <div>
-            <h1>Events</h1>
-            <select onChange={onFilterSelect}>
-                <option value="all">All Events</option>
-                <option value="my events">My Events</option>
-                <option value="attending">Attending</option>
-            </select>
+        <div class="ui center aligned grid">
+            <div class="equal width row">
+                <div class="column">
+                    <h1>Events</h1>
+                    <select class="ui search dropdown" onChange={onFilterSelect}>
+                        <option value="all">All Events</option>
+                        <option value="my events">My Events</option>
+                        <option value="attending">Attending</option>
+                    </select>
+                </div>
+            </div>
             
-            {filteredEvents.length > 0 ? (
-                filteredEvents.map(event => (
-                    <div key={event.id}>
-                        <h1>{event.title}</h1>
-                            <p>{event.start_date} to {event.end_date}</p>
-                            <h2>Attendees</h2>
-                            {event.attendees && event.attendees.length > 0 ? (
-                                event.attendees.map((attendee) => (
-                                    <div key={attendee.id}>
-                                        <img src={attendee.user.profile_photo} style={tinyImageStyle}/>
-                                    <p>{attendee.user.username}</p>
-                                    </div>
-                                ))
-                            ) : (
-                                <p>No one attending yet.</p>
-                            )}
+            <div class="stackable three column row">
+                {filteredEvents.length > 0 ? (
+                    filteredEvents.map(event => (
+                        <div class="column">
+                            <div class="ui very padded segment" key={event.id}>
+                                <h1>{event.title}</h1>
+                                    <p>{event.start_date} to {event.end_date}</p>
+                                    <h2>Attendees</h2>
+                                    {event.attendees && event.attendees.length > 0 ? (
+                                        event.attendees.map((attendee) => (
+                                            <div key={attendee.id}>
+                                                <img class="ui avatar image" alt="" src={attendee.user.profile_photo}/>
+                                                <span>{attendee.user.username}</span>
+                                            </div>
+                                        ))
+                                    ) : (
+                                        <p>No one attending yet.</p>
+                                    )}
 
-                        <Link to={`/events/${event.id}`}>
-                            <button>View Details</button>                
-                        </Link>
-
+                                <Link to={`/events/${event.id}`}>
+                                    <button class="ui button">View Details</button>                
+                                </Link>
+                            </div>
+                        </div>
+                    ))
+                ) : (
+                    <div class="column">
+                        <p>No events found.</p>
                     </div>
-                ))
-            ) : (
-                <p>No events found.</p>
-            )}
+                )}
+            </div>
         </div>
     )
 }

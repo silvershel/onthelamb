@@ -7,30 +7,21 @@ import * as Yup from "yup";
 function SignupForm() {
     const { signup } = useAppContext();
 
-    // Formik things to explore
-    // .setFieldValue('email', 'test@example.com');
-    // .setSubmitting(isSubmitting)
-    // .resetForm()
-
 
     const checkUsername = (username) => {
-        // formik.setFieldError("username", "");
-        // formik.setStatus({usernameAvailable: ""});
+        formik.setFieldError("username", "");
+        formik.setStatus({usernameAvailable: ""});
 
         fetch(`/check_username/${username}`)
             .then((r) => r.json())
             .then((data) => {
                 if (data.error) {
                     formik.setFieldError("username", data.error);
-                    // formik.setStatus({usernameAvailable: ""});
                 } else {
-                    // formik.setFieldError("username", "");
                     formik.setStatus({ usernameAvailable: data.message });
                 }
             })
             .catch((error) => {
-                // formik.setFieldError("username", "Error checking username.");
-                // formik.setStatus({usernameAvailable: ""});
                 console.error("Username check error:", error.message);
             });
     };
@@ -46,12 +37,12 @@ function SignupForm() {
 
         validationSchema: Yup.object({
             user_type: Yup.string().required(),
-            name: Yup.string().required("A name is required"),
+            name: Yup.string().required("Name is required"),
             username: Yup.string()
-                .required("A username is required")
+                .required("Username is required")
+                .matches(/^[\w]+$/, "Username can only contain letters, numbers, and underscores.")
                 .min(5, "Username must be at least 5 characters.")
-                .matches(/^[a-zA-Z0-9_]+$/, 'Username can only contain letters, numbers, and underscores') // implement .matches into backend.
-                .test('check-username', 'Checking username...', function(value) {
+                .test("check-username", "Checking username...", function(value) {
                     if (value) {
                         checkUsername(value);
                     }
@@ -113,10 +104,7 @@ function SignupForm() {
                         }}
                         value={formik.values.username}
                     />
-                    <p>{formik.errors.username}</p>
-                    {formik.status && formik.status.usernameAvailable && (
-                        <div className="success">{formik.status.usernameAvailable}</div>
-                    )}
+                    <p>{!formik.errors.username && formik.status ? formik.status.usernameAvailable : formik.errors.username}</p>
                 </div>
                 <div>
                     <label>Password:</label>
@@ -134,7 +122,7 @@ function SignupForm() {
                         <div>{formik.errors.apiError}</div>
                     ) : null}
                 </div>
-                <button type="submit">Sign Up</button>
+                <button class="ui button" type="submit">Sign Up</button>
                 <p>Already have an account? <Link to="/login">Log In</Link></p>
             </form>
         </div>

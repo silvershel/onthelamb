@@ -7,19 +7,12 @@ from config import app, db, api
 from models import User, Event, Attendee, Vendor, UserSchema, AttendeeSchema, VendorSchema, EventSchema
 from datetime import datetime
 
-# Notes on status Codes
-    # 200 successful GET requests.
-    # 201 POST requests where a resource is created.
-    # 400 the server cannot process the request due to something that is perceived to be client-side error.
-    # 401 When a user tries to access a protected endpoint without being authenticated.
-    # 404 GET requests that do not exist in the database.
-    # 422 POST requests with invalid data.
-    # 500 An unexpected error.
 
 
 class Login(Resource):
     def post(self):
         data = request.get_json()
+        
         username = data.get('username')
         password = data.get('password')
 
@@ -32,19 +25,19 @@ class Login(Resource):
 
         if not user:
             return {'error': 'Not a valid user.'}, 400
-        
+
         try:
             session['username'] = user.username
 
             user_schema = UserSchema()
             user_data = user_schema.dump(user)
             return user_data, 200
-        
+
         except Exception as e:
             return {'error': str(e)}, 401
-                
-        
 
+
+# checked and working in postman
 class Signup(Resource):
     def post(self):
         data = request.get_json()  
@@ -54,28 +47,14 @@ class Signup(Resource):
         username = data.get('username')
         password = data.get('password')
 
-        if not user_type:
-            return {'error': 'User type is required.'}, 400
-        if not name:
-            return {'error': 'Name is required.'}, 400
-        if not username:
-            return {'error': 'Username is required.'}, 400
-        if len(username) < 5:
-            return {'error': 'Username must be at least 6 characters'}, 400
-        
-        existing_user = User.query.filter_by(username=username).first()
-        if existing_user:
-            return {'error': 'Username is already taken.'}, 400
-        
-        new_user = User(
+        try:
+            new_user = User(
                 user_type = user_type,
                 name = name,
-                username = username,
+                username = username.lower(),
                 password = password
             )
-            
-        try:
-            
+
             db.session.add(new_user)
             db.session.commit()
             session['username'] = new_user.username
@@ -83,20 +62,27 @@ class Signup(Resource):
             user_schema = UserSchema()
             user_data = user_schema.dump(new_user)
             return user_data, 201
-        
+
+        except ValueError as e:
+            return {'error': str(e)}, 400
+
+        except IntegrityError as e:
+            return {'error': str(e)}, 409
+
         except Exception as e:
             return {'error': str(e)}, 500
-        
-        
+
+
 class CheckUsername(Resource):
     def get(self, username):
+        username = username.lower()
         existing_user = User.query.filter_by(username=username).first()
         
         if existing_user:
-            return {'error': 'Username already exisits.'}, 400
+            return {'error': 'Username already exists.'}, 400
         
         return {'message': 'Username is available.'}, 200
-    
+
 
 class CheckSession(Resource):
     def get(self):
@@ -108,18 +94,18 @@ class CheckSession(Resource):
 
                 if not user:
                     return {'error': 'User not found.'}, 404
-                
+
                 user_schema = UserSchema()
                 user_data = user_schema.dump(user)
                 return user_data, 200
-            
+
             else:
                 # change this to an empty object then update logic on frontend.
                 return None, 200
 
         except Exception as e:
             return {'error': str(e)}, 500
-        
+
 
 class Logout(Resource):
     def delete(self):
@@ -128,32 +114,32 @@ class Logout(Resource):
             return {}, 204
         else:
             return {'error': 'No user logged in'}, 400
-        
-        
+
+
 class Users(Resource):
     def get(self):
         try:
             users = User.query.all()
-            
+
             user_schema = UserSchema(many=True)
             users_data = user_schema.dump(users)
             return users_data, 200
 
         except Exception as e:
             return {'error': str(e)}, 422
-                        
-        
+
+
 class UserByUsername(Resource):
     def get(self, username):
         user = User.query.filter_by(username = username).first()
 
         if not user:
             return {'error': 'User not found'}, 404
-        
+
         user_schema = UserSchema()
         user_data = user_schema.dump(user)
         return user_data, 200
-        
+
 
     def patch(self, username):
         data = request.get_json()
@@ -161,7 +147,7 @@ class UserByUsername(Resource):
 
         if not user:
             return {'error': 'User not found'}, 404
-        
+
         if 'name' in data:
             user.name = data['name']
         if 'profile_data' in data:
@@ -173,37 +159,36 @@ class UserByUsername(Resource):
             user_schema = UserSchema()
             user_data = user_schema.dump(user)
             return user_data, 200
-        
+
         except Exception as e:
             db.session.rollback()
             return {'error': str(e)}, 422
-        
+
     def delete(self, username):
         user = User.query.filter_by(username = username).first()
 
         if not user:
             return {'error': 'User not found'}, 404
-        
+
         db.session.delete(user)
         db.session.commit()
-        return {'message': 'User deleted'}, 200
-    
+        return {'message': 'User deleted'}, 201
+
 class Events(Resource):
     def get(self):
         try:
             events = Event.query.all()
-            
+
             event_schema = EventSchema(many=True)
             events_data = event_schema.dump(events)
-
             return events_data, 200
 
         except Exception as e:
             return {'error': str(e)}, 404
-                
+
     def post(self):
         data = request.get_json()
-        
+
         title = data.get('title')
         event_type = data.get('event_type')
         start_date_str = data.get('start_date')
@@ -217,7 +202,7 @@ class Events(Resource):
 
         if not title or not start_date or not end_date:
             return {'error': 'Missing required fields'}, 400
-        
+
         new_event = Event(
             title = title,
             event_type = event_type,
@@ -234,25 +219,23 @@ class Events(Resource):
 
             event_schema = EventSchema()
             event_data = event_schema.dump(new_event)
-
             return event_data, 201
-        
+
         except Exception as e:
             return {'error': str(e)}, 500
-        
-        
+
+
 class EventById(Resource):
     def get(self, event_id):
         event = Event.query.get(event_id)
 
         if not event:
             return {'error': 'Event not found'}, 404
-        
+
         event_schema = EventSchema()
         event_data = event_schema.dump(event)
-
         return event_data, 200
-    
+
 
     def patch(self, event_id):
         data = request.get_json()
@@ -260,7 +243,7 @@ class EventById(Resource):
         event = Event.query.get(event_id)
         if not event:
             return {'error': 'Event not found'}, 404
-        
+
         if 'event_type' in data:
             event.title = data['event_type']
         if 'title' in data:
@@ -279,42 +262,41 @@ class EventById(Resource):
 
             event_schema = EventSchema()
             event_data = event_schema.dump(event)
-
             return event_data, 200
-        
+
         except Exception as e:
             db.session.rollback()
             return {'error': str(e)}, 422
-        
+
 
     def delete(self, event_id):
         event = Event.query.get(event_id)
 
         if not event:
             return {'error': 'Event not found'}, 404
-        
+
         db.session.delete(event)
         db.session.commit()
         return {'message': 'Event deleted'}, 200
-    
-    
+
+
+# checked and working in postman
 class Attendees(Resource):
     def get(self):
         try:
             attendees = Attendee.query.all()
-            
+
             attendee_schema = AttendeeSchema(many=True)
             attendee_data = attendee_schema.dump(attendees)
-
             return attendee_data, 200
 
         except Exception as e:
             return {'error': str(e)}, 422
-        
+
 
     def post(self):
         data = request.get_json()
-        
+
         user_id = data.get('user_id')
         event_id = data.get('event_id')
 
@@ -323,18 +305,17 @@ class Attendees(Resource):
                 user_id = user_id,
                 event_id = event_id
             )
-            
+
             db.session.add(new_attendee)
             db.session.commit()
 
             attendee_schema = AttendeeSchema()
-            attendee_data = attendee_schema.dump(new_attendee)
-            
+            attendee_data = attendee_schema.dump(new_attendee)           
             return attendee_data, 201
-        
+
         except ValueError as e:
             return {'error': str(e)}, 400
-        
+
         except IntegrityError as e:
             return {'error': str(e)}, 409
 
@@ -342,41 +323,42 @@ class Attendees(Resource):
             return {'error': str(e)}, 500
 
 
+# checked and working in postman
 class AttendeeById(Resource):
     def get(self, attendee_id):
         attendee = Attendee.query.get(attendee_id)
 
         if not attendee:
             return {'error': 'Attendee not found'}, 404
-        
+
         attendee_schema = AttendeeSchema()
         attendee_data = attendee_schema.dump(attendee)
-        return attendee_data, 200       
+        return attendee_data, 200
 
     def delete(self, attendee_id):
         attendee = Attendee.query.get(attendee_id)
 
         if not attendee:
             return {'error': 'Attendee not found'}, 404
-        
+
         db.session.delete(attendee)
         db.session.commit()
         return {'message': 'Attendee deleted'}, 200
-    
-    
+
+
+# checked and working in postman
 class Vendors(Resource):
     def get(self):
         try:
             vendors = Vendor.query.all()
-            
+
             vendor_schema = VendorSchema(many=True)
             vendor_data = vendor_schema.dump(vendors)
-
             return vendor_data, 200
 
         except Exception as e:
             return {'error': str(e)}, 422
-        
+
     def post(self):
         data = request.get_json()
         
@@ -393,37 +375,37 @@ class Vendors(Resource):
             db.session.commit()
 
             vendor_schema = VendorSchema()
-            vendor_data = vendor_schema.dump(new_vendor)
-            
+            vendor_data = vendor_schema.dump(new_vendor)    
             return vendor_data, 201
-        
+
         except ValueError as e:
             return {'error': str(e)}, 400
-        
+
         except IntegrityError as e:
             return {'error': str(e)}, 409
 
         except Exception as e:
             return {'error': str(e)}, 500
-        
 
+
+# checked and working in postman
 class VendorsById(Resource):
     def get(self, vendor_id):
         vendor = Vendor.query.get(vendor_id)
 
         if not vendor:
             return {'error': 'Vendor not found'}, 404
-        
+
         vendor_schema = VendorSchema()
         vendor_data = vendor_schema.dump(vendor)
         return vendor_data, 200
-    
+
     def delete(self, vendor_id):
         vendor = Vendor.query.get(vendor_id)
 
         if not vendor:
             return {'error': 'Vendor not found'}, 404
-        
+
         db.session.delete(vendor)
         db.session.commit()
         return {'message': 'Vendor deleted'}, 200

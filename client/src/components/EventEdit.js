@@ -127,11 +127,11 @@ function EventEdit() {
                     ) : (
                         <p>No vendors have been assigned.</p>
                     )}
-                    <button type="button">Add Vendor</button>
+                    <button class="ui button" type="button">Add Vendor</button>
                 </div>
-                <button type="submit">Save Edits</button>
+                <button class="ui button" type="submit">Save Edits</button>
             </form>
-            <button type="button" onClick={handleDelete}>Delete Event</button>
+            <button class="ui button" type="button" onClick={handleDelete}>Delete Event</button>
         </div>
     );
 }

@@ -16,10 +16,6 @@ import ErrorPage from "./components/ErrorPage";
 // context
 import { AppProvider, useAppContext } from "./contexts/AppContext";
 
-// styles
-const containerStyle = {
-  textAlign: 'center'
-};
 
 function Routes() {
 	const { currentUser } = useAppContext();
@@ -27,7 +23,7 @@ function Routes() {
 	if (!currentUser) {
 		return (
 			<Router>
-				<div style={containerStyle}>
+				<div class="ui center aligned grid container">
 					<Switch>
 						<Route path="/login" exact component={LoginForm} />
 						<Route path="/signup" exact component={SignupForm}/>
@@ -43,24 +39,28 @@ function Routes() {
 
 	return (
 		<Router>
-			<div style={containerStyle}>
-				<NavBar currentUser={currentUser} />
-				<Switch>
-					<Route path="/login" exact>
-						<Redirect to="/" />
-					</Route>
-					<Route path="/signup" exact>
-						<Redirect to="/" />
-					</Route>
-					<Route path="/" exact component={EventList} />
-					<Route path="/events" exact component={EventList} />
-					<Route path="/events/:eventId" exact component={EventDetails} />
-					<Route path="/events/:eventId/edit" exact component={EventEdit} />
-					<Route path="/create" exact component={EventCreate} />
-					<Route path="/users/:username" exact component={Profile} />
-					<Route path="/profile/:username/edit" exact component={ProfileEdit} />
-					<Route path="*" component={ErrorPage} />
-				</Switch>
+			<div>
+				<div class="ui center aligned segment">
+					<NavBar currentUser={currentUser} />
+				</div>
+				<div>
+					<Switch>
+						<Route path="/login" exact>
+							<Redirect to="/" />
+						</Route>
+						<Route path="/signup" exact>
+							<Redirect to="/" />
+						</Route>
+						<Route path="/" exact component={EventList} />
+						<Route path="/events" exact component={EventList} />
+						<Route path="/events/:eventId" exact component={EventDetails} />
+						<Route path="/events/:eventId/edit" exact component={EventEdit} />
+						<Route path="/create" exact component={EventCreate} />
+						<Route path="/users/:username" exact component={Profile} />
+						<Route path="/profile/:username/edit" exact component={ProfileEdit} />
+						<Route path="*" component={ErrorPage} />
+					</Switch>
+				</div>
 			</div>
 		</Router>
 	);

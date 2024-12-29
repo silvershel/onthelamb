@@ -41,7 +41,7 @@ function NavBar() {
 			<h1>
 				<Link to="/">On The Lamb</Link>
 			</h1>
-			<select id="dropdown" onChange={handleSelectChange}>
+			<select class="ui search dropdown" id="dropdown" onChange={handleSelectChange}>
 				<option value="dashboard">Dashboard</option>
 				<option value="my profile">My Profile</option>
 				<option value="edit profile">Edit Profile</option>

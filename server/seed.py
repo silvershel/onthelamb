@@ -25,7 +25,7 @@ if __name__ == '__main__':
         # Seed Users
         test_user_sheep = User(
             name = "Sheep Test User",
-            username = "Sheep",
+            username = "sheep",
             password = "password",
             user_type = "Sheep",
             profile_photo = "https://cdn.dribbble.com/userupload/17756893/file/original-aa925a9bb546f667dd24b56715c3da7e.png?format=webp&resize=400x300&vertical=center",
@@ -37,7 +37,7 @@ if __name__ == '__main__':
 
         test_user_shepherd = User(
             name = "Shepherd Test User",
-            username = "Shepherd",
+            username = "shepherd",
             password = "password",
             user_type = "Shepherd",
             profile_photo = "https://cdn.dribbble.com/userupload/17756893/file/original-aa925a9bb546f667dd24b56715c3da7e.png?format=webp&resize=400x300&vertical=center",
@@ -47,19 +47,22 @@ if __name__ == '__main__':
         db.session.add(test_user_shepherd)
         db.session.commit()
 
-        # Stored test users for reference
         test_users = [test_user_sheep, test_user_shepherd]
+
+        def generate_username():
+            username = fake.user_name() + str(fake.random_number(digits=5))
+            return username
 
         users = []
         used_usernames = set()
 
         for i in range(10):
-            username = fake.user_name()
+            username = generate_username()
             user_type = rc(['Sheep', 'Shepherd'])
             profile_photo = 'https://cdn.dribbble.com/userupload/17756893/file/original-aa925a9bb546f667dd24b56715c3da7e.png?format=webp&resize=400x300&vertical=center'
 
             while username in used_usernames:
-                username = fake.user_name()
+                username = generate_username()
 
             used_usernames.add(username)
 
