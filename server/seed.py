@@ -28,7 +28,7 @@ if __name__ == '__main__':
             username = "sheep",
             password = "password",
             user_type = "Sheep",
-            profile_photo = "https://cdn.dribbble.com/userupload/17756893/file/original-aa925a9bb546f667dd24b56715c3da7e.png?format=webp&resize=400x300&vertical=center",
+            profile_photo = "https://modernfarmer.com/wp-content/uploads/2017/12/Funny-Sheep-Facts-jpg.webp",
             latitude = "38.805496",
             longitude = "-77.04344"
         )
@@ -40,7 +40,7 @@ if __name__ == '__main__':
             username = "shepherd",
             password = "password",
             user_type = "Shepherd",
-            profile_photo = "https://cdn.dribbble.com/userupload/17756893/file/original-aa925a9bb546f667dd24b56715c3da7e.png?format=webp&resize=400x300&vertical=center",
+            profile_photo = "https://modernfarmer.com/wp-content/uploads/2017/12/Funny-Sheep-Facts-jpg.webp",
             latitude = "38.805496",
             longitude = "-77.04344"
         )
@@ -59,7 +59,7 @@ if __name__ == '__main__':
         for i in range(10):
             username = generate_username()
             user_type = rc(['Sheep', 'Shepherd'])
-            profile_photo = 'https://cdn.dribbble.com/userupload/17756893/file/original-aa925a9bb546f667dd24b56715c3da7e.png?format=webp&resize=400x300&vertical=center'
+            profile_photo = 'https://modernfarmer.com/wp-content/uploads/2017/12/Funny-Sheep-Facts-jpg.webp'
 
             while username in used_usernames:
                 username = generate_username()

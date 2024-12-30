@@ -55,22 +55,27 @@ function EventEdit() {
     return (
         <div>
             <h2>Edit {event.title}</h2>
-            <form onSubmit={formik.handleSubmit}>
-                <div>
+            <form class="ui form error" onSubmit={formik.handleSubmit}>
+                <div class="field">
                     <label>Event Type</label>
-                    <select 
-                        id="event_type" 
-                        name="event_type" 
-                        value={formik.values.event_type}
-                        onChange={formik.handleChange} >
-                        <option value="Local Meetup">Local Meetup</option>
-                        <option value="Festival">Festival</option>
-                        <option value="Retreat">Retreat</option>
-                        <option value="Popup">Popup</option>
-                        <option value="Trunk Show">Trunk Show</option>
+                    <select class="ui search dropdown" id="event_type" name="event_type" value={formik.values.event_type} onChange={formik.handleChange} >
+                        <option value="" disabled>Select an option:</option>
+
+                        {currentUser.user_type === "Sheep" ? (
+                            <option value="Local Meetup">Local Meetup</option>
+                        ) : (
+                            ["Local Meetup", "Festival", "Retreat", "Popup", "Trunk Show"].map((eventType) => (
+                            <option key={eventType} value={eventType}>
+                                {eventType.charAt(0).toUpperCase() + eventType.slice(1)}
+                            </option>
+                            ))
+                        )}
                     </select>
+                    <div class="ui error message">
+                        {formik.errors.event_type}
+                    </div>
                 </div>
-                <div>
+                <div class="field">
                     <label>Event Title</label>
                     <input
                         type="text"
@@ -78,8 +83,11 @@ function EventEdit() {
                         value={formik.values.title}
                         onChange={formik.handleChange}
                     />
+                    <div class="ui error message">
+                        {formik.errors.title}
+                    </div>
                 </div>
-                <div>
+                <div class="field">
                     <label>Start Date</label>
                     <input
                         type="date"
@@ -87,8 +95,11 @@ function EventEdit() {
                         value={formik.values.start_date}
                         onChange={formik.handleChange}
                     />
+                    <div class="ui error message">
+                        {formik.errors.start_date}
+                    </div>
                 </div>
-                <div>
+                <div class="field">
                     <label>End Date</label>
                     <input
                         type="date"
@@ -96,17 +107,23 @@ function EventEdit() {
                         value={formik.values.end_date}
                         onChange={formik.handleChange}
                     />
+                    <div class="ui error message">
+                        {formik.errors.end_date}
+                    </div>
                 </div>
-                <div>
+                <div class="field">
                     <label>Description</label>
                     <input
-                        type="description"
+                        type="text"
                         name="description"
                         value={formik.values.description}
                         onChange={formik.handleChange}
                     />
+                    <div class="ui error message">
+                        {formik.errors.description}
+                    </div>
                 </div>
-                <div>
+                <div class="field">
                     <label>Event Website</label>
                     <input
                         type="text"
@@ -114,6 +131,9 @@ function EventEdit() {
                         value={formik.values.website_link}
                         onChange={formik.handleChange}
                     />
+                    <div class="ui error message">
+                        {formik.errors.website_link}
+                    </div>
                 </div>
                 <div>
                     <h2>Vendors</h2>

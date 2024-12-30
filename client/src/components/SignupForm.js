@@ -53,10 +53,10 @@ function SignupForm() {
 
         onSubmit: (values) => {
             const newUser = {
-                    user_type: values.user_type,
-                    name: values.name,
-                    username: values.username,
-                    password: values.password,
+                user_type: values.user_type,
+                name: values.name,
+                username: values.username,
+                password: values.password,
             }
             console.log(newUser);
             signup(newUser)
@@ -67,9 +67,8 @@ function SignupForm() {
     return (
         <div>
             <h1>Sign Up</h1>
-            <form onSubmit={formik.handleSubmit}>
-                <div>
-                    <label>User Type:</label>
+            <form class="ui form error success" onSubmit={formik.handleSubmit}>
+                <div class="required field">
                     <select 
                         id="user_type" 
                         name="user_type" 
@@ -79,48 +78,59 @@ function SignupForm() {
                         <option value="Sheep">Sheep</option>
                         <option value="Shepherd">Shepherd</option>
                     </select>
-                    <p>{formik.errors.user_type}</p>
+                    <div class="ui error message">
+                        {formik.errors.user_type}
+                    </div>
                 </div>
-                <div>
-                    <label>Name:</label>
+                <div class="required field">
                     <input 
                         type="text"
                         id="name"
                         name="name"
+                        placeholder="Name"
                         onChange={formik.handleChange}
                         value={formik.values.name}
                     />
-                    <p>{formik.errors.name}</p>
+                     <div class="ui error message">
+                        {formik.errors.name}
+                    </div>
                 </div>
-                <div>
-                    <label>Username (this cannot be changed):</label>
+                <div class="required field">
                     <input 
                         type="text"
                         id="username"
                         name="username"
+                        placeholder="Username (this cannot be changed)"
                         onChange={(e) => {
                             formik.handleChange(e);
                             checkUsername(e.target.value, formik.setFieldError);
                         }}
                         value={formik.values.username}
                     />
-                    <p>{!formik.errors.username && formik.status ? formik.status.usernameAvailable : formik.errors.username}</p>
+                    <div>
+                        {!formik.errors.username && formik.status
+                            ? <div class="ui success message">{formik.status.usernameAvailable}</div> 
+                            : <div class="ui error message">{formik.errors.username}</div>
+                        }
+                    </div>
                 </div>
-                <div>
-                    <label>Password:</label>
+                <div class="required field">
                     <input 
                         type="text" 
                         id="password"
                         name="password"
+                        placeholder="Password"
                         onChange={formik.handleChange}
                         value={formik.values.password}
                     />
-                    <p>{formik.errors.password}</p>
+                     <div class="ui error message">
+                        {formik.errors.password}
+                    </div>
                 </div>
-                <div>
-                    {formik.errors.apiError ? (
-                        <div>{formik.errors.apiError}</div>
-                    ) : null}
+                <div class="ui error message">
+                    {formik.errors.apiError 
+                    ? (<div>{formik.errors.apiError}</div>)
+                    : null}
                 </div>
                 <button class="ui button" type="submit">Sign Up</button>
                 <p>Already have an account? <Link to="/login">Log In</Link></p>

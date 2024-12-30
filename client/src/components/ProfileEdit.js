@@ -48,7 +48,9 @@ function ProfileEdit() {
                         <option value="Sheep">Sheep</option>
                         <option value="Shepherd">Shepherd</option>
                     </select>
-                    <p>{formik.errors.user_type}</p>
+                    <div class="ui error message">
+                        {formik.errors.user_type}
+                    </div>
                 </div>
                 <div class="field">
                     <label>Name:</label>
@@ -59,12 +61,14 @@ function ProfileEdit() {
                         onChange={formik.handleChange}
                         value={formik.values.name}
                     />
-                    <p>{formik.errors.first_name}</p>
+                    <div class="ui error message">
+                        {formik.errors.name}
+                    </div>
                 </div>
-                <div>
-                    {formik.errors.apiError ? (
-                        <div>{formik.errors.apiError}</div>
-                    ) : null}
+                <div class="ui error message">
+                    {formik.errors.apiError 
+                    ? (<div>{formik.errors.apiError}</div>)
+                    : null}
                 </div>
                 <button class="ui button" type="submit">Save Edits</button>
             </form>

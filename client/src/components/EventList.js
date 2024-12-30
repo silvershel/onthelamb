@@ -15,19 +15,16 @@ function EventList() {
     };
 
     return (
-        <div class="ui center aligned grid">
-            <div class="equal width row">
-                <div class="column">
-                    <h1>Events</h1>
-                    <select class="ui search dropdown" onChange={onFilterSelect}>
-                        <option value="all">All Events</option>
-                        <option value="my events">My Events</option>
-                        <option value="attending">Attending</option>
-                    </select>
-                </div>
-            </div>
+        <div>
+            <h1>Events</h1>
+            <select class="ui search dropdown" onChange={onFilterSelect}>
+                <option value="all">All Events</option>
+                <option value="my events">My Events</option>
+                <option value="attending">Attending</option>
+            </select>
             
-            <div class="stackable three column row">
+            <div class="ui grid">
+                <div class="ui stackable three column row">
                 {filteredEvents.length > 0 ? (
                     filteredEvents.map(event => (
                         <div class="column">
@@ -57,6 +54,7 @@ function EventList() {
                         <p>No events found.</p>
                     </div>
                 )}
+            </div>
             </div>
         </div>
     )

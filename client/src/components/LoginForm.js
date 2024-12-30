@@ -32,35 +32,39 @@ function LoginForm() {
     return (
         <div>
             <h1 class="ui header">Log In</h1>
-            <form class="ui form" onSubmit={formik.handleSubmit}>
+            <form class="ui form error" onSubmit={formik.handleSubmit}>
                 <div class="field">
-                    <label>Username:</label>
                     <input 
                         type="text"
                         id="username"
                         name="username"
+                        placeholder="Username"
                         onChange={formik.handleChange}
                         value={formik.values.username}
                     />
-                    <p>{formik.errors.username}</p>
+                    <div class="ui error message">
+                        {formik.errors.username}
+                    </div>
                 </div>
                 <div class="field">
-                    <label>Password:</label>
                     <input 
                         type="text"
                         id="password"
                         name="password"
+                        placeholder="Password"
                         onChange={formik.handleChange}
                         value={formik.values.password}
                     />
-                    <p>{formik.errors.password}</p>
+                    <div class="ui error message">
+                        {formik.errors.password}
+                    </div>
                 </div>
-                <div>
-                    {formik.errors.apiError ? (
-                        <div>{formik.errors.apiError}</div>
-                    ) : null}
+                <div class="ui error message">
+                    {formik.errors.apiError 
+                    ? (<div>{formik.errors.apiError}</div>)
+                    : null}
                 </div>
-                <button class="ui basic button" type="submit">Log In</button>
+                <button class="ui button" type="submit">Log In</button>
             </form>
             <p>Don't have an account? <Link to="/signup">Signup</Link></p>
         </div>

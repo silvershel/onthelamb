@@ -13,41 +13,42 @@ function Profile() {
     const userEvents = events.filter(event => event.user_id === user.id);
 
     return(
-        <div>
-            <h1>{user.username}</h1>
+        <div class="ui equal width grid">
+            <div class="column">
+                <img class="ui fluid image" alt="" src={user.profile_photo}/>
+                <div class="ui bottom attached button">Update Profile Photo</div>
+            </div>
+            <div class="column">
+                <h1>{user.username}</h1>
+                <p>Name: {user.name}</p>
+                <p>Bio:</p>
 
-            <img 
-                alt="" 
-                src={user.profile_photo} 
-            />
-            
-            <button class="ui button">Edit Profile Photo</button>
-            
-            <p>Name: {user.name}</p>
-            <p>Bio:</p>
+                <Link to={`/profile/${user.username}/edit`}>
+                    <button class="ui button">Edit Profile</button>
+                </Link>
+                <Link to={`/create`}>
+                    <button class="ui button">Create Event</button>
+                </Link>
+            </div>
 
-            <Link to={`/profile/${user.username}/edit`}>
-                <button class="ui button">Edit Profile</button>
-            </Link>
 
-            <Link to={`/create`}>
-                <button class="ui button">Create Event</button>
-            </Link>
-
-            <h1>{currentUser.id === user.id ? "My" : `${user.name}'s`} Events</h1>
-            {userEvents.length > 0 ? (
-                userEvents.map(event => 
-                    <div key={event.id}>
-                        <h2>{event.title}</h2>
-                        <Link to={`/events/${event.id}`}>
-                            <button class="ui button">View Details</button>                
-                        </Link>
-                    </div>
-                )
-            ) : (
-                <h2>No Events Found</h2>
-            )}
-            
+            <div class="equal width row">
+                <h1>{currentUser.id === user.id ? "My" : `${user.name}'s`} Events</h1>
+            </div>
+            <div class="equal width row">
+                {userEvents.length > 0 ? (
+                    userEvents.map(event => 
+                        <div class="column" key={event.id}>
+                            <h2>{event.title}</h2>
+                            <Link to={`/events/${event.id}`}>
+                                <button class="ui button">View Details</button>                
+                            </Link>
+                        </div>
+                    )
+                ) : (
+                    <h2>No Events Found</h2>
+                )}
+                </div>
         </div>
     )
 }

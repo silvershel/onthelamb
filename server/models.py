@@ -16,7 +16,7 @@ class User(db.Model, SerializerMixin):
     name = db.Column(String)
     username = db.Column(String, unique=True, nullable=False)
     password = db.Column(String, nullable=False)
-    profile_photo = db.Column(String, default="https://cdn.dribbble.com/userupload/17756893/file/original-aa925a9bb546f667dd24b56715c3da7e.png?format=webp&resize=400x300&vertical=center")
+    profile_photo = db.Column(String, default="https://modernfarmer.com/wp-content/uploads/2017/12/Funny-Sheep-Facts-jpg.webp")
     profile_data = db.Column(JSON)
     latitude = db.Column(Float)
     longitude = db.Column(Float)
@@ -59,7 +59,7 @@ class User(db.Model, SerializerMixin):
             raise ValueError("Name is required.")
         
         return name
-
+    
     
     @validates('username')
     def validate_username(self, key, username):
@@ -73,10 +73,10 @@ class User(db.Model, SerializerMixin):
             raise ValueError("Username can only contain letters, numbers, and underscores.")
         
         if User.query.filter_by(username=username).first():
-            raise ValueError(f"Username already exists")       
+            raise ValueError(f"Username already exists.")
         
         return username
-    
+
 
 class Event(db.Model, SerializerMixin):
     __tablename__ = 'events'
@@ -103,7 +103,7 @@ class Event(db.Model, SerializerMixin):
     # Date validation. No end date means end date is start date
     # Start date must be current date or after
     # End date must be later than start date
-    
+
 
 class Attendee(db.Model, SerializerMixin):
     __tablename__ = 'attendees'
