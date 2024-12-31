@@ -29,9 +29,8 @@ function LoginForm() {
     });
 
     return (
-        
-        <div class="ui very padded center aligned segment">
-            <h1 class="ui header">Log In</h1>
+        <div class="ui very padded center aligned container">
+            <h1>Log In</h1>
             <form class="ui form error" onSubmit={formik.handleSubmit}>
                 <div class="field">
                     <input 
@@ -65,8 +64,8 @@ function LoginForm() {
                     : null}
                 </div>
                 <button class="ui button" type="submit">Log In</button>
+                <p>Don't have an account? <Link to="/signup">Signup</Link></p>
             </form>
-            <p>Don't have an account? <Link to="/signup">Signup</Link></p>
         </div>
     )
 }

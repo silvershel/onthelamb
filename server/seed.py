@@ -28,7 +28,7 @@ if __name__ == '__main__':
             username = "sheep",
             password = "password",
             user_type = "Sheep",
-            profile_photo = "https://modernfarmer.com/wp-content/uploads/2017/12/Funny-Sheep-Facts-jpg.webp",
+            profile_photo = "https://cdn.shopify.com/s/files/1/2242/8117/files/shaggie.jpg?v=1735611916",
             latitude = "38.805496",
             longitude = "-77.04344"
         )
@@ -40,7 +40,7 @@ if __name__ == '__main__':
             username = "shepherd",
             password = "password",
             user_type = "Shepherd",
-            profile_photo = "https://modernfarmer.com/wp-content/uploads/2017/12/Funny-Sheep-Facts-jpg.webp",
+            profile_photo = "https://cdn.shopify.com/s/files/1/2242/8117/files/shaggie.jpg?v=1735611916",
             latitude = "38.805496",
             longitude = "-77.04344"
         )
@@ -58,8 +58,8 @@ if __name__ == '__main__':
 
         for i in range(10):
             username = generate_username()
-            user_type = rc(['Sheep', 'Shepherd'])
-            profile_photo = 'https://modernfarmer.com/wp-content/uploads/2017/12/Funny-Sheep-Facts-jpg.webp'
+            user_type = rc(["Sheep", "Shepherd"])
+            profile_photo = "https://cdn.shopify.com/s/files/1/2242/8117/files/shaggie.jpg?v=1735611916"
 
             while username in used_usernames:
                 username = generate_username()
@@ -88,7 +88,7 @@ if __name__ == '__main__':
         # events specific to test users 1 and 2
         for i in range(6):
             for test_user in test_users:
-                event_type = rc(['Festival', 'Retreat', 'Local Meetup', 'Popup', 'Trunk Show'])
+                event_type = rc(["Festival", "Retreat", "Local Meetup", "Popup", "Trunk Show"])
                 event_title = f"{fake.company()} {event_type}"
 
                 event = Event(
@@ -106,7 +106,7 @@ if __name__ == '__main__':
         # events for all users
         for i in range(10):
             user = rc(users)
-            event_type = rc(['Festival', 'Retreat', 'Local Meetup', 'Popup', 'Trunk Show'])
+            event_type = rc(["Festival", "Retreat", "Local Meetup", "Popup", "Trunk Show"])
             event_title = f"{fake.company()} {event_type}"
 
             event = Event(

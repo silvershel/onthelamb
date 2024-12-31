@@ -15,8 +15,8 @@ function Profile() {
     return(
         <div class="ui equal width grid">
             <div class="column">
-                <img class="ui fluid image" alt="" src={user.profile_photo}/>
-                <div class="ui bottom attached button">Update Profile Photo</div>
+                <img class="ui fluid circular image" alt="" src={user.profile_photo}/>
+                <button class="ui button">Update Profile Photo</button>
             </div>
             <div class="column">
                 <h1>{user.username}</h1>
