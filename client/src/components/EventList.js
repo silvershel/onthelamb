@@ -16,7 +16,7 @@ function EventList() {
 
     return (
         <div>
-            <h1>Events</h1>
+            <h2>Events</h2>
             <select class="ui search dropdown" onChange={onFilterSelect}>
                 <option value="all">All Events</option>
                 <option value="my events">My Events</option>
@@ -25,23 +25,27 @@ function EventList() {
             
             <div class="ui grid">
                 <div class="ui stackable three column row">
+                    
                 {filteredEvents.length > 0 ? (
                     filteredEvents.map(event => (
                         <div class="column">
-                            <div class="ui very padded segment" key={event.id}>
-                                <h1>{event.title}</h1>
+                            <div class="ui padded segment" key={event.id}>
+                                <h3>{event.title}</h3>
                                     <p>{event.start_date} to {event.end_date}</p>
-                                    <h2>Attendees</h2>
-                                    {event.attendees && event.attendees.length > 0 ? (
-                                        event.attendees.map((attendee) => (
-                                            <div key={attendee.id}>
-                                                <img class="ui avatar image" alt="" src={attendee.user.profile_photo}/>
-                                                <span>{attendee.user.username}</span>
-                                            </div>
-                                        ))
-                                    ) : (
-                                        <p>No one attending yet.</p>
-                                    )}
+                                    
+                                    <h4>Attendees</h4>
+                                    <div class="ui equal width grid">
+                                        {event.attendees && event.attendees.length > 0 ? (
+                                            event.attendees.map((attendee) => (
+                                                <div key={attendee.id}>
+                                                    <img class="ui mini avatar image" alt="" src={attendee.user.profile_photo}/>
+                                                    <span>{attendee.user.username}</span>
+                                                </div>
+                                            ))
+                                        ) : (
+                                            <p>No one attending yet.</p>
+                                        )}
+                                    </div>
 
                                 <Link to={`/events/${event.id}`}>
                                     <button class="ui button">View Details</button>                

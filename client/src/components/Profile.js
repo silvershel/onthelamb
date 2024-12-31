@@ -13,13 +13,13 @@ function Profile() {
     const userEvents = events.filter(event => event.user_id === user.id);
 
     return(
-        <div class="ui equal width grid">
+        <div class="ui stackable equal width grid">
             <div class="column">
                 <img class="ui fluid circular image" alt="" src={user.profile_photo}/>
                 <button class="ui button">Update Profile Photo</button>
             </div>
             <div class="column">
-                <h1>{user.username}</h1>
+                <h2>{user.username}</h2>
                 <p>Name: {user.name}</p>
                 <p>Bio:</p>
 
@@ -33,13 +33,13 @@ function Profile() {
 
 
             <div class="equal width row">
-                <h1>{currentUser.id === user.id ? "My" : `${user.name}'s`} Events</h1>
+                <h2>{currentUser.id === user.id ? "My" : `${user.name}'s`} Events</h2>
             </div>
             <div class="equal width row">
                 {userEvents.length > 0 ? (
                     userEvents.map(event => 
                         <div class="column" key={event.id}>
-                            <h2>{event.title}</h2>
+                            <h3>{event.title}</h3>
                             <Link to={`/events/${event.id}`}>
                                 <button class="ui button">View Details</button>                
                             </Link>

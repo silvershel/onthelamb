@@ -30,13 +30,13 @@ function EventDetails() {
     }
 
     return (
-        <div class="ui equal width grid">
+        <div class="ui stackable equal width grid">
             <div class="column">
                 <img class="ui fluid image" alt="" src="https://modernfarmer.com/wp-content/uploads/2017/12/Funny-Sheep-Facts-jpg.webp"/>
                 
             </div>
             <div class="column">
-                <h1>{event.title}</h1>
+                <h2>{event.title}</h2>
                 <p>Organized by: <Link to={`/users/${event.user?.username}`}>{event.user?.username}</Link></p>
                 <p>Starts: {event.start_date}</p>
                 <p>Ends: {event.end_date}</p>
@@ -66,7 +66,7 @@ function EventDetails() {
             
             <div class="equal width row">            
                 <div class="column">
-                    <h2>Attendees</h2>
+                    <h3>Attendees</h3>
                     {event.attendees && event.attendees.length > 0 ? (
                         event.attendees.map((attendee) => (
                             <div class="column" key={attendee.id}>
@@ -80,7 +80,7 @@ function EventDetails() {
                 </div>
                 
                 <div class="column">            
-                    <h2>Vendors</h2>
+                    <h3>Vendors</h3>
                     {event.vendors && event.vendors.length > 0 ? (
                         event.vendors.map((vendor) => (
                             <div class="column" key={vendor.id}>

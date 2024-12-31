@@ -34,7 +34,7 @@ function ProfileEdit() {
 
     return (
         <div>
-            <h1>Edit Profile</h1>
+            <h2>Edit Profile</h2>
             <form class="ui form" onSubmit={formik.handleSubmit}>
                 <div class="field">
                     <label>User Type:</label>
