@@ -37,17 +37,17 @@ function EventDetails() {
             </div>
             <div class="column">
                 <h2>{event.title}</h2>
-                <p>Organized by: <Link to={`/users/${event.user?.username}`}>{event.user?.username}</Link></p>
-                <p>Starts: {event.start_date}</p>
-                <p>Ends: {event.end_date}</p>
-                <p>Website: {event.website_link}</p>
+                <p>organized by: <Link to={`/users/${event.user?.username}`}>{event.user?.username}</Link></p>
+                <p>starts: {event.start_date}</p>
+                <p>ends: {event.end_date}</p>
+                <p>website: {event.website_link}</p>
                 <a href={event.website_link}>{event.website_link}</a>
                 <div>
                     {event.user_id !== currentUser.id && (
                         !userAttending() ? (
-                            <button class="positive ui button" onClick={onAttendClick}>Attend</button>
+                            <button class="positive ui button" onClick={onAttendClick}>attend</button>
                         ) : (
-                            <button class="negative ui button" onClick={onDeleteAttendClick}>Remove Attendance</button>
+                            <button class="negative ui button" onClick={onDeleteAttendClick}>remove attendance</button>
                         )
                     )}
                 </div>
@@ -55,7 +55,7 @@ function EventDetails() {
                 <div>
                     {currentUser.id === event.user_id ? (
                         <Link to={`/events/${event.id}/edit`}>
-                            <button class="ui button">Manage Event</button>
+                            <button class="ui button">manage event</button>
                         </Link>
                     ) : (
                         null
@@ -66,7 +66,7 @@ function EventDetails() {
             
             <div class="equal width row">            
                 <div class="column">
-                    <h3>Attendees</h3>
+                    <h3>attendees</h3>
                     {event.attendees && event.attendees.length > 0 ? (
                         event.attendees.map((attendee) => (
                             <div class="column" key={attendee.id}>
@@ -75,12 +75,12 @@ function EventDetails() {
                             </div>
                         ))
                     ) : (
-                        <p>No one attending yet.</p>
+                        <p>no attendees yet.</p>
                     )}
                 </div>
                 
                 <div class="column">            
-                    <h3>Vendors</h3>
+                    <h3>vendors</h3>
                     {event.vendors && event.vendors.length > 0 ? (
                         event.vendors.map((vendor) => (
                             <div class="column" key={vendor.id}>
@@ -88,7 +88,7 @@ function EventDetails() {
                             </div>
                         ))
                     ) : (
-                        <p>No vendors have been assigned.</p>
+                        <p>no vendors have been assigned yet.</p>
                     )}
                 </div>
             </div>

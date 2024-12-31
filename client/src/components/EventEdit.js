@@ -54,15 +54,16 @@ function EventEdit() {
 
     return (
         <div>
-            <h2>Edit {event.title}</h2>
+            <h2>edit {event.title}</h2>
+            <h3>event details</h3>
             <form class="ui form error" onSubmit={formik.handleSubmit}>
                 <div class="field">
-                    <label>Event Type</label>
+                    <label>type</label>
                     <select class="ui search dropdown" id="event_type" name="event_type" value={formik.values.event_type} onChange={formik.handleChange} >
-                        <option value="" disabled>Select an option:</option>
+                        <option value="" disabled>please select an option:</option>
 
                         {currentUser.user_type === "Sheep" ? (
-                            <option value="Local Meetup">Local Meetup</option>
+                            <option value="Local Meetup">local meetup</option>
                         ) : (
                             ["Local Meetup", "Festival", "Retreat", "Popup", "Trunk Show"].map((eventType) => (
                             <option key={eventType} value={eventType}>
@@ -76,7 +77,7 @@ function EventEdit() {
                     </div>
                 </div>
                 <div class="field">
-                    <label>Event Title</label>
+                    <label>title</label>
                     <input
                         type="text"
                         name="title"
@@ -88,7 +89,7 @@ function EventEdit() {
                     </div>
                 </div>
                 <div class="field">
-                    <label>Start Date</label>
+                    <label>starts</label>
                     <input
                         type="date"
                         name="start_date"
@@ -100,7 +101,7 @@ function EventEdit() {
                     </div>
                 </div>
                 <div class="field">
-                    <label>End Date</label>
+                    <label>ends</label>
                     <input
                         type="date"
                         name="end_date"
@@ -112,7 +113,7 @@ function EventEdit() {
                     </div>
                 </div>
                 <div class="field">
-                    <label>Description</label>
+                    <label>description</label>
                     <input
                         type="text"
                         name="description"
@@ -124,7 +125,7 @@ function EventEdit() {
                     </div>
                 </div>
                 <div class="field">
-                    <label>Event Website</label>
+                    <label>website</label>
                     <input
                         type="text"
                         name="website_link"
@@ -136,7 +137,7 @@ function EventEdit() {
                     </div>
                 </div>
                 <div>
-                    <h2>Vendors</h2>
+                    <h3>vendors</h3>
                     {event.vendors && event.vendors.length > 0 ? (
                         event.vendors.map((vendor) => (
                             <div key={vendor.id}>
@@ -145,13 +146,13 @@ function EventEdit() {
                             </div>
                         ))
                     ) : (
-                        <p>No vendors have been assigned.</p>
+                        <p>no vendors have been assigned.</p>
                     )}
-                    <button class="ui button" type="button">Add Vendor</button>
+                    <button class="ui button" type="button">add vendor</button>
                 </div>
-                <button class="ui button" type="submit">Save Edits</button>
+                <button class="ui button" type="submit">save edits</button>
             </form>
-            <button class="ui button" type="button" onClick={handleDelete}>Delete Event</button>
+            <button class="ui button" type="button" onClick={handleDelete}>delete event</button>
         </div>
     );
 }

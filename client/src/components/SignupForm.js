@@ -66,7 +66,7 @@ function SignupForm() {
 
     return (
         <div class="ui very padded center aligned container">
-            <h1>Sign Up</h1>
+            <h1>sign up</h1>
             <form class="ui form error success" onSubmit={formik.handleSubmit}>
                 <div class="required field">
                     <select 
@@ -132,8 +132,8 @@ function SignupForm() {
                     ? (<div>{formik.errors.apiError}</div>)
                     : null}
                 </div>
-                <button class="ui button" type="submit">Sign Up</button>
-                <p>Already have an account? <Link to="/login">Log In</Link></p>
+                <button class="ui button" type="submit">sign up</button>
+                <p>already have an account? <Link to="/login">log in.</Link></p>
             </form>
         </div>
     )

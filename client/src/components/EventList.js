@@ -16,11 +16,11 @@ function EventList() {
 
     return (
         <div>
-            <h2>Events</h2>
+            <h2>events</h2>
             <select class="ui search dropdown" onChange={onFilterSelect}>
-                <option value="all">All Events</option>
-                <option value="my events">My Events</option>
-                <option value="attending">Attending</option>
+                <option value="all">all</option>
+                <option value="mine">mine</option>
+                <option value="attending">attending</option>
             </select>
             
             <div class="ui grid">
@@ -30,10 +30,10 @@ function EventList() {
                     filteredEvents.map(event => (
                         <div class="column">
                             <div class="ui padded segment" key={event.id}>
-                                <h3>{event.title}</h3>
-                                    <p>{event.start_date} to {event.end_date}</p>
-                                    
-                                    <h4>Attendees</h4>
+                                <h4>{event.title}</h4>
+                                    <p>starts: {event.start_date}</p>
+                                    <p>ends: {event.start_date}</p>
+                                    <h5>attendees</h5>
                                     <div class="ui equal width grid">
                                         {event.attendees && event.attendees.length > 0 ? (
                                             event.attendees.map((attendee) => (
@@ -43,19 +43,19 @@ function EventList() {
                                                 </div>
                                             ))
                                         ) : (
-                                            <p>No one attending yet.</p>
+                                            <p>no attendees yet.</p>
                                         )}
                                     </div>
 
                                 <Link to={`/events/${event.id}`}>
-                                    <button class="ui button">View Details</button>                
+                                    <button class="ui button">view details</button>                
                                 </Link>
                             </div>
                         </div>
                     ))
                 ) : (
                     <div class="column">
-                        <p>No events found.</p>
+                        <p>no events found.</p>
                     </div>
                 )}
             </div>

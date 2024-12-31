@@ -34,7 +34,7 @@ function ProfileEdit() {
 
     return (
         <div>
-            <h2>Edit Profile</h2>
+            <h2>edit profile</h2>
             <form class="ui form" onSubmit={formik.handleSubmit}>
                 <div class="field">
                     <label>User Type:</label>
@@ -44,16 +44,16 @@ function ProfileEdit() {
                         name="user_type" 
                         value={formik.values.user_type}
                         onChange={formik.handleChange} >
-                        <option value="" disabled>Please select a user type: </option>
-                        <option value="Sheep">Sheep</option>
-                        <option value="Shepherd">Shepherd</option>
+                        <option value="" disabled>please select a user type: </option>
+                        <option value="Sheep">sheep</option>
+                        <option value="Shepherd">shepherd</option>
                     </select>
                     <div class="ui error message">
                         {formik.errors.user_type}
                     </div>
                 </div>
                 <div class="field">
-                    <label>Name:</label>
+                    <label>name:</label>
                     <input 
                         type="text"
                         id="name"
@@ -70,7 +70,7 @@ function ProfileEdit() {
                     ? (<div>{formik.errors.apiError}</div>)
                     : null}
                 </div>
-                <button class="ui button" type="submit">Save Edits</button>
+                <button class="ui button" type="submit">save edits</button>
             </form>
         </div>
     )

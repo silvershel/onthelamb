@@ -30,7 +30,7 @@ function LoginForm() {
 
     return (
         <div class="ui very padded center aligned container">
-            <h1>Log In</h1>
+            <h1>log in</h1>
             <form class="ui form error" onSubmit={formik.handleSubmit}>
                 <div class="field">
                     <input 
@@ -63,8 +63,8 @@ function LoginForm() {
                     ? (<div>{formik.errors.apiError}</div>)
                     : null}
                 </div>
-                <button class="ui button" type="submit">Log In</button>
-                <p>Don't have an account? <Link to="/signup">Signup</Link></p>
+                <button class="ui button" type="submit">log in</button>
+                <p>don't have an account? <Link to="/signup">signup.</Link></p>
             </form>
         </div>
     )

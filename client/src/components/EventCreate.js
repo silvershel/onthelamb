@@ -48,15 +48,15 @@ function EventCreate() {
 
     return (
         <div>
-            <h2>Create Event</h2>
+            <h2>create an event</h2>
             <form class="ui form error" onSubmit={formik.handleSubmit}>
                 <div class="required field">
-                    <label>Event Type</label>
+                    <label>event type</label>
                     <select class="ui search dropdown" id="event_type" name="event_type" value={formik.values.event_type} onChange={formik.handleChange} >
-                        <option value="" disabled>Select an option:</option>
+                        <option value="" disabled>select an option:</option>
 
                         {currentUser.user_type === "Sheep" ? (
-                            <option value="Local Meetup">Local Meetup</option>
+                            <option value="Local Meetup">local meetup</option>
                         ) : (
                             ["Local Meetup", "Festival", "Retreat", "Popup", "Trunk Show"].map((eventType) => (
                             <option key={eventType} value={eventType}>
@@ -74,7 +74,7 @@ function EventCreate() {
                     
                 </div>
                 <div class="required field">
-                    <label>Event Title</label>
+                    <label>title</label>
                     <input
                         type="text"
                         id="title"
@@ -88,7 +88,7 @@ function EventCreate() {
                 </div>
                 <div class="two fields">
                 <div class="required field">
-                    <label>Start Date</label>
+                    <label>starts</label>
                     <input
                         type="date"
                         id="start_date"
@@ -101,7 +101,7 @@ function EventCreate() {
                     </div>
                 </div>
                 <div class="required field">
-                    <label>End Date</label>
+                    <label>ends</label>
                     <input
                         type="date"
                         id="end_date"
@@ -115,7 +115,7 @@ function EventCreate() {
                 </div>
                 </div>
                 <div class="required field">
-                    <label>Description</label>
+                    <label>description</label>
                     <input
                         type="text"
                         id="description"
@@ -128,7 +128,7 @@ function EventCreate() {
                     </div>
                 </div>
                 <div class="required field">
-                    <label>Event Website</label>
+                    <label>website</label>
                     <input
                         type="text"
                         id="website_link"
@@ -145,7 +145,7 @@ function EventCreate() {
                     ? (<div>{formik.errors.apiError}</div>)
                     : null}
                 </div>
-                <button class="ui button"type="submit">Save</button>
+                <button class="ui button"type="submit">save</button>
             </form>
         </div>
     );

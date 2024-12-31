@@ -139,7 +139,7 @@ export const AppProvider = ({ children }) => {
     useEffect(() => {
         const filterEvents = () => {
             let eventsList = [];
-            if (filter === "my events") {
+            if (filter === "mine") {
                 eventsList = events.filter(event => event.user_id === currentUser.id);
             } else if (filter === "attending") {
                 eventsList = events.filter(event =>
