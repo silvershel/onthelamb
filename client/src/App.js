@@ -23,7 +23,7 @@ function Routes() {
 	if (!currentUser) {
 		return (
 			<Router>
-				<div class="ui center aligned container">
+				<div class="centered-container">
 					<Switch>
 						<Route path="/login" exact component={LoginForm} />
 						<Route path="/signup" exact component={SignupForm}/>

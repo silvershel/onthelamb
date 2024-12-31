@@ -4,15 +4,12 @@ export const AppContext = createContext();
 
 export const AppProvider = ({ children }) => {
     const [currentUser, setCurrentUser] = useState(null);
+    const [user, setUser] = useState({});
     const [events, setEvents] = useState([]);
     const [filteredEvents, setFilteredEvents] = useState([]);
     const [filter, setFilter] = useState("all");
     const [event, setEvent] = useState({});
     const [attendees, setAttendees] = useState([]);    
-    const [user, setUser] = useState({});
-    // const [error, setError] = useState(null);
-    // const savedUser = localStorage.getItem("currentUser");
-
 
     // LOGIN
     const login = (user) => {
@@ -29,16 +26,13 @@ export const AppProvider = ({ children }) => {
         .then((r) => r.json())
         .then((user) => {
             if (user.error) {
-                // setError(user.error);
                 // return { error: user.error };
-              }
+            }
             console.log(user);
             setCurrentUser(user);
-            // localStorage.setItem("currentUser", JSON.stringify(user));
         })
         .catch((error) => {
             console.error("Signup error:", error);
-            // setError("An unexpected error during signup occurred.");
             // return { error: 'An unexpected error occurred.' };
           });
     };
@@ -61,29 +55,20 @@ export const AppProvider = ({ children }) => {
         .then((user) => {
             console.log(user);
             setCurrentUser(user);
-            // localStorage.setItem("currentUser", JSON.stringify(user));
         })
         .catch((error) => console.error('Signup form error:', error));
     };
 
 
     // CHECK SESSION
-    useEffect(() => {
-        // const storedUser = localStorage.getItem("currentUser");
-
-
-        // if (storedUser) {
-        //     setCurrentUser(JSON.parse(storedUser));
-        // } else { 
-            fetch("/check_session")
-                .then((r) => r.json())
-                .then((user) => {
-                    console.log(user);
-                    setCurrentUser(user);
-                    // localStorage.setItem("currentUser", JSON.stringify(user));
-                })
-                .catch((error) => console.error("Error checking session:", error));
-        // }
+    useEffect(() => { 
+        fetch("/check_session")
+            .then((r) => r.json())
+            .then((user) => {
+                console.log(user);
+                setCurrentUser(user);
+            })
+            .catch((error) => console.error("Error checking session:", error));
     }, []);
 
 
@@ -92,7 +77,6 @@ export const AppProvider = ({ children }) => {
         fetch("/logout", { method: "DELETE" })
         .then((r) => {
             if (r.ok) {
-                // localStorage.removeItem("currentUser");
                 setCurrentUser(null);
             }
         });
@@ -122,7 +106,6 @@ export const AppProvider = ({ children }) => {
         .then((updatedUser) => {
             console.log(updatedUser);
             setCurrentUser(updatedUser);
-            // localStorage.setItem("currentUser", JSON.stringify(updatedUser));
 
             setEvents((prevEvents) =>
                 prevEvents.map((event) => ({
@@ -160,7 +143,6 @@ export const AppProvider = ({ children }) => {
                 eventsList = events.filter(event => event.user_id === currentUser.id);
             } else if (filter === "attending") {
                 eventsList = events.filter(event =>
-                    // returns true for an event where an attendee.user_id === currentUser.id
                     event.attendees.some(attendee => attendee.user_id === currentUser.id)
                 );
             } else {

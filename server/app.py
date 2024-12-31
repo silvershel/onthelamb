@@ -13,18 +13,17 @@ class Login(Resource):
     def post(self):
         data = request.get_json()
         
-        username = data.get('username')
+        username = data.get('username').lower()
         password = data.get('password')
-
-        if not username:
-            return {'error': 'Username is required'}, 400
-        if not password:
-            return {'error': 'Password is required'}, 400
 
         user = User.query.filter(User.username == username).first()
 
         if not user:
             return {'error': 'Not a valid user.'}, 400
+        if not username:
+            return {'error': 'Username is required'}, 400
+        if not password:
+            return {'error': 'Password is required'}, 400
 
         try:
             session['username'] = user.username

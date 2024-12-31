@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useAppContext } from "../contexts/AppContext";
 import { useFormik } from 'formik';
 import * as Yup from "yup";
-import { button } from "semantic-ui-react"
+
 
 function LoginForm() {
     const { login } = useAppContext();
@@ -24,13 +24,13 @@ function LoginForm() {
                 username: values.username,
                 password: values.password,
             }
-            // console.log(user);
             login(user);            
         },
     });
 
     return (
-        <div>
+        
+        <div class="ui very padded center aligned segment">
             <h1 class="ui header">Log In</h1>
             <form class="ui form error" onSubmit={formik.handleSubmit}>
                 <div class="field">

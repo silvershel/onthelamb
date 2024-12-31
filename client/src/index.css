@@ -5,3 +5,11 @@
   --text: hsla(0, 0%, 100%, 0.88);
 }
 
+
+
+.centered-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
