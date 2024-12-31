@@ -23,7 +23,7 @@ function Routes() {
 	if (!currentUser) {
 		return (
 			<Router>
-				<div class="centered-container">
+				<div class="login-container">
 					<Switch>
 						<Route path="/login" exact component={LoginForm} />
 						<Route path="/signup" exact component={SignupForm}/>
@@ -43,7 +43,7 @@ function Routes() {
 				<div>
 					<NavBar currentUser={currentUser} />
 				</div>
-				<div class="ui container">
+				<div className="login-background">
 					<Switch>
 						<Route path="/login" exact>
 							<Redirect to="/" />

@@ -1,0 +1,18 @@
+Asset Usage
+
+1. Optimize assets before uploading.
+2. Place assets in the static/assets directory.
+3. Configure Flask to serve static files:
+    app = Flask(__name__, static_folder="static")
+
+4. Apply it to a style in your index.css:
+    .login-background {
+        background-image: url('/static/assets/filename.ext');
+        background-size: cover;
+        background-position: center;
+        height: 100vh; /* Make it full-screen */
+    }
+    
+5. Use the class in a <div>:
+    <div className="login-background"></div>
+

@@ -38,9 +38,9 @@ function NavBar() {
 
 	return (
 		<div class="ui basic center aligned very padded segment">
-			<h1>
+			<div>
 				<Link to="/">on the lamb</Link>
-			</h1>
+			</div>
 			<select class="ui search dropdown" id="dropdown" onChange={handleSelectChange}>
 				<option value="dashboard">Dashboard</option>
 				<option value="my profile">My Profile</option>
