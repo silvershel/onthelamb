@@ -21,7 +21,7 @@ class User(db.Model, SerializerMixin):
     latitude = db.Column(Float)
     longitude = db.Column(Float)
 
-    # events = db.relationship('Event', back_populates='user', cascade='all, delete-orphan')
+    events = db.relationship('Event', back_populates='user', cascade='all, delete-orphan')
     attendees = db.relationship('Attendee', back_populates='user', cascade='all, delete-orphan')
     vendors = db.relationship('Vendor', back_populates='user', cascade='all, delete-orphan')
 
@@ -91,10 +91,10 @@ class Event(db.Model, SerializerMixin):
     end_date = db.Column(Date)
     description = db.Column(String, nullable=False)
     website_link = db.Column(String)
-    # user_id = db.Column(Integer, ForeignKey('users.id'), nullable=False)
+    user_id = db.Column(Integer, ForeignKey('users.id'), nullable=False)
     # vendor_id = 
     
-    # user = db.relationship('User', back_populates='events')
+    user = db.relationship('User', back_populates='events')
     attendees = db.relationship('Attendee', back_populates='event', cascade='all, delete-orphan')
     vendors = db.relationship('Vendor', back_populates='event', cascade='all, delete-orphan')
 

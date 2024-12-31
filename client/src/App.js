@@ -2,13 +2,14 @@ import React from "react";
 import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
 
 // components
-import NavBar from "./components/NavBar";
+import Header from "./components/Header";
 import LoginForm from "./components/LoginForm";
 import SignupForm from "./components/SignupForm";
 import EventDetails from "./components/EventDetails";
 import EventEdit from "./components/EventEdit";
 import EventCreate from "./components/EventCreate";
 import EventList from "./components/EventList";
+import UserDashboard from "./components/UserDashboard";
 import Profile from "./components/Profile";
 import ProfileEdit from "./components/ProfileEdit";
 import ErrorPage from "./components/ErrorPage";
@@ -41,7 +42,7 @@ function Routes() {
 		<Router>
 			<div>
 				<div>
-					<NavBar currentUser={currentUser} />
+					<Header />
 				</div>
 				<div className="login-background">
 					<Switch>
@@ -56,8 +57,9 @@ function Routes() {
 						<Route path="/events/:eventId" exact component={EventDetails} />
 						<Route path="/events/:eventId/edit" exact component={EventEdit} />
 						<Route path="/create" exact component={EventCreate} />
+						<Route path="/dashboard" exact component={UserDashboard}/>
 						<Route path="/users/:username" exact component={Profile} />
-						<Route path="/profile/:username/edit" exact component={ProfileEdit} />
+						<Route path="/users/:username/edit" exact component={ProfileEdit} />
 						<Route path="*" component={ErrorPage} />
 					</Switch>
 				</div>

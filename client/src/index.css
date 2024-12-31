@@ -5,62 +5,45 @@
   --text: hsla(0, 0%, 100%, 0.88);
 }
 
-h1 {
+/* FONT STYLES */
+h1, h2, h3, h4, h5 {
+  color: #3A111A !important;
   font-family: "Poppins", serif !important;
-  font-size: 52px !important;
-  letter-spacing: 1px !important;
   font-optical-sizing: auto;
   font-weight: 700 !important;
   font-style: normal;
-  font-variation-settings:
-    "wdth" 100;
+  letter-spacing: 1px !important;
+}
+
+h1 {
+  font-size: 52px !important;
 }
 
 h2 {
-  font-family: "Poppins", serif !important;
   font-size: 48px !important;
-  letter-spacing: .5px !important;
-  font-optical-sizing: auto;
-  font-weight: 700 !important;
-  font-style: normal;
-  font-variation-settings:
-    "wdth" 100;
 }
 
 h3 {
-  font-family: "Poppins", serif !important;
   font-size: 32px !important;
-  letter-spacing: .5px !important;
-  font-optical-sizing: auto;
-  font-weight: 700 !important;
-  font-style: normal;
 }
 
 h4 {
-  font-family: "Poppins", serif !important;
   font-size: 20px !important;
-  letter-spacing: .5px !important;
-  font-optical-sizing: auto;
-  font-weight: 700 !important;
-  font-style: normal;
 }
 
 h5 {
-  font-family: "Poppins", serif !important;
   font-size: 16px !important;
-  letter-spacing: .5px !important;
-  font-optical-sizing: auto;
-  font-weight: 700 !important;
-  font-style: normal;
 }
 
 body {
+  color: #3A111A !important;
   font-family: "Poppins", serif !important;
   font-optical-sizing: auto;
   font-weight: 400 !important;
   font-style: normal;
 }
 
+/* BUTTON STYLES */
 button {
   font-family: "Poppins", serif !important;
   font-size: 16px !important;
@@ -69,9 +52,10 @@ button {
   font-style: normal;
 }
 
+/* CONTAINER STYLES */
 .login-container {
   display: flex; /* flexbox */
-  background-image: url('http://localhost:5555/static/assets/login-hero.jpg') !important;
+  background-image: url('http://localhost:5555/static/assets/login-hero-winter.jpg') !important;
   background-size: cover; /* image fills screen */
   background-position: center; /* image horizontal alighment */
   justify-content: center; /* content horizontal alighment */

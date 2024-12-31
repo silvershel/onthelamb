@@ -23,7 +23,7 @@ function Profile() {
                 <p>name: {user.name}</p>
                 <p>bio:</p>
 
-                <Link to={`/profile/${user.username}/edit`}>
+                <Link to={`/users/${user.username}/edit`}>
                     <button class="ui button">edit profile</button>
                 </Link>
                 <Link to={`/create`}>
