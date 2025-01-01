@@ -4,7 +4,7 @@ import { useAppContext } from '../contexts/AppContext';
 
 
 function TopNav() {
-	const { currentUser, logout } = useAppContext();
+	const { logout } = useAppContext();
     const navigate = useHistory()
 
 	return (

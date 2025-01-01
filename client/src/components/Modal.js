@@ -1,5 +1,4 @@
 import React from 'react';
-import EventCreate from './EventCreate';
 
 function Modal({ open, closeComponent }) {
 
@@ -13,7 +12,7 @@ function Modal({ open, closeComponent }) {
             </button>
 
             <div>
-                <EventCreate closeComponent={closeComponent}/>
+                {/* Component goes here */}
             </div>
             
         </div>

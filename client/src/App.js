@@ -7,11 +7,8 @@ import LoginForm from './components/LoginForm';
 import SignupForm from './components/SignupForm';
 import EventDetails from './components/EventDetails';
 import EventEdit from './components/EventEdit';
-// import EventCreate from './components/EventCreate';
 import EventList from './components/EventList';
 import UserDashboard from './components/UserDashboard';
-import Profile from './components/Profile';
-import ProfileEdit from './components/ProfileEdit';
 import ErrorPage from './components/ErrorPage';
 
 // context
@@ -59,9 +56,6 @@ function Routes() {
 						<Route path='/events' exact component={EventList} />
 						<Route path='/events/:eventId' exact component={EventDetails} />
 						<Route path='/events/:eventId/edit' exact component={EventEdit} />
-						{/* <Route path='/create' exact component={EventCreate} /> */}
-						<Route path='/users/:username' exact component={Profile} />
-						<Route path='/users/:username/edit' exact component={ProfileEdit} />
 						<Route path='*' component={ErrorPage} />
 					</Switch>
 				</div>

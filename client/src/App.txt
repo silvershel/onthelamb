@@ -1,0 +1,43 @@
+        
+    // <App />
+        // <Login /> or <Signup />
+        // Routes
+            // <Top Nav />
+            //
+            // <Switch />
+                // <Events />
+                // <Dashboard /> 
+
+    // <Dashboard />
+        // CREATE <UserHeader />
+        // Profile
+        // <ControlPanel /> (only returns this component)
+        // Event Create
+    
+    // Control Panel
+        // Tabs (sidebar menu)
+            // Tab Panel > Logo/Instructions
+            // Tab Panel > <EventContainer />
+            // Tab Panel > Logout
+
+    // <EventContainer />
+        // handles main event delete and deletes of related models owned by event
+        // <NewEventModal />
+        // <EventCard2 /> Maps over events and returns EventCard2 with props.
+
+    // <NewEventModal /> (main modal window)
+        // <NewEvent /> (new event form)
+
+    // <EventCard2 /> (grid with columns and cards)
+        // <DetailsCont />
+        // <DetailsCont2 />
+
+
+
+    Create Event Modal
+    <div className={`ui page dimmer ${open === 'modal' ? 'active' : ''}`}>
+        <Modal open={open} closeComponent={closeComponent}/>
+    </div>
+    
+    Modal Button
+    <button className='ui button' onClick={() => openComponent('create event')} >Create Event</button>

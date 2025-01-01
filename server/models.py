@@ -17,7 +17,7 @@ class User(db.Model, SerializerMixin):
     name = db.Column(String)
     username = db.Column(String, unique=True, nullable=False)
     password = db.Column(String, nullable=False)
-    profile_photo = db.Column(String, default='https://cdn.shopify.com/s/files/1/2242/8117/files/shaggie.jpg?v=1735611916')
+    profile_photo = db.Column(String, default='http://localhost:5555/static/assets/default-profile-photo-04.jpg')
     profile_data = db.Column(JSON)
     latitude = db.Column(Float)
     longitude = db.Column(Float)

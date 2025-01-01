@@ -24,7 +24,7 @@ function EventDetails({ closeComponent }) {
 
     function onDeleteAttendClick() {
         const attendeeToDelete = event.attendees.find(attendee => attendee.user_id === currentUser.id);
-        deleteAttendee(currentUser.id, eventId);
+        deleteAttendee(attendeeToDelete, eventId);
     }
 
     const userAttending = () => {
@@ -34,7 +34,7 @@ function EventDetails({ closeComponent }) {
     return (
         <div className='ui stackable equal width grid'>
 
-            <button onClick={()=>closeComponent()}>Close Component</button>
+            <button onClick={()=>closeComponent()} className='ui button'>Close Component</button>
 
 
             <div className='column'>
@@ -59,13 +59,6 @@ function EventDetails({ closeComponent }) {
                 </div>
 
                 <div>
-                    {currentUser.id === event.user_id ? (
-                        <Link to={`/events/${event.id}/edit`}>
-                            <button className='ui button'>manage event</button>
-                        </Link>
-                    ) : (
-                        null
-                    )}
                 </div>
             </div>
 

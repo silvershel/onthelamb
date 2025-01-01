@@ -28,7 +28,7 @@ if __name__ == '__main__':
             username = 'sheep',
             password = 'password',
             user_type = 'Sheep',
-            profile_photo = 'https://cdn.shopify.com/s/files/1/2242/8117/files/shaggie.jpg?v=1735611916',
+            profile_photo = 'http://localhost:5555/static/assets/default-profile-photo-04.jpg',
             latitude = '38.805496',
             longitude = '-77.04344'
         )
@@ -40,7 +40,7 @@ if __name__ == '__main__':
             username = 'shepherd',
             password = 'password',
             user_type = 'Shepherd',
-            profile_photo = 'https://cdn.shopify.com/s/files/1/2242/8117/files/shaggie.jpg?v=1735611916',
+            profile_photo = 'http://localhost:5555/static/assets/default-profile-photo-04.jpg',
             latitude = '38.805496',
             longitude = '-77.04344'
         )
@@ -59,7 +59,7 @@ if __name__ == '__main__':
         for i in range(10):
             username = generate_username()
             user_type = rc(['Sheep', 'Shepherd'])
-            profile_photo = 'https://cdn.shopify.com/s/files/1/2242/8117/files/shaggie.jpg?v=1735611916'
+            profile_photo = 'http://localhost:5555/static/assets/default-profile-photo-04.jpg'
 
             while username in used_usernames:
                 username = generate_username()
