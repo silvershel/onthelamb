@@ -4,7 +4,7 @@ import { useHistory } from "react-router-dom";
 import { useFormik } from 'formik';
 import * as Yup from "yup";
 
-function EventCreate({ open, closeModal }) {
+function EventCreate() {
     const { currentUser, createEvent } = useAppContext();
     const navigate = useHistory()
     
@@ -49,9 +49,7 @@ function EventCreate({ open, closeModal }) {
     });
 
     return (
-        <div className={`ui modal ${open ? 'active' : ''}`}>
-            <button className="ui button" onClick={closeModal}>Close</button>
-            
+        <div>            
             <h2>create an event</h2>
             <form className="ui form error" onSubmit={formik.handleSubmit}>
                 <div className="required field">
@@ -68,7 +66,6 @@ function EventCreate({ open, closeModal }) {
                             </option>
                             ))
                         )}
-
                     </select>
                     <div className="ui error message">
                         {formik.errors.event_type && formik.touched.event_type && (

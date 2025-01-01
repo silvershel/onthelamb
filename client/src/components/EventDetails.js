@@ -6,8 +6,10 @@ function EventDetails() {
     const { currentUser, fetchEvent, event, createAttendee, deleteAttendee } = useAppContext();
     const { eventId } = useParams();
 
+
     useEffect(() => {
         fetchEvent(eventId);
+        console.log(event)
     }, [eventId]);
 
     function onAttendClick() {
@@ -22,7 +24,7 @@ function EventDetails() {
 
     function onDeleteAttendClick() {
         const attendeeToDelete = event.attendees.find(attendee => attendee.user_id === currentUser.id);
-        deleteAttendee(attendeeToDelete, eventId);
+        deleteAttendee(currentUser.id, eventId);
     }
 
     const userAttending = () => {
@@ -37,7 +39,7 @@ function EventDetails() {
             </div>
             <div className="column">
                 <h2>{event.title}</h2>
-                <p>organized by: <Link to={`/users/${event.user?.username}`}>{event.user?.username}</Link></p>
+                {/* <p>organized by: <Link to={`/users/${event.user?.username}`}>{event.username}</Link></p> */}
                 <p>starts: {event.start_date}</p>
                 <p>ends: {event.end_date}</p>
                 <p>website: {event.website_link}</p>
@@ -67,29 +69,24 @@ function EventDetails() {
             <div className="equal width row">            
                 <div className="column">
                     <h3>attendees</h3>
-                    {event.attendees && event.attendees.length > 0 ? (
-                        event.attendees.map((attendee) => (
-                            <div className="column" key={attendee.id}>
-                                <img className="ui avatar image" alt="" src={attendee.user.profile_photo}/>
-                                <span>{attendee.user.username}</span>
-                            </div>
-                        ))
-                    ) : (
-                        <p>no attendees yet.</p>
-                    )}
+                    {/* {event.attendees.map((attendee) => (
+                        <div className="ui card" key={attendee.id}>
+                            <p>hi</p>
+                        </div>
+                    ))} */}
                 </div>
                 
                 <div className="column">            
                     <h3>vendors</h3>
-                    {event.vendors && event.vendors.length > 0 ? (
+                    {/* {event.vendors && event.vendors.length > 0 ? (
                         event.vendors.map((vendor) => (
-                            <div className="column" key={vendor.id}>
+                            <div className="ui card" key={vendor.id}>
                             <p>{vendor.user.username}</p>
                             </div>
                         ))
                     ) : (
                         <p>no vendors have been assigned yet.</p>
-                    )}
+                    )} */}
                 </div>
             </div>
             

@@ -2,7 +2,7 @@ import React from "react";
 import { useAppContext } from "../contexts/AppContext";
 import EventCard from "./EventCard";
 
-function EventList() {
+function Events() {
     const { events } = useAppContext();
 
     const renderCards = (events, attribute) => {
@@ -52,4 +52,4 @@ function EventList() {
     )
 }
 
-export default EventList;
+export default Events;

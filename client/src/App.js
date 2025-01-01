@@ -2,7 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
 
 // components
-import Header from "./components/Header";
+import TopNav from "./components/TopNav";
 import LoginForm from "./components/LoginForm";
 import SignupForm from "./components/SignupForm";
 import EventDetails from "./components/EventDetails";
@@ -42,9 +42,9 @@ function Routes() {
 		<Router>
 			<div>
 				<div>
-					<Header />
+					<TopNav />
 				</div>
-				<div className="login-background">
+				<div>
 					<Switch>
 						<Route path="/login" exact>
 							<Redirect to="/" />
@@ -52,7 +52,7 @@ function Routes() {
 						<Route path="/signup" exact>
 							<Redirect to="/" />
 						</Route>
-						<Route path="/" exact component={EventList} />
+						<Route path="/" exact component={UserDashboard} />
 						<Route path="/events" exact component={EventList} />
 						<Route path="/events/:eventId" exact component={EventDetails} />
 						<Route path="/events/:eventId/edit" exact component={EventEdit} />

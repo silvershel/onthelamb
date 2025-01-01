@@ -160,11 +160,12 @@ export const AppProvider = ({ children }) => {
             console.log(newEvent);
             setEvents((prevEvents) => [...prevEvents, newEvent]);
 
-            createAttendee({
+            const newAttendee = {
                 comment: 'greetings, from your host!',
-                user_id: newEvent.user_id,
+                user_id: currentUser.id,
                 event_id: newEvent.id,
-            }, newEvent.id);
+            }
+            createAttendee( newAttendee, newEvent.id);
         })
         .catch((error) => console.error('Error creating new event:', error));
     };

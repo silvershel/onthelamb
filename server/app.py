@@ -192,14 +192,13 @@ class Events(Resource):
         event_type = data.get('event_type')
         start_date_str = data.get('start_date')
         end_date_str = data.get('end_date')
-        creation_date_str = data.get('creation_date')
+        creation_date = datetime.now().date()
         description = data.get('description')
         website_link = data.get('website_link')
         user_id = data.get('user_id')
 
         start_date = datetime.strptime(start_date_str, '%Y-%m-%d').date() if start_date_str else None
         end_date = datetime.strptime(end_date_str, '%Y-%m-%d').date() if end_date_str else None
-        creation_date = datetime.strptime(creation_date_str, '%Y-%m-%d').date if creation_date_str else None
 
         if not title or not start_date or not end_date:
             return {'error': 'Missing required fields'}, 400
