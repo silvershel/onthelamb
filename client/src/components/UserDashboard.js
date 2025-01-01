@@ -1,17 +1,25 @@
 import React, { useState } from "react";
 import { useAppContext } from "../contexts/AppContext";
-import UserNav from "./UserNav";
+import UserDetails from "./UserDetails";
+import UserEdit from "./UserEdit";
 import MiniCard from "./MiniCard";
 import Modal from "./Modal";
+import EventDetails from "./EventDetails";
+
 
 function UserDashboard() {
     const { currentUser } = useAppContext();
-    const [modalOpen, setModalOpen] = useState(false);
+    const [open, setOpen] = useState(null);
+
+    const openComponent = (componentName) => setOpen(componentName);
+    const closeComponent = () => setOpen(null);
+    const openModal = () => setOpen(true);
+    const closeModal = () => setOpen(false);
         
     const userEvents = currentUser.events;
+    const userTickets = currentUser.attendees;
+    const userBooths = currentUser.vendors;
 
-    const openModal = () => setModalOpen(true);
-    const closeModal = () => setModalOpen(false);
 
     // NOTES
         // add values and indexes to divs for easy reference for functions
@@ -46,47 +54,62 @@ function UserDashboard() {
     return(
         <div className="ui stackable grid">
             
-            {/* page header */}
+            {/* page header & menu */}
             <div className="ui center aligned row">
                 <div className="ui column">
 				<h3>on the lamb</h3>
 				<p>Welcome, {currentUser.name}!</p>
+                <button onClick={() => openComponent('modal')} className="ui button">Create Event</button>
                 </div>
-			</div>
-
-            {/* menu */}
-            <div className="ui center aligned row">
-                <div className="ui column">
-                    <UserNav />
-                    <button onClick={openModal} className="ui button">Create Event</button>
-                </div> 
-            </div>   
+			</div> 
 
             {/* modal */}
-            <div className={`ui page dimmer ${modalOpen ? 'active' : ''}`}>
-                <Modal modalOpen={modalOpen} closeModal={closeModal}/>
-            </div>           
+            <div className={`ui page dimmer ${open === 'modal' ? 'active' : ''}`}>
+                <Modal open={open} closeComponent={closeComponent}/>
+            </div>
 
-            {/* section header */}
-            <div className="ui row">
-                <div className="ui column">
-                    <h3>my events</h3>
-                </div>
-            </div> 
+            {/* main container */}
+            <div className="ui container">
+                <div className="ui stackable grid">
 
-            {/* events grid */}
-            <div className="ui four column row">
-                {userEvents.map((event) => (
-                    <div className="ui column" key={event.id}>
-                        <div className="ui card">
-                            <MiniCard event={event} />
-                        </div>
+                    {/* profile */}
+                    <div className="four wide column">
+                        <h3>my info</h3>
+                        <img class="ui circular image" src={currentUser.profile_photo}></img>
+                        {open === null
+                        ? <UserDetails open={open} openComponent={openComponent}/>
+                        : <UserEdit open={open} closeComponent={closeComponent}/>
+                        }
                     </div>
-                ))}
+
+
+                    {/* my events */}
+                    <div className="eight wide column">
+                    <h3>my events</h3>
+                    <div className="ui stackable two column grid">
+                        {userEvents.map((event) => (
+                            <div className="ui column" key={event.id}>
+                                <div className="ui card">
+                                    <MiniCard event={event} openComponent={openComponent}/>
+                                    <EventDetails />
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                    </div>
+
+                    {/* general detail */}
+                    <div className="four wide column">
+                        <h3>attending</h3>
+                        <p>{currentUser.attendees.length}</p>
+                        <h3>vending</h3>
+                        <p>{currentUser.vendors.length}</p>
+                    </div>
+
+                </div>
             </div>
 
         </div>
-
     )
 }
 

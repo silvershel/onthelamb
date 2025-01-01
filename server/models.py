@@ -225,3 +225,5 @@ class UserSchema(ma.SQLAlchemyAutoSchema):
 
     id = fields.Integer()
     events = ma.Nested(EventSchema, many=True)
+    attendees = ma.Nested('AttendeeSchema', many=True)
+    vendors = ma.Nested('VendorSchema', many=True)

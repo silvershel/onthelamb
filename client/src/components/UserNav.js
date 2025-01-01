@@ -38,7 +38,6 @@ function UserNav() {
 				<option value="dashboard">my dashboard</option>
 				<option value="my profile">my profile</option>
 				<option value="edit profile">edit profile</option>
-				<option value="create event">create event</option>
 			</select>
 		</div>
 	);

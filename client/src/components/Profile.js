@@ -22,13 +22,6 @@ function Profile() {
                 <h2>{user.username}</h2>
                 <p>name: {user.name}</p>
                 <p>bio:</p>
-
-                <Link to={`/users/${user.username}/edit`}>
-                    <button className="ui button">edit profile</button>
-                </Link>
-                <Link to={`/create`}>
-                    <button className="ui button">create event</button>
-                </Link>
             </div>
 
 
@@ -41,7 +34,7 @@ function Profile() {
                         <div className="column" key={event.id}>
                             <h4>{event.title}</h4>
                             <Link to={`/events/${event.id}`}>
-                                <button className="ui button">view details</button>                
+                                <button class="ui button">view details</button>                
                             </Link>
                         </div>
                     )

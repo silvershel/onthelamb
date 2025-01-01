@@ -4,7 +4,7 @@ import { useHistory } from "react-router-dom";
 import { useFormik } from 'formik';
 import * as Yup from "yup";
 
-function EventCreate() {
+function EventCreate({ closeComponent }) {
     const { currentUser, createEvent } = useAppContext();
     const navigate = useHistory()
     
@@ -43,6 +43,7 @@ function EventCreate() {
             }
             console.log(newEvent);
             createEvent(newEvent);
+            closeComponent()
 
             navigate.push(`/dashboard`)
         }

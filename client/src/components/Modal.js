@@ -1,19 +1,19 @@
 import React from "react";
 import EventCreate from "./EventCreate";
 
-function Modal({ modalOpen, closeModal }) {
+function Modal({ open, closeComponent }) {
 
     return (
-        <div className={`ui modal ${modalOpen ? 'active' : ''}`}>
+        <div className={`ui modal ${open ? 'active' : ''}`}>
             
             <button 
                 class="ui right floated icon button" 
-                onClick={closeModal}>
+                onClick={() => closeComponent()}>
                 <i class="close icon"></i>
             </button>
 
             <div>
-                <EventCreate />
+                <EventCreate closeComponent={closeComponent}/>
             </div>
             
         </div>

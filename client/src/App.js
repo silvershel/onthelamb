@@ -7,7 +7,7 @@ import LoginForm from "./components/LoginForm";
 import SignupForm from "./components/SignupForm";
 import EventDetails from "./components/EventDetails";
 import EventEdit from "./components/EventEdit";
-import EventCreate from "./components/EventCreate";
+// import EventCreate from "./components/EventCreate";
 import EventList from "./components/EventList";
 import UserDashboard from "./components/UserDashboard";
 import Profile from "./components/Profile";
@@ -31,7 +31,9 @@ function Routes() {
 						<Route path="/" exact>
 							<Redirect to="/login" />
 						</Route>
-						<Route path="*" component={ErrorPage} />
+						<Route path="*" exact component={ErrorPage}>
+							<Redirect to="/" />
+						</Route>
 					</Switch>				
 				</div>				
 			</Router>
@@ -53,11 +55,11 @@ function Routes() {
 							<Redirect to="/" />
 						</Route>
 						<Route path="/" exact component={UserDashboard} />
+						<Route path="/dashboard" exact component={UserDashboard}/>
 						<Route path="/events" exact component={EventList} />
 						<Route path="/events/:eventId" exact component={EventDetails} />
 						<Route path="/events/:eventId/edit" exact component={EventEdit} />
-						<Route path="/create" exact component={EventCreate} />
-						<Route path="/dashboard" exact component={UserDashboard}/>
+						{/* <Route path="/create" exact component={EventCreate} /> */}
 						<Route path="/users/:username" exact component={Profile} />
 						<Route path="/users/:username/edit" exact component={ProfileEdit} />
 						<Route path="*" component={ErrorPage} />

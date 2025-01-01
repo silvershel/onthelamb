@@ -1,14 +1,13 @@
 import React, { createContext, useState, useEffect } from "react";
-import { EventProvider } from "./EventContext";
 
 export const AppContext = createContext();
 
 export const AppProvider = ({ children }) => {
     const [currentUser, setCurrentUser] = useState(null);
-    const [users, setUsers] = useState({});
-    const [user, setUser] = useState({});
+    const [users, setUsers] = useState([]);
+    const [user, setUser] = useState([]);
     const [events, setEvents] = useState([]);
-    const [event, setEvent] = useState({});
+    const [event, setEvent] = useState([]);
 
     // LOGIN
     const login = (user) => {
@@ -76,16 +75,15 @@ export const AppProvider = ({ children }) => {
     };
 
     // FETCH USERS
-    const fetchUsers = () => {
-        fetch(`/users/`)
-            .then((r) => r.json())
-            .then((users) => {
-                console.log(users);
-                setUsers(users);
-            })
-            .catch((error) => console.error("Error fetching user:", error));
-    };
-
+    useEffect(() => {
+        fetch("/users")
+        .then((r) => r.json())
+        .then((users) => {
+            console.log(users);
+            setUsers(users);
+        })
+        .catch((error) => console.error("Error fetching users:", error));
+    }, []);
 
     // FETCH USER
     const fetchUser = (username) => {
@@ -93,7 +91,7 @@ export const AppProvider = ({ children }) => {
             .then((r) => r.json())
             .then((user) => {
                 console.log(user);
-                setUser(users);
+                setUser(user);
             })
             .catch((error) => console.error("Error fetching users:", error));
     };
