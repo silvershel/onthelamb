@@ -1,65 +1,53 @@
-import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
+import React from "react";
 import { useAppContext } from "../contexts/AppContext";
+import EventCard from "./EventCard";
 
 function EventList() {
-    const { filteredEvents, setFilter } = useAppContext();
+    const { events } = useAppContext();
 
-    useEffect(() => {
-        setFilter("all");
-    }, []);
-
-    const onFilterSelect = (e) => {
-        console.log(e.target.value)
-        setFilter(e.target.value);
+    const renderCards = (events, attribute) => {
+        const sortedEvents = [...events].sort((a, b) => new Date(a[attribute]) - new Date(b[attribute]));
+        return sortedEvents.slice(0, 4).map((event) => (
+            <div className="ui column" key={event.id}>
+                <div className="ui card">
+                    <EventCard event={event} />
+                </div>
+            </div>
+        ));
     };
 
     return (
-        <div>
-            <h2>events</h2>
-            <select class="ui search dropdown" onChange={onFilterSelect}>
-                <option value="all">all</option>
-                <option value="mine">mine</option>
-                <option value="attending">attending</option>
-            </select>
-            
-            <div class="ui grid">
-                <div class="ui stackable three column row">
-                    
-                {filteredEvents.length > 0 ? (
-                    filteredEvents.map(event => (
-                        <div class="column">
-                            <div class="ui padded segment" key={event.id}>
-                                <h4>{event.title}</h4>
-                                    <p>starts: {event.start_date}</p>
-                                    <p>ends: {event.start_date}</p>
-                                    <h5>attendees</h5>
-                                    <div class="ui equal width grid">
-                                        {event.attendees && event.attendees.length > 0 ? (
-                                            event.attendees.map((attendee) => (
-                                                <div key={attendee.id}>
-                                                    <img class="ui mini avatar image" alt="" src={attendee.user.profile_photo}/>
-                                                    <span>{attendee.user.username}</span>
-                                                </div>
-                                            ))
-                                        ) : (
-                                            <p>no attendees yet.</p>
-                                        )}
-                                    </div>
+        <div className="ui stackable grid container">
 
-                                <Link to={`/events/${event.id}`}>
-                                    <button class="ui button">view details</button>                
-                                </Link>
-                            </div>
-                        </div>
-                    ))
-                ) : (
-                    <div class="column">
-                        <p>no events found.</p>
-                    </div>
-                )}
+            <div className="ui center aligned row">
+                <div className="ui column">
+                    <h2>events</h2>
+                    <h4>cute subtitle banner goes here</h4>
+                </div>
+            </div>             
+
+            
+            <div className="ui row">
+                <div className="ui column">
+                    <h3>happening soon</h3>
+                </div>
+            </div> 
+            <div className="ui four column row">
+                {renderCards(events, "start_date")}
             </div>
+
+            <div className="ui row">
+                <div className="ui column">
+                    <h3>new</h3>
+                </div>
+            </div> 
+            <div className="ui four column row">
+                {renderCards(events, "creation_date")}
             </div>
+
+
+            {/* <h3>nearby</h3> */}
+            {/* {nearbyEvents} */}
         </div>
     )
 }

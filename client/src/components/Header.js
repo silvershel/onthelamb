@@ -8,12 +8,12 @@ function Header() {
     const navigate = useHistory()
 
 	return (
-		<div class="ui basic center aligned very padded segment">
+		<div className="ui basic center aligned very padded segment">
 			<h3>on the lamb</h3>
             <p>Welcome, {currentUser.name}!</p>
-            <button class="ui button" onClick={() => navigate.push("/")}>events</button>
-            <button class="ui button" onClick={() => navigate.push(`/dashboard`)}>my dashboard</button>
-            <button class="ui button" onClick={() => {logout(); navigate.push("/login")}}>logout</button>
+            <button className="ui button" onClick={() => navigate.push("/")}>events</button>
+            <button className="ui button" onClick={() => navigate.push(`/dashboard`)}>my dashboard</button>
+            <button className="ui button" onClick={() => {logout(); navigate.push("/login")}}>logout</button>
 		</div>
 	);
 };

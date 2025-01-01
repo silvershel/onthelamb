@@ -35,11 +35,11 @@ function ProfileEdit() {
     return (
         <div>
             <h2>edit profile</h2>
-            <form class="ui form" onSubmit={formik.handleSubmit}>
-                <div class="field">
+            <form className="ui form" onSubmit={formik.handleSubmit}>
+                <div className="field">
                     <label>User Type:</label>
                     <select 
-                        class="ui search dropdown"
+                        className="ui search dropdown"
                         id="user_type" 
                         name="user_type" 
                         value={formik.values.user_type}
@@ -48,11 +48,11 @@ function ProfileEdit() {
                         <option value="Sheep">sheep</option>
                         <option value="Shepherd">shepherd</option>
                     </select>
-                    <div class="ui error message">
+                    <div className="ui error message">
                         {formik.errors.user_type}
                     </div>
                 </div>
-                <div class="field">
+                <div className="field">
                     <label>name:</label>
                     <input 
                         type="text"
@@ -61,16 +61,16 @@ function ProfileEdit() {
                         onChange={formik.handleChange}
                         value={formik.values.name}
                     />
-                    <div class="ui error message">
+                    <div className="ui error message">
                         {formik.errors.name}
                     </div>
                 </div>
-                <div class="ui error message">
+                <div className="ui error message">
                     {formik.errors.apiError 
                     ? (<div>{formik.errors.apiError}</div>)
                     : null}
                 </div>
-                <button class="ui button" type="submit">save edits</button>
+                <button className="ui button" type="submit">save edits</button>
             </form>
         </div>
     )

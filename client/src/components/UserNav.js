@@ -34,7 +34,7 @@ function UserNav() {
 
 	return (
 		<div>
-			<select class="ui search dropdown" id="dropdown" onChange={handleSelectChange}>
+			<select className="ui search dropdown" id="dropdown" onChange={handleSelectChange}>
 				<option value="dashboard">my dashboard</option>
 				<option value="my profile">my profile</option>
 				<option value="edit profile">edit profile</option>

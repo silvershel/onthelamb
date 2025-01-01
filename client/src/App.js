@@ -24,7 +24,7 @@ function Routes() {
 	if (!currentUser) {
 		return (
 			<Router>
-				<div class="login-container">
+				<div className="login-container">
 					<Switch>
 						<Route path="/login" exact component={LoginForm} />
 						<Route path="/signup" exact component={SignupForm}/>

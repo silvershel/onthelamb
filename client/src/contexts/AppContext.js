@@ -1,15 +1,14 @@
 import React, { createContext, useState, useEffect } from "react";
+import { EventProvider } from "./EventContext";
 
 export const AppContext = createContext();
 
 export const AppProvider = ({ children }) => {
     const [currentUser, setCurrentUser] = useState(null);
+    const [users, setUsers] = useState({});
     const [user, setUser] = useState({});
     const [events, setEvents] = useState([]);
-    const [filteredEvents, setFilteredEvents] = useState([]);
-    const [filter, setFilter] = useState("all");
     const [event, setEvent] = useState({});
-    const [attendees, setAttendees] = useState([]);    
 
     // LOGIN
     const login = (user) => {
@@ -25,15 +24,11 @@ export const AppProvider = ({ children }) => {
         })
         .then((r) => r.json())
         .then((user) => {
-            if (user.error) {
-                // return { error: user.error };
-            }
             console.log(user);
             setCurrentUser(user);
         })
         .catch((error) => {
             console.error("Signup error:", error);
-            // return { error: 'An unexpected error occurred.' };
           });
     };
 
@@ -59,7 +54,6 @@ export const AppProvider = ({ children }) => {
         .catch((error) => console.error('Signup form error:', error));
     };
 
-
     // CHECK SESSION
     useEffect(() => { 
         fetch("/check_session")
@@ -71,7 +65,6 @@ export const AppProvider = ({ children }) => {
             .catch((error) => console.error("Error checking session:", error));
     }, []);
 
-
     // LOGOUT
     const logout = () => {
         fetch("/logout", { method: "DELETE" })
@@ -82,6 +75,17 @@ export const AppProvider = ({ children }) => {
         });
     };
 
+    // FETCH USERS
+    const fetchUsers = () => {
+        fetch(`/users/`)
+            .then((r) => r.json())
+            .then((users) => {
+                console.log(users);
+                setUsers(users);
+            })
+            .catch((error) => console.error("Error fetching user:", error));
+    };
+
 
     // FETCH USER
     const fetchUser = (username) => {
@@ -89,11 +93,10 @@ export const AppProvider = ({ children }) => {
             .then((r) => r.json())
             .then((user) => {
                 console.log(user);
-                setUser(user);
+                setUser(users);
             })
-            .catch((error) => console.error("Error fetching user:", error));
+            .catch((error) => console.error("Error fetching users:", error));
     };
-
 
     // UPDATE USER
     const updateUser = (updatedUser) => {
@@ -134,26 +137,6 @@ export const AppProvider = ({ children }) => {
         .catch((error) => console.error("Error fetching events:", error));
     }, []);
 
-
-    // FILTER EVENTS
-    useEffect(() => {
-        const filterEvents = () => {
-            let eventsList = [];
-            if (filter === "mine") {
-                eventsList = events.filter(event => event.user_id === currentUser.id);
-            } else if (filter === "attending") {
-                eventsList = events.filter(event =>
-                    event.attendees.some(attendee => attendee.user_id === currentUser.id)
-                );
-            } else {
-                eventsList = events;
-            }
-          setFilteredEvents(eventsList);
-        };
-        filterEvents();
-    }, [events, filter, currentUser]);
-
-
     // FETCH EVENT
     const fetchEvent = (eventId) => {
         fetch(`/events/${eventId}`)
@@ -164,7 +147,6 @@ export const AppProvider = ({ children }) => {
             })
             .catch((error) => console.error("Error fetching event:", error));
     };
-
 
     // CREATE EVENT
     const createEvent = (newEvent) => {
@@ -179,14 +161,13 @@ export const AppProvider = ({ children }) => {
             setEvents((prevEvents) => [...prevEvents, newEvent]);
 
             createAttendee({
-                comment: 'hello',
+                comment: 'greetings, from your host!',
                 user_id: newEvent.user_id,
                 event_id: newEvent.id,
             }, newEvent.id);
         })
         .catch((error) => console.error('Error creating new event:', error));
     };
-
 
     // UPDATE EVENT
     const updateEvent = (eventId, updatedEvent) => {
@@ -207,7 +188,6 @@ export const AppProvider = ({ children }) => {
         .catch((error) => console.error('Error updating event:', error));
     };
     
-
     // DELETE EVENT
     const deleteEvent = (eventId) => {
         fetch(`/events/${eventId}`, { method: 'DELETE' })
@@ -223,7 +203,6 @@ export const AppProvider = ({ children }) => {
         })
         .catch((error) => console.error('Error deleting event:', error));
     };
-
 
     // CREATE ATTENDEE
     const createAttendee = (newAttendee, eventId) => {
@@ -249,7 +228,6 @@ export const AppProvider = ({ children }) => {
         .catch((error) => console.error('Error creating new attendee:', error));
     };
 
-
     // DELETE ATTENDEE
     const deleteAttendee = (attendeeToDelete, eventId) => {
         fetch(`/attendees/${attendeeToDelete.id}`, { 
@@ -273,30 +251,25 @@ export const AppProvider = ({ children }) => {
         .catch((error) => console.error('Error deleting attendee:', error));
     };
 
-    
     return (
         <AppContext.Provider
             value={{
                 login,
                 signup,
                 logout,
-                currentUser,
-                setCurrentUser,
-                user,
-                setUser,
                 fetchUser,
                 updateUser,
-                events,
-                setEvents,
-                filteredEvents,
-                setFilter,
-                event,
+                currentUser,
+                users,
+                user,
+
                 fetchEvent,
                 createEvent,
                 updateEvent,
                 deleteEvent,
-                attendees,
-                setAttendees,
+                events,
+                event,
+
                 createAttendee,
                 deleteAttendee,
             }}

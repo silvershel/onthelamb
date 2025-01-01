@@ -1,5 +1,6 @@
 from sqlalchemy_serializer import SerializerMixin
 from sqlalchemy import Integer, String, Date, Float, ForeignKey, Enum, JSON
+from sqlalchemy.sql import func
 from sqlalchemy.orm import validates
 from flask_marshmallow import Marshmallow
 from marshmallow import fields
@@ -89,6 +90,7 @@ class Event(db.Model, SerializerMixin):
     address = db.Column(JSON)
     start_date = db.Column(Date, nullable=False)
     end_date = db.Column(Date)
+    creation_date = db.Column(Date, nullable=False, default=func.current_date())
     description = db.Column(String, nullable=False)
     website_link = db.Column(String)
     user_id = db.Column(Integer, ForeignKey('users.id'), nullable=False)
@@ -182,14 +184,6 @@ class Vendor(db.Model, SerializerMixin):
         return event_id
 
 
-class UserSchema(ma.SQLAlchemyAutoSchema):
-    class Meta:
-        model = User
-        load_instance = True
-        exclude = ('password',)
-
-    id = fields.Integer()
-
 class AttendeeSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = Attendee
@@ -197,29 +191,37 @@ class AttendeeSchema(ma.SQLAlchemyAutoSchema):
     
     user_id = fields.Integer()
     event_id = fields.Integer()
-    user = ma.Nested(UserSchema)
 
 class VendorSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = Vendor
         load_instance = True
-    user = ma.Nested(UserSchema)
 
 class EventSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = Event
         load_instance = True
-        field_order = ['id', 'title', 'event_type', 'start_date', 'end_date', 'website_link', 'description', 'user_id', 'user', 'attendees', 'vendors']
+        field_order = ['id', 'title', 'event_type', 'start_date', 'end_date', 'creation_date', 'website_link', 'description', 'user_id', 'user', 'attendees', 'vendors']
 
     id = fields.Integer()
     title = fields.String()
     event_type = fields.String()
     start_date = fields.DateTime()
     end_date = fields.DateTime()
+    creation_date = fields.DateTime()
     website_link = fields.String()
     description = fields.String()
     user_id = fields.Integer()
 
-    user = ma.Nested('UserSchema')
+    # user = ma.Nested('UserSchema')
     attendees = ma.Nested('AttendeeSchema', many=True)
     vendors = ma.Nested('VendorSchema', many=True)
+
+class UserSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = User
+        load_instance = True
+        exclude = ('password',)
+
+    id = fields.Integer()
+    events = ma.Nested(EventSchema, many=True)

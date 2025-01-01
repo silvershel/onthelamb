@@ -29,10 +29,11 @@ function LoginForm() {
     });
 
     return (
-        <div class="ui very padded center aligned container">
-            <h1>log in</h1>
-            <form class="ui form error" onSubmit={formik.handleSubmit}>
-                <div class="field">
+        <div className="ui very padded center aligned container">
+            <h1>on the lamb</h1>
+            <h3>login</h3>
+            <form className="ui form error" onSubmit={formik.handleSubmit}>
+                <div className="field">
                     <input 
                         type="text"
                         id="username"
@@ -41,11 +42,11 @@ function LoginForm() {
                         onChange={formik.handleChange}
                         value={formik.values.username}
                     />
-                    <div class="ui error message">
+                    <div className="ui error message">
                         {formik.errors.username}
                     </div>
                 </div>
-                <div class="field">
+                <div className="field">
                     <input 
                         type="text"
                         id="password"
@@ -54,16 +55,16 @@ function LoginForm() {
                         onChange={formik.handleChange}
                         value={formik.values.password}
                     />
-                    <div class="ui error message">
+                    <div className="ui error message">
                         {formik.errors.password}
                     </div>
                 </div>
-                <div class="ui error message">
+                <div className="ui error message">
                     {formik.errors.apiError 
                     ? (<div>{formik.errors.apiError}</div>)
                     : null}
                 </div>
-                <button class="ui button" type="submit">log in</button>
+                <button className="ui button" type="submit">log in</button>
                 <p>don't have an account? <Link to="/signup">signup.</Link></p>
             </form>
         </div>

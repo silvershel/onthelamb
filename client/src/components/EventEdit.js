@@ -56,10 +56,10 @@ function EventEdit() {
         <div>
             <h2>edit {event.title}</h2>
             <h3>event details</h3>
-            <form class="ui form error" onSubmit={formik.handleSubmit}>
-                <div class="field">
+            <form className="ui form error" onSubmit={formik.handleSubmit}>
+                <div className="field">
                     <label>type</label>
-                    <select class="ui search dropdown" id="event_type" name="event_type" value={formik.values.event_type} onChange={formik.handleChange} >
+                    <select className="ui search dropdown" id="event_type" name="event_type" value={formik.values.event_type} onChange={formik.handleChange} >
                         <option value="" disabled>please select an option:</option>
 
                         {currentUser.user_type === "Sheep" ? (
@@ -72,11 +72,11 @@ function EventEdit() {
                             ))
                         )}
                     </select>
-                    <div class="ui error message">
+                    <div className="ui error message">
                         {formik.errors.event_type}
                     </div>
                 </div>
-                <div class="field">
+                <div className="field">
                     <label>title</label>
                     <input
                         type="text"
@@ -84,11 +84,11 @@ function EventEdit() {
                         value={formik.values.title}
                         onChange={formik.handleChange}
                     />
-                    <div class="ui error message">
+                    <div className="ui error message">
                         {formik.errors.title}
                     </div>
                 </div>
-                <div class="field">
+                <div className="field">
                     <label>starts</label>
                     <input
                         type="date"
@@ -96,11 +96,11 @@ function EventEdit() {
                         value={formik.values.start_date}
                         onChange={formik.handleChange}
                     />
-                    <div class="ui error message">
+                    <div className="ui error message">
                         {formik.errors.start_date}
                     </div>
                 </div>
-                <div class="field">
+                <div className="field">
                     <label>ends</label>
                     <input
                         type="date"
@@ -108,11 +108,11 @@ function EventEdit() {
                         value={formik.values.end_date}
                         onChange={formik.handleChange}
                     />
-                    <div class="ui error message">
+                    <div className="ui error message">
                         {formik.errors.end_date}
                     </div>
                 </div>
-                <div class="field">
+                <div className="field">
                     <label>description</label>
                     <input
                         type="text"
@@ -120,11 +120,11 @@ function EventEdit() {
                         value={formik.values.description}
                         onChange={formik.handleChange}
                     />
-                    <div class="ui error message">
+                    <div className="ui error message">
                         {formik.errors.description}
                     </div>
                 </div>
-                <div class="field">
+                <div className="field">
                     <label>website</label>
                     <input
                         type="text"
@@ -132,7 +132,7 @@ function EventEdit() {
                         value={formik.values.website_link}
                         onChange={formik.handleChange}
                     />
-                    <div class="ui error message">
+                    <div className="ui error message">
                         {formik.errors.website_link}
                     </div>
                 </div>
@@ -148,11 +148,11 @@ function EventEdit() {
                     ) : (
                         <p>no vendors have been assigned.</p>
                     )}
-                    <button class="ui button" type="button">add vendor</button>
+                    <button className="ui button" type="button">add vendor</button>
                 </div>
-                <button class="ui button" type="submit">save edits</button>
+                <button className="ui button" type="submit">save edits</button>
             </form>
-            <button class="ui button" type="button" onClick={handleDelete}>delete event</button>
+            <button className="ui button" type="button" onClick={handleDelete}>delete event</button>
         </div>
     );
 }

@@ -13,35 +13,35 @@ function Profile() {
     const userEvents = events.filter(event => event.user_id === user.id);
 
     return(
-        <div class="ui stackable equal width grid">
-            <div class="column">
-                <img class="ui fluid circular image" alt="" src={user.profile_photo}/>
-                <button class="ui button">update profile photo</button>
+        <div className="ui stackable equal width grid">
+            <div className="column">
+                <img className="ui fluid circular image" alt="" src={user.profile_photo}/>
+                <button className="ui button">update profile photo</button>
             </div>
-            <div class="column">
+            <div className="column">
                 <h2>{user.username}</h2>
                 <p>name: {user.name}</p>
                 <p>bio:</p>
 
                 <Link to={`/users/${user.username}/edit`}>
-                    <button class="ui button">edit profile</button>
+                    <button className="ui button">edit profile</button>
                 </Link>
                 <Link to={`/create`}>
-                    <button class="ui button">create event</button>
+                    <button className="ui button">create event</button>
                 </Link>
             </div>
 
 
-            <div class="equal width row">
+            <div className="equal width row">
                 <h3>{currentUser.id === user.id ? "my" : `${user.name}'s`} events</h3>
             </div>
-            <div class="equal width row">
+            <div className="equal width row">
                 {userEvents.length > 0 ? (
                     userEvents.map(event => 
-                        <div class="column" key={event.id}>
+                        <div className="column" key={event.id}>
                             <h4>{event.title}</h4>
                             <Link to={`/events/${event.id}`}>
-                                <button class="ui button">view details</button>                
+                                <button className="ui button">view details</button>                
                             </Link>
                         </div>
                     )

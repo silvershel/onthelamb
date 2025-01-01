@@ -4,7 +4,7 @@ import { useHistory } from "react-router-dom";
 import { useFormik } from 'formik';
 import * as Yup from "yup";
 
-function EventCreate() {
+function EventCreate({ open, closeModal }) {
     const { currentUser, createEvent } = useAppContext();
     const navigate = useHistory()
     
@@ -14,6 +14,7 @@ function EventCreate() {
             title: "",
             start_date: "",
             end_date: "",
+            creation_date: "",
             description: "",
             website_link: "",
         },
@@ -33,6 +34,7 @@ function EventCreate() {
                 title: values.title,
                 start_date: values.start_date,
                 end_date: values.end_date,
+                creation_date: new Date(),
                 description: values.description,
                 website_link: values.website_link,
                 user_id: currentUser.id,
@@ -42,17 +44,19 @@ function EventCreate() {
             console.log(newEvent);
             createEvent(newEvent);
 
-            navigate.push(`/users/${currentUser.username}`)
+            navigate.push(`/dashboard`)
         }
     });
 
     return (
-        <div>
+        <div className={`ui modal ${open ? 'active' : ''}`}>
+            <button className="ui button" onClick={closeModal}>Close</button>
+            
             <h2>create an event</h2>
-            <form class="ui form error" onSubmit={formik.handleSubmit}>
-                <div class="required field">
+            <form className="ui form error" onSubmit={formik.handleSubmit}>
+                <div className="required field">
                     <label>event type</label>
-                    <select class="ui search dropdown" id="event_type" name="event_type" value={formik.values.event_type} onChange={formik.handleChange} >
+                    <select className="ui search dropdown" id="event_type" name="event_type" value={formik.values.event_type} onChange={formik.handleChange} >
                         <option value="" disabled>select an option:</option>
 
                         {currentUser.user_type === "Sheep" ? (
@@ -66,14 +70,14 @@ function EventCreate() {
                         )}
 
                     </select>
-                    <div class="ui error message">
+                    <div className="ui error message">
                         {formik.errors.event_type && formik.touched.event_type && (
                             <p>{formik.errors.event_type}</p>
                         )}
                     </div>
                     
                 </div>
-                <div class="required field">
+                <div className="required field">
                     <label>title</label>
                     <input
                         type="text"
@@ -82,12 +86,12 @@ function EventCreate() {
                         value={formik.values.title}
                         onChange={formik.handleChange}
                     />
-                    <div class="ui error message">
+                    <div className="ui error message">
                         {formik.errors.title}  
                     </div>
                 </div>
-                <div class="two fields">
-                <div class="required field">
+                <div className="two fields">
+                <div className="required field">
                     <label>starts</label>
                     <input
                         type="date"
@@ -96,11 +100,11 @@ function EventCreate() {
                         value={formik.values.start_date}
                         onChange={formik.handleChange}
                     />
-                     <div class="ui error message">
+                     <div className="ui error message">
                         {formik.errors.start_date}
                     </div>
                 </div>
-                <div class="required field">
+                <div className="required field">
                     <label>ends</label>
                     <input
                         type="date"
@@ -109,12 +113,12 @@ function EventCreate() {
                         value={formik.values.end_date}
                         onChange={formik.handleChange}
                     />
-                    <div class="ui error message">
+                    <div className="ui error message">
                         {formik.errors.end_date}
                     </div>
                 </div>
                 </div>
-                <div class="required field">
+                <div className="required field">
                     <label>description</label>
                     <input
                         type="text"
@@ -123,11 +127,11 @@ function EventCreate() {
                         value={formik.values.description}
                         onChange={formik.handleChange}
                     />
-                    <div class="ui error message">
+                    <div className="ui error message">
                         {formik.errors.description}
                     </div>
                 </div>
-                <div class="required field">
+                <div className="required field">
                     <label>website</label>
                     <input
                         type="text"
@@ -136,16 +140,16 @@ function EventCreate() {
                         value={formik.values.website_link}
                         onChange={formik.handleChange}
                     />
-                    <div class="ui error message">
+                    <div className="ui error message">
                         {formik.errors.website_link}
                     </div>
                 </div>
-                <div class="ui error message">
+                <div className="ui error message">
                     {formik.errors.apiError 
                     ? (<div>{formik.errors.apiError}</div>)
                     : null}
                 </div>
-                <button class="ui button"type="submit">save</button>
+                <button className="ui button"type="submit">save</button>
             </form>
         </div>
     );

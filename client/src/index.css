@@ -12,7 +12,7 @@ h1, h2, h3, h4, h5 {
   font-optical-sizing: auto;
   font-weight: 700 !important;
   font-style: normal;
-  letter-spacing: 1px !important;
+  letter-spacing: .5px !important;
 }
 
 h1 {
