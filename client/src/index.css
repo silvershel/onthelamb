@@ -8,7 +8,7 @@
 /* FONT STYLES */
 h1, h2, h3, h4, h5 {
   color: #3A111A !important;
-  font-family: "Poppins", serif !important;
+  font-family: 'Poppins', serif !important;
   font-optical-sizing: auto;
   font-weight: 700 !important;
   font-style: normal;
@@ -37,7 +37,7 @@ h5 {
 
 body {
   color: #3A111A !important;
-  font-family: "Poppins", serif !important;
+  font-family: 'Poppins', serif !important;
   font-optical-sizing: auto;
   font-weight: 400 !important;
   font-style: normal;
@@ -46,7 +46,7 @@ body {
 
 /* BUTTON STYLES */
 button {
-  font-family: "Poppins", serif !important;
+  font-family: 'Poppins', serif !important;
   font-optical-sizing: auto;
   font-weight: 500 !important;
   font-style: normal;

@@ -17,7 +17,7 @@ class User(db.Model, SerializerMixin):
     name = db.Column(String)
     username = db.Column(String, unique=True, nullable=False)
     password = db.Column(String, nullable=False)
-    profile_photo = db.Column(String, default="https://cdn.shopify.com/s/files/1/2242/8117/files/shaggie.jpg?v=1735611916")
+    profile_photo = db.Column(String, default='https://cdn.shopify.com/s/files/1/2242/8117/files/shaggie.jpg?v=1735611916')
     profile_data = db.Column(JSON)
     latitude = db.Column(Float)
     longitude = db.Column(Float)
@@ -29,7 +29,7 @@ class User(db.Model, SerializerMixin):
 
     # @hybrid_property
     # def password_hash(self):
-    #     raise AttributeError("Password hash can not be viewed.")
+    #     raise AttributeError('Password hash can not be viewed.')
     
     # @password_hash.setter
     # def password_hash(self, password):
@@ -41,15 +41,15 @@ class User(db.Model, SerializerMixin):
     
     # @validates('_password_hash')
     # def validate_password_hash(self, key, _password_hash):
-    #     if _password_hash == "":
-    #         raise ValueError("Password cannot be empty.")
+    #     if _password_hash == '':
+    #         raise ValueError('Password cannot be empty.')
     #     return _password_hash
 
 
     @validates('user_type')
     def validate_type(self, key, user_type):
         if not user_type:
-            raise ValueError("User type is required.")
+            raise ValueError('User type is required.')
         
         return user_type
     
@@ -57,7 +57,7 @@ class User(db.Model, SerializerMixin):
     @validates('name')
     def validate_name(self, key, name):
         if not name:
-            raise ValueError("Name is required.")
+            raise ValueError('Name is required.')
         
         return name
     
@@ -65,16 +65,16 @@ class User(db.Model, SerializerMixin):
     @validates('username')
     def validate_username(self, key, username):
         if not username:
-            raise ValueError("Username is required.")
+            raise ValueError('Username is required.')
         
         if len(username) < 5:
-            raise ValueError("Username must be at least 5 characters.")
+            raise ValueError('Username must be at least 5 characters.')
         
         if not re.match(r'^[\w_]+$', username):
-            raise ValueError("Username can only contain letters, numbers, and underscores.")
+            raise ValueError('Username can only contain letters, numbers, and underscores.')
         
         if User.query.filter_by(username=username).first():
-            raise ValueError(f"Username already exists.")
+            raise ValueError(f'Username already exists.')
         
         return username
 
@@ -125,23 +125,23 @@ class Attendee(db.Model, SerializerMixin):
     @validates('user_id')
     def validate_user_id(self, key, user_id):
         if not user_id:
-            raise ValueError("User ID is required.")  
+            raise ValueError('User ID is required.')  
 
         if not User.query.get(user_id):
-            raise ValueError("User does not exist.")
+            raise ValueError('User does not exist.')
         
         return user_id
 
     @validates('event_id')
     def validate_event_id(self, key, event_id):
         if not event_id:
-            raise ValueError("Event ID is required.")
+            raise ValueError('Event ID is required.')
         
         if not Event.query.get(event_id):
-            raise ValueError("Event does not exist")
+            raise ValueError('Event does not exist')
         
         if Attendee.query.filter_by(user_id=self.user_id, event_id=event_id).first():
-            raise ValueError(f"User is already attending this event.")
+            raise ValueError(f'User is already attending this event.')
         
         return event_id
     
@@ -163,23 +163,23 @@ class Vendor(db.Model, SerializerMixin):
     @validates('user_id')
     def validate_user_id(self, key, user_id):
         if not user_id:
-            raise ValueError("User ID is required.")  
+            raise ValueError('User ID is required.')  
 
         if not User.query.get(user_id):
-            raise ValueError("User does not exist.")
+            raise ValueError('User does not exist.')
         
         return user_id
 
     @validates('event_id')
     def validate_event_id(self, key, event_id):
         if not event_id:
-            raise ValueError("Event ID is required.")
+            raise ValueError('Event ID is required.')
         
         if not Event.query.get(event_id):
-            raise ValueError("Event does not exist")
+            raise ValueError('Event does not exist')
         
         if Vendor.query.filter_by(user_id=self.user_id, event_id=event_id).first():
-            raise ValueError(f"User is already vending at this event.")
+            raise ValueError(f'User is already vending at this event.')
         
         return event_id
 

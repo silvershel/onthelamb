@@ -1,8 +1,8 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { useAppContext } from "../contexts/AppContext";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { useAppContext } from '../contexts/AppContext';
 import { useFormik } from 'formik';
-import * as Yup from "yup";
+import * as Yup from 'yup';
 
 
 function LoginForm() {
@@ -10,13 +10,13 @@ function LoginForm() {
     
     const formik = useFormik({
         initialValues: {
-            username: "",
-            password: "",
+            username: '',
+            password: '',
         },
 
         validationSchema: Yup.object({
-            username: Yup.string().required("Username is required"),
-            password: Yup.string().required("Password is required"),
+            username: Yup.string().required('Username is required'),
+            password: Yup.string().required('Password is required'),
         }),
 
         onSubmit: (values) => {
@@ -29,43 +29,43 @@ function LoginForm() {
     });
 
     return (
-        <div className="ui very padded center aligned container">
+        <div className='ui very padded center aligned container'>
             <h1>on the lamb</h1>
             <h3>login</h3>
-            <form className="ui form error" onSubmit={formik.handleSubmit}>
-                <div className="field">
+            <form className='ui form error' onSubmit={formik.handleSubmit}>
+                <div className='field'>
                     <input 
-                        type="text"
-                        id="username"
-                        name="username"
-                        placeholder="Username"
+                        type='text'
+                        id='username'
+                        name='username'
+                        placeholder='Username'
                         onChange={formik.handleChange}
                         value={formik.values.username}
                     />
-                    <div className="ui error message">
+                    <div className='ui error message'>
                         {formik.errors.username}
                     </div>
                 </div>
-                <div className="field">
+                <div className='field'>
                     <input 
-                        type="text"
-                        id="password"
-                        name="password"
-                        placeholder="Password"
+                        type='text'
+                        id='password'
+                        name='password'
+                        placeholder='Password'
                         onChange={formik.handleChange}
                         value={formik.values.password}
                     />
-                    <div className="ui error message">
+                    <div className='ui error message'>
                         {formik.errors.password}
                     </div>
                 </div>
-                <div className="ui error message">
+                <div className='ui error message'>
                     {formik.errors.apiError 
                     ? (<div>{formik.errors.apiError}</div>)
                     : null}
                 </div>
-                <button className="ui button" type="submit">log in</button>
-                <p>don't have an account? <Link to="/signup">signup.</Link></p>
+                <button className='ui button' type='submit'>log in</button>
+                <p>don't have an account? <Link to='/signup'>signup.</Link></p>
             </form>
         </div>
     )

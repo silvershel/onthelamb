@@ -1,10 +1,10 @@
-import React, { useState } from "react";
-import { useAppContext } from "../contexts/AppContext";
-import UserDetails from "./UserDetails";
-import UserEdit from "./UserEdit";
-import MiniCard from "./MiniCard";
-import Modal from "./Modal";
-import EventDetails from "./EventDetails";
+import React, { useState } from 'react';
+import { useAppContext } from '../contexts/AppContext';
+import UserDetails from './UserDetails';
+import UserEdit from './UserEdit';
+import MiniCard from './MiniCard';
+import Modal from './Modal';
+import EventDetails from './EventDetails';
 
 
 function UserDashboard() {
@@ -52,14 +52,14 @@ function UserDashboard() {
 
 
     return(
-        <div className="ui stackable grid">
+        <div className='ui stackable grid'>
             
             {/* page header & menu */}
-            <div className="ui center aligned row">
-                <div className="ui column">
+            <div className='ui center aligned row'>
+                <div className='ui column'>
 				<h3>on the lamb</h3>
 				<p>Welcome, {currentUser.name}!</p>
-                <button onClick={() => openComponent('modal')} className="ui button">Create Event</button>
+                <button onClick={() => openComponent('modal')} className='ui button'>Create Event</button>
                 </div>
 			</div> 
 
@@ -69,29 +69,33 @@ function UserDashboard() {
             </div>
 
             {/* main container */}
-            <div className="ui container">
-                <div className="ui stackable grid">
+            <div className='ui container'>
+                <div className='ui stackable grid'>
 
                     {/* profile */}
-                    <div className="four wide column">
+                    <div className='four wide column'>
                         <h3>my info</h3>
-                        <img class="ui circular image" src={currentUser.profile_photo}></img>
-                        {open === null
-                        ? <UserDetails open={open} openComponent={openComponent}/>
-                        : <UserEdit open={open} closeComponent={closeComponent}/>
+                        <img class='ui circular image' src={currentUser.profile_photo}></img>
+                        {open === 'profile edit'
+                        ? <UserEdit open={open} closeComponent={closeComponent}/>
+                        : <UserDetails open={open} openComponent={openComponent}/>
                         }
                     </div>
 
 
                     {/* my events */}
-                    <div className="eight wide column">
+                    <div className='eight wide column'>
                     <h3>my events</h3>
-                    <div className="ui stackable two column grid">
+                    <div className='ui stackable two column grid'>
                         {userEvents.map((event) => (
-                            <div className="ui column" key={event.id}>
-                                <div className="ui card">
-                                    <MiniCard event={event} openComponent={openComponent}/>
-                                    <EventDetails />
+                            <div className='ui column' key={event.id}>
+                                <div className='ui card'>
+                                {open === 'event details'
+                                    ? <EventDetails open={open} closeComponent={closeComponent}/>
+                                    : <MiniCard event={event} openComponent={openComponent}/>
+                                }
+                                    {/* <MiniCard event={event} openComponent={openComponent}/>
+                                    <EventDetails /> */}
                                 </div>
                             </div>
                         ))}
@@ -99,7 +103,7 @@ function UserDashboard() {
                     </div>
 
                     {/* general detail */}
-                    <div className="four wide column">
+                    <div className='four wide column'>
                         <h3>attending</h3>
                         <p>{currentUser.attendees.length}</p>
                         <h3>vending</h3>

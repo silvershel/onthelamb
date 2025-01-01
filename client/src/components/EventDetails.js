@@ -1,8 +1,8 @@
-import React, { useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
-import { useAppContext } from "../contexts/AppContext";
+import React, { useEffect } from 'react';
+import { Link, useParams } from 'react-router-dom';
+import { useAppContext } from '../contexts/AppContext';
 
-function EventDetails() {
+function EventDetails({ closeComponent }) {
     const { currentUser, fetchEvent, event, createAttendee, deleteAttendee } = useAppContext();
     const { eventId } = useParams();
 
@@ -14,7 +14,7 @@ function EventDetails() {
 
     function onAttendClick() {
         const newAttendee = {
-            comment: "hello from EventDetails",
+            comment: 'hello from EventDetails',
             event_id: event.id,
             user_id: currentUser.id
         };
@@ -32,12 +32,16 @@ function EventDetails() {
     }
 
     return (
-        <div className="ui stackable equal width grid">
-            <div className="column">
-                <img className="ui fluid image" alt="" src="https://modernfarmer.com/wp-content/uploads/2017/12/Funny-Sheep-Facts-jpg.webp"/>
+        <div className='ui stackable equal width grid'>
+
+            <button onClick={()=>closeComponent()}>Close Component</button>
+
+
+            <div className='column'>
+                <img className='ui fluid image' alt='' src='https://modernfarmer.com/wp-content/uploads/2017/12/Funny-Sheep-Facts-jpg.webp'/>
                 
             </div>
-            <div className="column">
+            <div className='column'>
                 <h2>{event.title}</h2>
                 {/* <p>organized by: <Link to={`/users/${event.user?.username}`}>{event.username}</Link></p> */}
                 <p>starts: {event.start_date}</p>
@@ -47,9 +51,9 @@ function EventDetails() {
                 <div>
                     {event.user_id !== currentUser.id && (
                         !userAttending() ? (
-                            <button className="positive ui button" onClick={onAttendClick}>attend</button>
+                            <button className='positive ui button' onClick={onAttendClick}>attend</button>
                         ) : (
-                            <button className="negative ui button" onClick={onDeleteAttendClick}>remove attendance</button>
+                            <button className='negative ui button' onClick={onDeleteAttendClick}>remove attendance</button>
                         )
                     )}
                 </div>
@@ -57,7 +61,7 @@ function EventDetails() {
                 <div>
                     {currentUser.id === event.user_id ? (
                         <Link to={`/events/${event.id}/edit`}>
-                            <button className="ui button">manage event</button>
+                            <button className='ui button'>manage event</button>
                         </Link>
                     ) : (
                         null
@@ -66,24 +70,24 @@ function EventDetails() {
             </div>
 
             
-            <div className="equal width row">            
-                <div className="column">
+            <div className='equal width row'>            
+                <div className='column'>
                     <h3>attendees</h3>
                     {/* {event.attendees.map((attendee) => (
-                        <div className="ui card" key={attendee.id}>
+                        <div className='ui card' key={attendee.id}>
                             <p>hi</p>
                         </div>
                     ))} */}
                 </div>
                 
-                <div className="column">            
+                <div className='column'>            
                     <h3>vendors</h3>
                     {/* {event.vendors && event.vendors.length > 0 ? (
                         event.vendors.map((vendor) => (
-                            <div className="ui card" key={vendor.id}>
+                            <div className='ui card' key={vendor.id}>
                             <p>{vendor.user.username}</p>
                             </div>
-                        ))
+                        ))onClick={() => openComponent('profile edit')
                     ) : (
                         <p>no vendors have been assigned yet.</p>
                     )} */}

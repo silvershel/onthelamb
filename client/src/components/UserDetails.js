@@ -1,4 +1,4 @@
-import { useAppContext } from "../contexts/AppContext";
+import { useAppContext } from '../contexts/AppContext';
 
 function UserDetails({ openComponent }) {
     const { currentUser } = useAppContext();
@@ -7,7 +7,7 @@ function UserDetails({ openComponent }) {
         <div>
             <h5>{currentUser.name}</h5>
             <p>user type: {currentUser.user_type}</p>
-            <button className="ui button" onClick={() => openComponent('profile edit')}>edit info</button>
+            <button className='ui button' onClick={() => openComponent('profile edit')}>edit info</button>
         </div>
     )
 }

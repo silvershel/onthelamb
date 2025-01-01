@@ -1,7 +1,7 @@
-import React from "react";
-import { useAppContext } from "../contexts/AppContext";
+import React from 'react';
+import { useAppContext } from '../contexts/AppContext';
 import { useFormik } from 'formik';
-import * as Yup from "yup";
+import * as Yup from 'yup';
 
 function UserEdit({ closeComponent }) {
     const { currentUser, updateUser } = useAppContext();
@@ -14,7 +14,7 @@ function UserEdit({ closeComponent }) {
 
         validationSchema: Yup.object({
             user_type: Yup.string().required(),
-            name: Yup.string().required("Name is required"),
+            name: Yup.string().required('Name is required'),
         }),
 
         onSubmit: (values) => {
@@ -32,42 +32,42 @@ function UserEdit({ closeComponent }) {
 
     return (
         <div>
-            <form className="ui form" onSubmit={formik.handleSubmit}>
-                <div className="field">
+            <form className='ui form' onSubmit={formik.handleSubmit}>
+                <div className='field'>
                     <label>name:</label>
                     <input 
-                        type="text"
-                        id="name"
-                        name="name"
+                        type='text'
+                        id='name'
+                        name='name'
                         onChange={formik.handleChange}
                         value={formik.values.name}
                     />
-                    <div className="ui error message">
+                    <div className='ui error message'>
                         {formik.errors.name}
                     </div>
                 </div>
-                <div className="field">
+                <div className='field'>
                     <label>User Type:</label>
                     <select 
-                        className="ui search dropdown"
-                        id="user_type" 
-                        name="user_type" 
+                        className='ui search dropdown'
+                        id='user_type' 
+                        name='user_type' 
                         value={formik.values.user_type}
                         onChange={formik.handleChange} >
-                        <option value="" disabled>please select a user type: </option>
-                        <option value="Sheep">sheep</option>
-                        <option value="Shepherd">shepherd</option>
+                        <option value='' disabled>please select a user type: </option>
+                        <option value='Sheep'>sheep</option>
+                        <option value='Shepherd'>shepherd</option>
                     </select>
-                    <div className="ui error message">
+                    <div className='ui error message'>
                         {formik.errors.user_type}
                     </div>
                 </div>
-                <div className="ui error message">
+                <div className='ui error message'>
                     {formik.errors.apiError 
                     ? (<div>{formik.errors.apiError}</div>)
                     : null}
                 </div>
-                <button className="ui button" type="submit">save edits</button>
+                <button className='ui button' type='submit'>save edits</button>
             </form>
         </div>
     )

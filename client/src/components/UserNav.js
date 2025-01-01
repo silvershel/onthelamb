@@ -1,6 +1,6 @@
-import React from "react";
-import { useHistory } from "react-router-dom";
-import { useAppContext } from "../contexts/AppContext";
+import React from 'react';
+import { useHistory } from 'react-router-dom';
+import { useAppContext } from '../contexts/AppContext';
 
 
 function UserNav() {
@@ -10,23 +10,23 @@ function UserNav() {
 	function handleSelectChange(e) {
 		const selection = e.target.value;
 
-		if (selection === "dashboard") {
-			navigate.push("/dashboard");
-		} else if (selection === "my profile") {
+		if (selection === 'dashboard') {
+			navigate.push('/dashboard');
+		} else if (selection === 'my profile') {
 			navigate.push(`/users/${currentUser.username}`);
 			resetSelect();
-		} else if (selection === "edit profile") {
+		} else if (selection === 'edit profile') {
 			navigate.push(`/users/${currentUser.username}/edit`);
 			resetSelect();
-		} else if (selection === "create event") {
-			navigate.push("/create");
+		} else if (selection === 'create event') {
+			navigate.push('/create');
 			resetSelect();
 		}
 	  }
 
 	
 	function resetSelect() {
-		const selectElement = document.getElementById("dropdown");
+		const selectElement = document.getElementById('dropdown');
 		if (selectElement) {
 		  selectElement.selectedIndex = 0;
 		}
@@ -34,10 +34,10 @@ function UserNav() {
 
 	return (
 		<div>
-			<select className="ui search dropdown" id="dropdown" onChange={handleSelectChange}>
-				<option value="dashboard">my dashboard</option>
-				<option value="my profile">my profile</option>
-				<option value="edit profile">edit profile</option>
+			<select className='ui search dropdown' id='dropdown' onChange={handleSelectChange}>
+				<option value='dashboard'>my dashboard</option>
+				<option value='my profile'>my profile</option>
+				<option value='edit profile'>edit profile</option>
 			</select>
 		</div>
 	);

@@ -1,5 +1,5 @@
-import React from "react";
-import EventCreate from "./EventCreate";
+import React from 'react';
+import EventCreate from './EventCreate';
 
 function Modal({ open, closeComponent }) {
 
@@ -7,9 +7,9 @@ function Modal({ open, closeComponent }) {
         <div className={`ui modal ${open ? 'active' : ''}`}>
             
             <button 
-                class="ui right floated icon button" 
+                class='ui right floated icon button' 
                 onClick={() => closeComponent()}>
-                <i class="close icon"></i>
+                <i class='close icon'></i>
             </button>
 
             <div>

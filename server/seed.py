@@ -13,7 +13,7 @@ from models import db, User, Event, Attendee, Vendor
 if __name__ == '__main__':
     fake = Faker()
     with app.app_context():
-        print("Starting seed...")
+        print('Starting seed...')
         
         # Delete Existing Data
         User.query.delete()
@@ -24,25 +24,25 @@ if __name__ == '__main__':
 
         # Seed Users
         test_user_sheep = User(
-            name = "Sheep Test User",
-            username = "sheep",
-            password = "password",
-            user_type = "Sheep",
-            profile_photo = "https://cdn.shopify.com/s/files/1/2242/8117/files/shaggie.jpg?v=1735611916",
-            latitude = "38.805496",
-            longitude = "-77.04344"
+            name = 'Sheep Test User',
+            username = 'sheep',
+            password = 'password',
+            user_type = 'Sheep',
+            profile_photo = 'https://cdn.shopify.com/s/files/1/2242/8117/files/shaggie.jpg?v=1735611916',
+            latitude = '38.805496',
+            longitude = '-77.04344'
         )
         db.session.add(test_user_sheep)
         db.session.commit()
 
         test_user_shepherd = User(
-            name = "Shepherd Test User",
-            username = "shepherd",
-            password = "password",
-            user_type = "Shepherd",
-            profile_photo = "https://cdn.shopify.com/s/files/1/2242/8117/files/shaggie.jpg?v=1735611916",
-            latitude = "38.805496",
-            longitude = "-77.04344"
+            name = 'Shepherd Test User',
+            username = 'shepherd',
+            password = 'password',
+            user_type = 'Shepherd',
+            profile_photo = 'https://cdn.shopify.com/s/files/1/2242/8117/files/shaggie.jpg?v=1735611916',
+            latitude = '38.805496',
+            longitude = '-77.04344'
         )
         db.session.add(test_user_shepherd)
         db.session.commit()
@@ -58,8 +58,8 @@ if __name__ == '__main__':
 
         for i in range(10):
             username = generate_username()
-            user_type = rc(["Sheep", "Shepherd"])
-            profile_photo = "https://cdn.shopify.com/s/files/1/2242/8117/files/shaggie.jpg?v=1735611916"
+            user_type = rc(['Sheep', 'Shepherd'])
+            profile_photo = 'https://cdn.shopify.com/s/files/1/2242/8117/files/shaggie.jpg?v=1735611916'
 
             while username in used_usernames:
                 username = generate_username()
@@ -80,7 +80,7 @@ if __name__ == '__main__':
 
         db.session.add_all(users)
         db.session.commit()
-        print(f"Created {len(users)} users.")
+        print(f'Created {len(users)} users.')
 
         # Seed Events
         events = []
@@ -88,8 +88,8 @@ if __name__ == '__main__':
         # events specific to test users 1 and 2
         for i in range(6):
             for test_user in test_users:
-                event_type = rc(["Festival", "Retreat", "Local Meetup", "Popup", "Trunk Show"])
-                event_title = f"{fake.company()} {event_type}"
+                event_type = rc(['Festival', 'Retreat', 'Local Meetup', 'Popup', 'Trunk Show'])
+                event_title = f'{fake.company()} {event_type}'
 
                 event = Event(
                     title=event_title,
@@ -107,8 +107,8 @@ if __name__ == '__main__':
         # events for all users
         for i in range(10):
             user = rc(users)
-            event_type = rc(["Festival", "Retreat", "Local Meetup", "Popup", "Trunk Show"])
-            event_title = f"{fake.company()} {event_type}"
+            event_type = rc(['Festival', 'Retreat', 'Local Meetup', 'Popup', 'Trunk Show'])
+            event_title = f'{fake.company()} {event_type}'
 
             event = Event(
                 title = event_title,
@@ -125,7 +125,7 @@ if __name__ == '__main__':
 
         db.session.add_all(events)
         db.session.commit()
-        print(f"Created {len(events)} events.")
+        print(f'Created {len(events)} events.')
 
         # Seed Attendees
         attendees = []
@@ -141,7 +141,7 @@ if __name__ == '__main__':
 
         db.session.add_all(attendees)
         db.session.commit()
-        print(f"Created {len(attendees)} attendees.")
+        print(f'Created {len(attendees)} attendees.')
 
         # Seed Vendors
         vendors = []
@@ -157,6 +157,6 @@ if __name__ == '__main__':
 
         db.session.add_all(vendors)
         db.session.commit()
-        print(f"Created {len(vendors)} vendors.")
+        print(f'Created {len(vendors)} vendors.')
 
-        print("Seeding complete.")
+        print('Seeding complete.')
