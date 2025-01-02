@@ -1,9 +1,8 @@
 import React from 'react';
 import { useAppContext } from '../contexts/AppContext';
 
-function MiniCard({ event }) {
-    const { deleteEvent } = useAppContext();
-     
+function MiniCard({ event, toggleComponent }) {
+    const { deleteEvent } = useAppContext();     
 
     return (
         <div key={event.id} className='ui card'>  
@@ -20,7 +19,7 @@ function MiniCard({ event }) {
                     <img src="/images/avatar/large/jenny.jpg"/>
                 </div>
                 <div class="content">
-                    <h5>{event.title}</h5>
+                    <h4>{event.title}</h4>
                 <div class="meta">
                     <p>{event.start_date}</p>
                 </div>
@@ -31,12 +30,9 @@ function MiniCard({ event }) {
                 <button class="ui icon button" onClick={() => deleteEvent(event.id)}>
                 <i class="trash alternate icon"></i>
                 </button>
-                {/* <a>
-                    <i class="trash alternate icon"></i>
-                </a> */}
-                <a>
-                    <i class="right floated folder open icon"></i>
-                </a>
+                <button class="ui right floated icon button" onClick={() => toggleComponent(event)}>
+                <i class="open folder icon"></i>
+                </button>
             </div>
         </div>
     )

@@ -53,27 +53,15 @@ function EventDetails() {
 
             <div className='ui basic segment'>
                 <div className='ui column'>
-                    <h3>tickets</h3>
-                    {/* {event.tickets.map((ticket) => (
-                        <div className='ui card' key={ticket.id}>
-                            <p>hi</p>
-                        </div>
-                    ))} */}
+                    <h3>attendees</h3>
+                    <p>attendee list here</p>
                 </div>
             </div>
 
             <div className='ui basic segment'> 
                 <div className='ui column'>            
-                    <h3>booths</h3>
-                    {/* {event.booths && event.booths.length > 0 ? (
-                        event.booths.map((booth) => (
-                            <div className='ui card' key={booth.id}>
-                            <p>{booth.user.username}</p>
-                            </div>
-                        ))onClick={() => openComponent('profile edit')
-                    ) : (
-                        <p>no booths have been assigned yet.</p>
-                    )} */}
+                    <h3>vendors</h3>
+                    <p>vendor list here</p>
                 </div>
             </div>
                            
@@ -89,11 +77,6 @@ function EventDetails() {
                 </div>
             </div>
 
-            
-            <div className='equal width row'>            
-                
-            </div>
-            
         </div>
     )
 }

@@ -1,17 +1,13 @@
-import React, { useEffect } from 'react';
-import { useHistory, useParams } from 'react-router-dom';
+import React from 'react';
+import { useHistory } from 'react-router-dom';
 import { useAppContext } from '../contexts/AppContext';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
-function EventEdit() {
-    const { currentUser, event, fetchEvent, updateEvent, deleteEvent } = useAppContext();
-    const { eventId } = useParams()
+function UserEventEdit({ event, isEditing, setIsEditing }) {
+    const { currentUser, updateEvent } = useAppContext();
     const navigate = useHistory()
 
-    useEffect(() => {
-        fetchEvent(eventId)
-    }, [eventId])
 
     const formik = useFormik({
         initialValues: {
@@ -43,14 +39,9 @@ function EventEdit() {
                 user_id: currentUser.id,
             };
             updateEvent(event.id, updatedEvent);
-            navigate.push(`/events/${eventId}`)
+            navigate.push(`/events/${event.id}`)
         }
     });
-
-    function handleDelete() {
-        deleteEvent(eventId);
-        navigate.push('/');
-    }
 
     return (
         <div>
@@ -136,25 +127,11 @@ function EventEdit() {
                         {formik.errors.website_link}
                     </div>
                 </div>
-                <div>
-                    <h3>booths</h3>
-                    {event.booths && event.booths.length > 0 ? (
-                        event.booths.map((booth) => (
-                            <div key={booth.id}>
-                            <p>{booth.user.username}</p>
-                            <p>(remove)</p>
-                            </div>
-                        ))
-                    ) : (
-                        <p>no booths have been assigned.</p>
-                    )}
-                    <button className='ui button' type='button'>add booth</button>
-                </div>
-                <button className='ui button' type='submit'>save edits</button>
+                <button className='ui button' type='submit' >save edits</button>
+                <button className='ui button' type='click' onClick={()=>setIsEditing()}>close window</button>
             </form>
-            <button className='ui button' type='button' onClick={handleDelete}>delete event</button>
         </div>
     );
 }
 
-export default EventEdit;
+export default UserEventEdit;

@@ -8,7 +8,7 @@ function EventCard({ event }) {
         <div className='ui card'>   
             <div className='content'>
                 <img src='' />                
-                <h5>{event.title}</h5>
+                <h4>{event.title}</h4>
                 <p>{event.start_date} to {event.end_date}</p>
                 <p>organized by: (username)</p>
                 <p>{event.description}</p>

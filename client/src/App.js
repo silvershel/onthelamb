@@ -6,7 +6,6 @@ import TopNav from './components/TopNav';
 import LoginForm from './components/LoginForm';
 import SignupForm from './components/SignupForm';
 import EventDetails from './components/EventDetails';
-import EventEdit from './components/EventEdit';
 import EventList from './components/EventList';
 import UserDashboard from './components/UserDashboard';
 import ErrorPage from './components/ErrorPage';
@@ -55,7 +54,6 @@ function Routes() {
 						<Route path='/dashboard' exact component={UserDashboard}/>
 						<Route path='/events' exact component={EventList} />
 						<Route path='/events/:eventId' exact component={EventDetails} />
-						<Route path='/events/:eventId/edit' exact component={EventEdit} />
 						<Route path='*' component={ErrorPage} />
 					</Switch>
 				</div>

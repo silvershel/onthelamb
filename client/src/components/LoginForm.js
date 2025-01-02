@@ -29,9 +29,10 @@ function LoginForm() {
     });
 
     return (
-        <div className='ui very padded center aligned container'>
+        <div className='ui basic center aligned segment'>
             <h1>on the lamb</h1>
             <h3>login</h3>
+            <p>Yarn’t you glad you found us?</p>
             <form className='ui form error' onSubmit={formik.handleSubmit}>
                 <div className='field'>
                     <input 

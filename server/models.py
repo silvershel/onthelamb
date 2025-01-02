@@ -204,6 +204,26 @@ class Booth(db.Model, SerializerMixin):
         return event_id
 
 
+class UserSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = User
+        load_instance = True
+        exclude = ('password',)
+
+    events = ma.Nested('EventSchema', many=True, exclude=('user', 'tickets', 'booths'))
+    tickets = ma.Nested('TicketSchema', many=True, exclude=('user', 'event'))
+    booths = ma.Nested('BoothSchema', many=True, exclude=('user', 'event'))
+    
+class EventSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = Event
+        load_instance = True
+
+    user = ma.Nested('UserSchema', exclude=('events', 'tickets', 'booths'))
+    tickets = ma.Nested('TicketSchema', many=True, exclude=('event', 'user'))
+    booths = ma.Nested('BoothSchema', many=True, exclude=('event', 'user'))
+
+
 class TicketSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = Ticket
@@ -225,22 +245,3 @@ class BoothSchema(ma.SQLAlchemyAutoSchema):
 
     user = ma.Nested('UserSchema', exclude=('tickets', 'events', 'booths'))
     event = ma.Nested('EventSchema', exclude=('tickets', 'booths', 'user'))
-
-class EventSchema(ma.SQLAlchemyAutoSchema):
-    class Meta:
-        model = Event
-        load_instance = True
-
-    user = ma.Nested('UserSchema', exclude=('events', 'tickets', 'booths'))
-    tickets = ma.Nested('TicketSchema', many=True, exclude=('event', 'user'))
-    booths = ma.Nested('BoothSchema', many=True, exclude=('event', 'user'))
-
-class UserSchema(ma.SQLAlchemyAutoSchema):
-    class Meta:
-        model = User
-        load_instance = True
-        exclude = ('password',)
-
-    events = ma.Nested('EventSchema', many=True, exclude=('user', 'tickets', 'booths'))
-    tickets = ma.Nested('TicketSchema', many=True, exclude=('user', 'event'))
-    booths = ma.Nested('BoothSchema', many=True, exclude=('user', 'event'))

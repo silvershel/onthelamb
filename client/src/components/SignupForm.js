@@ -65,9 +65,10 @@ function SignupForm() {
 
 
     return (
-        <div className='ui very padded center aligned container'>
+        <div className='ui basic center aligned segment'>
             <h1>on the lamb</h1>
             <h3>signup</h3>
+            <p>Wool you join the fun?</p>
             <form className='ui form error success' onSubmit={formik.handleSubmit}>
                 <div className='required field'>
                     <select 
