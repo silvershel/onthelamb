@@ -31,9 +31,10 @@ function UserEdit({ closeComponent }) {
     });
 
     return (
-        <div>
+        <div className="ui center aligned basic segment">
+            
             <form className="ui form" onSubmit={formik.handleSubmit}>
-                <div className="field">
+                <div className="inline field">
                     <label>name:</label>
                     <input 
                         type="text"
@@ -46,8 +47,8 @@ function UserEdit({ closeComponent }) {
                         {formik.errors.name}
                     </div>
                 </div>
-                <div className="field">
-                    <label>User Type:</label>
+                <div className="inline field">
+                    <label>user type:</label>
                     <select 
                         className="ui search dropdown"
                         id="user_type" 
@@ -69,6 +70,7 @@ function UserEdit({ closeComponent }) {
                 </div>
                 <button className="ui button" type="submit">save edits</button>
             </form>
+
         </div>
     )
 }

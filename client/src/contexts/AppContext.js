@@ -111,10 +111,10 @@ export const AppProvider = ({ children }) => {
             setEvents((prevEvents) =>
                 prevEvents.map((event) => ({
                     ...event,
-                    attendees: event.attendees.map((attendee) =>
-                        attendee.user_id === updatedUser.id ?
-                            { ...attendee, user: updatedUser }
-                            : attendee
+                    tickets: event.tickets.map((ticket) =>
+                        ticket.user_id === updatedUser.id ?
+                            { ...ticket, user: updatedUser }
+                            : ticket
                     ),
                 }))
             );
@@ -158,12 +158,12 @@ export const AppProvider = ({ children }) => {
             console.log(newEvent);
             setEvents((prevEvents) => [...prevEvents, newEvent]);
 
-            const newAttendee = {
+            const newTicket = {
                 comment: 'greetings, from your host!',
                 user_id: currentUser.id,
                 event_id: newEvent.id,
             }
-            createAttendee( newAttendee, newEvent.id);
+            createTicket( newTicket, newEvent.id);
         })
         .catch((error) => console.error('Error creating new event:', error));
     };
@@ -178,8 +178,8 @@ export const AppProvider = ({ children }) => {
         .then((r) => r.json())
         .then((updatedEvent) => {
             console.log(updatedEvent);
-            setEvents((prevEvents) =>
-                prevEvents.map((event) =>
+            setCurrentUser((currentUser) =>                
+                currentUser.map((event) =>
                     event.id === updatedEvent.id ? updatedEvent : event
                 )
             );
@@ -193,9 +193,10 @@ export const AppProvider = ({ children }) => {
         .then((r) => {
             if (r.ok) {
                 console.log(`Event ${eventId} deleted.`)
-                setEvents((prevEvents) =>
-                    prevEvents.filter((event) => event.id !== eventId)
-                );
+                setCurrentUser((currentUser) => ({
+                    ...currentUser,
+                    events: currentUser.events.filter(event => event.id !== eventId)
+                }));
             } else {
                 console.error('Unable to delete event.');
             }
@@ -203,51 +204,51 @@ export const AppProvider = ({ children }) => {
         .catch((error) => console.error('Error deleting event:', error));
     };
 
-    // CREATE ATTENDEE
-    const createAttendee = (newAttendee, eventId) => {
-        fetch('/attendees', {
+    // CREATE TICEKT
+    const createTicket = (newTicket, eventId) => {
+        fetch('/tickets', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(newAttendee),
+            body: JSON.stringify(newTicket),
         })
         .then((r) => r.json())
-        .then((newAttendee) => {
-            console.log(newAttendee);
+        .then((newTicket) => {
+            console.log(newTicket);
             setEvents((prevEvents) =>
                 prevEvents.map((event) =>
-                    event.id === newAttendee.event_id ?
-                        { ...event, attendees: 
-                            { ...event.attendees, [newAttendee.id]: newAttendee}
+                    event.id === newTicket.event_id ?
+                        { ...event, tickets: 
+                            { ...event.tickets, [newTicket.id]: newTicket}
                         }
                         : event
                 )
             );
             fetchEvent(eventId);
         })
-        .catch((error) => console.error('Error creating new attendee:', error));
+        .catch((error) => console.error('Error creating new ticket:', error));
     };
 
-    // DELETE ATTENDEE
-    const deleteAttendee = (attendeeToDelete, eventId) => {
-        fetch(`/attendees/${attendeeToDelete.id}`, { 
+    // DELETE TICKET
+    const deleteTicket = (ticketToDelete, eventId) => {
+        fetch(`/tickets/${ticketToDelete.id}`, { 
             method: 'DELETE' 
         })
         .then((r) => r.json())
         .then(() => {
-            console.log(attendeeToDelete);
+            console.log(ticketToDelete);
             setEvents((prevEvents) =>
                 prevEvents.map((event) => 
                     event.id === eventId ?
                         {
                             ...event,
-                            attendees: event.attendees.filter((attendee) => attendee.id !== attendeeToDelete.id)
+                            tickets: event.tickets.filter((ticket) => ticket.id !== ticketToDelete.id)
                         }
                         : event
                 )
             );
             fetchEvent(eventId);
         })
-        .catch((error) => console.error('Error deleting attendee:', error));
+        .catch((error) => console.error('Error deleting tickets:', error));
     };
 
     return (
@@ -261,16 +262,14 @@ export const AppProvider = ({ children }) => {
                 currentUser,
                 users,
                 user,
-
                 fetchEvent,
                 createEvent,
                 updateEvent,
                 deleteEvent,
                 events,
                 event,
-
-                createAttendee,
-                deleteAttendee,
+                createTicket,
+                deleteTicket,
             }}
         >
             {children}

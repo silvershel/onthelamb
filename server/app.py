@@ -4,7 +4,7 @@ from sqlite3 import IntegrityError
 from flask import request, session, jsonify
 from flask_restful import Resource
 from config import app, db, api
-from models import User, Event, Attendee, Vendor, UserSchema, AttendeeSchema, VendorSchema, EventSchema
+from models import User, Event, Ticket, Booth, UserSchema, TicketSchema, BoothSchema, EventSchema
 from datetime import datetime
 
 
@@ -282,14 +282,14 @@ class EventById(Resource):
 
 
 # checked and working in postman
-class Attendees(Resource):
+class Tickets(Resource):
     def get(self):
         try:
-            attendees = Attendee.query.all()
+            tickets = Ticket.query.all()
 
-            attendee_schema = AttendeeSchema(many=True)
-            attendee_data = attendee_schema.dump(attendees)
-            return attendee_data, 200
+            ticket_schema = TicketSchema(many=True)
+            ticket_data = ticket_schema.dump(tickets)
+            return ticket_data, 200
 
         except Exception as e:
             return {'error': str(e)}, 422
@@ -302,17 +302,17 @@ class Attendees(Resource):
         event_id = data.get('event_id')
 
         try:
-            new_attendee = Attendee(
+            new_ticket = Ticket(
                 user_id = user_id,
                 event_id = event_id
             )
 
-            db.session.add(new_attendee)
+            db.session.add(new_ticket)
             db.session.commit()
 
-            attendee_schema = AttendeeSchema()
-            attendee_data = attendee_schema.dump(new_attendee)           
-            return attendee_data, 201
+            ticket_schema = TicketSchema()
+            ticket_data = ticket_schema.dump(new_ticket)           
+            return ticket_data, 201
 
         except ValueError as e:
             return {'error': str(e)}, 400
@@ -325,37 +325,37 @@ class Attendees(Resource):
 
 
 # checked and working in postman
-class AttendeeById(Resource):
-    def get(self, attendee_id):
-        attendee = Attendee.query.get(attendee_id)
+class TicketById(Resource):
+    def get(self, ticket_id):
+        ticket = Ticket.query.get(ticket_id)
 
-        if not attendee:
-            return {'error': 'Attendee not found'}, 404
+        if not ticket:
+            return {'error': 'Ticket not found'}, 404
 
-        attendee_schema = AttendeeSchema()
-        attendee_data = attendee_schema.dump(attendee)
-        return attendee_data, 200
+        ticket_schema = TicketSchema()
+        ticket_data = ticket_schema.dump(ticket)
+        return ticket_data, 200
 
-    def delete(self, attendee_id):
-        attendee = Attendee.query.get(attendee_id)
+    def delete(self, ticket_id):
+        ticket = Ticket.query.get(ticket_id)
 
-        if not attendee:
-            return {'error': 'Attendee not found'}, 404
+        if not ticket:
+            return {'error': 'Ticket not found'}, 404
 
-        db.session.delete(attendee)
+        db.session.delete(ticket)
         db.session.commit()
-        return {'message': 'Attendee deleted'}, 200
+        return {'message': 'Ticket deleted'}, 200
 
 
 # checked and working in postman
-class Vendors(Resource):
+class Booths(Resource):
     def get(self):
         try:
-            vendors = Vendor.query.all()
+            booths = Booth.query.all()
 
-            vendor_schema = VendorSchema(many=True)
-            vendor_data = vendor_schema.dump(vendors)
-            return vendor_data, 200
+            booth_schema = BoothSchema(many=True)
+            booth_data = booth_schema.dump(booths)
+            return booth_data, 200
 
         except Exception as e:
             return {'error': str(e)}, 422
@@ -367,17 +367,17 @@ class Vendors(Resource):
         event_id = data.get('event_id')
 
         try:
-            new_vendor = Vendor(
+            new_booth = Booth(
                 user_id = user_id,
                 event_id = event_id
             )
             
-            db.session.add(new_vendor)
+            db.session.add(new_booth)
             db.session.commit()
 
-            vendor_schema = VendorSchema()
-            vendor_data = vendor_schema.dump(new_vendor)    
-            return vendor_data, 201
+            booth_schema = BoothSchema()
+            booth_data = booth_schema.dump(new_booth)    
+            return booth_data, 201
 
         except ValueError as e:
             return {'error': str(e)}, 400
@@ -390,26 +390,26 @@ class Vendors(Resource):
 
 
 # checked and working in postman
-class VendorsById(Resource):
-    def get(self, vendor_id):
-        vendor = Vendor.query.get(vendor_id)
+class BoothById(Resource):
+    def get(self, booth_id):
+        booth = Booth.query.get(booth_id)
 
-        if not vendor:
-            return {'error': 'Vendor not found'}, 404
+        if not booth:
+            return {'error': 'Booth not found'}, 404
 
-        vendor_schema = VendorSchema()
-        vendor_data = vendor_schema.dump(vendor)
-        return vendor_data, 200
+        booth_schema = BoothSchema()
+        booth_data = booth_schema.dump(booth)
+        return booth_data, 200
 
-    def delete(self, vendor_id):
-        vendor = Vendor.query.get(vendor_id)
+    def delete(self, booth_id):
+        booth = Booth.query.get(booth_id)
 
-        if not vendor:
-            return {'error': 'Vendor not found'}, 404
+        if not booth:
+            return {'error': 'Booth not found'}, 404
 
-        db.session.delete(vendor)
+        db.session.delete(booth)
         db.session.commit()
-        return {'message': 'Vendor deleted'}, 200
+        return {'message': 'Booth deleted'}, 200
 
 
 api.add_resource(Login, '/login', endpoint='login')
@@ -421,10 +421,10 @@ api.add_resource(Users, '/users', endpoint='users')
 api.add_resource(UserByUsername, '/users/<username>', endpoint='user')
 api.add_resource(Events, '/events', endpoint='events')
 api.add_resource(EventById, '/events/<int:event_id>', endpoint='event')
-api.add_resource(Attendees, '/attendees', endpoint='attendees')
-api.add_resource(AttendeeById, '/attendees/<int:attendee_id>', endpoint='attendee')
-api.add_resource(Vendors, '/vendors', endpoint='vendors')
-api.add_resource(VendorsById, '/vendors/<int:vendor_id>', endpoint='vendor')
+api.add_resource(Tickets, '/tickets', endpoint='tickets')
+api.add_resource(TicketById, '/tickets/<int:ticket_id>', endpoint='ticket')
+api.add_resource(Booths, '/booths', endpoint='booths')
+api.add_resource(BoothById, '/booths/<int:booth_id>', endpoint='booth')
 
 
 @app.route('/')

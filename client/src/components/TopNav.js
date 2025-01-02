@@ -4,7 +4,7 @@ import { useAppContext } from '../contexts/AppContext';
 
 
 function TopNav() {
-	const { logout } = useAppContext();
+	const { currentUser, logout } = useAppContext();
     const navigate = useHistory()
 
 	return (
@@ -16,10 +16,10 @@ function TopNav() {
 					<option>summer</option>
 					<option>fall</option>
 					<option>winter</option>
-				</select>			
-				<button className='ui right floated button' onClick={() => {logout(); navigate.push('/login')}}>LOGOUT</button>
-				<button className='ui right floated button' onClick={() => navigate.push(`/dashboard`)}>DASHBOARD</button>
-				<button className='ui right floated button' onClick={() => navigate.push('/events')}>EVENTS</button>
+				</select>	
+				<button className='ui mini right floated button' onClick={() => {logout(); navigate.push('/login')}}>LOGOUT</button>
+				<button className='ui mini right floated button' onClick={() => navigate.push(`/dashboard`)}>DASHBOARD</button>
+				<button className='ui mini right floated button' onClick={() => navigate.push('/events')}>EVENTS</button>
 			</div>
 		</div>
 	);

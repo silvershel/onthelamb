@@ -8,46 +8,47 @@ function EventList() {
     const renderCards = (events, attribute) => {
         const sortedEvents = [...events].sort((a, b) => new Date(a[attribute]) - new Date(b[attribute]));
         return sortedEvents.slice(0, 4).map((event) => (
-            <div className='ui column' key={event.id}>
-                <div className='ui card'>
-                    <EventCard event={event} />
-                </div>
-            </div>
+            <EventCard event={event} key={event.id} />
         ));
     };
 
     return (
-        <div className='ui stackable grid container'>
+        <div className='ui basic segment'>
 
-            <div className='ui center aligned row'>
+            <div className='ui basic segment'>
                 <div className='ui column'>
                     <h2>events</h2>
-                    <h4>cute subtitle banner goes here</h4>
+                    <p>What's happening in the community.</p>
                 </div>
             </div>             
 
-            
-            <div className='ui row'>
+            {/* happening soon */}
+            <div className='ui basic segment'>
                 <div className='ui column'>
                     <h3>happening soon</h3>
                 </div>
             </div> 
-            <div className='ui four column row'>
-                {renderCards(events, 'start_date')}
+            
+            <div className='ui basic segment'>
+                <div className='ui four stackable cards'>
+                    {renderCards(events, 'start_date')}
+                </div>
             </div>
 
-            <div className='ui row'>
+            {/* new events */}
+            <div className='ui basic segment'>
                 <div className='ui column'>
                     <h3>new</h3>
                 </div>
             </div> 
-            <div className='ui four column row'>
-                {renderCards(events, 'creation_date')}
+            <div className='ui basic segment'>
+                <div className='ui four stackable cards'>
+                    {renderCards(events, 'creation_date')}
+                </div>
             </div>
 
-
-            {/* <h3>nearby</h3> */}
-            {/* {nearbyEvents} */}
+            {/* STRETCH: nearby events */}
+            
         </div>
     )
 }

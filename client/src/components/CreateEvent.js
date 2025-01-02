@@ -38,8 +38,8 @@ function EventCreate({ resetComponent }) {
                 description: values.description,
                 website_link: values.website_link,
                 user_id: currentUser.id,
-                attendees: {},
-                vendors: {}
+                tickets: {},
+                booths: {}
             }
             console.log(newEvent);
             createEvent(newEvent);
@@ -50,8 +50,12 @@ function EventCreate({ resetComponent }) {
     });
 
     return (
-        <div>            
-            <h2>create an event</h2>
+        <div>
+            <div className='ui center aligned basic segment'>
+                <h3>create event</h3>
+            </div>
+
+            <div className='ui basic segment'>           
             <form className='ui form error' onSubmit={formik.handleSubmit}>
                 <div className='required field'>
                     <label>event type</label>
@@ -98,7 +102,7 @@ function EventCreate({ resetComponent }) {
                         value={formik.values.start_date}
                         onChange={formik.handleChange}
                     />
-                     <div className='ui error message'>
+                    <div className='ui error message'>
                         {formik.errors.start_date}
                     </div>
                 </div>
@@ -149,6 +153,8 @@ function EventCreate({ resetComponent }) {
                 </div>
                 <button className='ui button'type='submit'>save</button>
             </form>
+            </div>
+
         </div>
     );
 }

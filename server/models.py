@@ -10,7 +10,14 @@ import re
 class User(db.Model, SerializerMixin):
     __tablename__ = 'users'
     
-    serialize_rules = ('-password', '-events.user', '-attendees.user', '-vendors.user')
+    serialize_rules = ('-password', 
+                       '-events.user', 
+                       '-events.tickets', 
+                       '-events.booths', 
+                       '-tickets.user', 
+                       '-tickets.event', 
+                       '-booths.user', 
+                       '-booths.event')
 
     id = db.Column(Integer, primary_key=True)
     user_type = db.Column(Enum('Sheep', 'Shepherd', name='user_type_enum'))
@@ -23,8 +30,8 @@ class User(db.Model, SerializerMixin):
     longitude = db.Column(Float)
 
     events = db.relationship('Event', back_populates='user', cascade='all, delete-orphan')
-    attendees = db.relationship('Attendee', back_populates='user', cascade='all, delete-orphan')
-    vendors = db.relationship('Vendor', back_populates='user', cascade='all, delete-orphan')
+    tickets = db.relationship('Ticket', back_populates='user', cascade='all, delete-orphan')
+    booths = db.relationship('Booth', back_populates='user', cascade='all, delete-orphan')
 
 
     # @hybrid_property
@@ -82,7 +89,13 @@ class User(db.Model, SerializerMixin):
 class Event(db.Model, SerializerMixin):
     __tablename__ = 'events'
 
-    serialize_rules = ('-user.events', '-attendees.event', '-vendors.event')
+    serialize_rules = ('-user.events', 
+                       '-user.tickets', 
+                       '-user.booths', 
+                       '-tickets.event', 
+                       '-tickets.user', 
+                       '-booths.event', 
+                       '-booths.user')
 
     id = db.Column(Integer, primary_key=True)
     event_type = db.Column(Enum('Local Meetup', 'Festival', 'Retreat', 'Popup', 'Trunk Show', name='event_type_enum'), nullable=False)
@@ -94,11 +107,10 @@ class Event(db.Model, SerializerMixin):
     description = db.Column(String, nullable=False)
     website_link = db.Column(String)
     user_id = db.Column(Integer, ForeignKey('users.id'), nullable=False)
-    # vendor_id = 
     
     user = db.relationship('User', back_populates='events')
-    attendees = db.relationship('Attendee', back_populates='event', cascade='all, delete-orphan')
-    vendors = db.relationship('Vendor', back_populates='event', cascade='all, delete-orphan')
+    tickets = db.relationship('Ticket', back_populates='event', cascade='all, delete-orphan')
+    booths = db.relationship('Booth', back_populates='event', cascade='all, delete-orphan')
 
 
     # VALIDATIONS
@@ -109,18 +121,23 @@ class Event(db.Model, SerializerMixin):
     # End date must be later than start date
 
 
-class Attendee(db.Model, SerializerMixin):
-    # change name to ticket
-    __tablename__ = 'attendees'
+class Ticket(db.Model, SerializerMixin):
+    __tablename__ = 'tickets'
 
-    serialize_rules = ('user.attendees', 'event.attendees',)
-    # comment = 
+    serialize_rules = ('-user.booth', 
+                       '-user.events', 
+                       '-user.tickets', 
+                       '-event.user', 
+                       '-event.tickets',
+                       '-event.booths',)
+    
+    comment = db.Column(String)
     id = db.Column(Integer, primary_key=True)
     user_id = db.Column(Integer, ForeignKey('users.id'), nullable=False)
     event_id = db.Column(Integer, ForeignKey('events.id'), nullable=False)
 
-    user = db.relationship('User', back_populates='attendees')
-    event = db.relationship('Event', back_populates='attendees')
+    user = db.relationship('User', back_populates='tickets')
+    event = db.relationship('Event', back_populates='tickets')
 
     @validates('user_id')
     def validate_user_id(self, key, user_id):
@@ -140,25 +157,28 @@ class Attendee(db.Model, SerializerMixin):
         if not Event.query.get(event_id):
             raise ValueError('Event does not exist')
         
-        if Attendee.query.filter_by(user_id=self.user_id, event_id=event_id).first():
+        if Ticket.query.filter_by(user_id=self.user_id, event_id=event_id).first():
             raise ValueError(f'User is already attending this event.')
         
         return event_id
     
 
-class Vendor(db.Model, SerializerMixin):
-    # change to booth
-    __tablename__ = 'vendors'
+class Booth(db.Model, SerializerMixin):
+    __tablename__ = 'booths'
 
-    serialize_rules = ('user.vendors', 'event.vendors',)
+    serialize_rules = ('-user.booth', 
+                       '-user.events', 
+                       '-user.tickets', 
+                       '-event.user', 
+                       '-event.tickets',
+                       '-event.booths',)
 
     id = db.Column(Integer, primary_key=True)
-    comment = db.Column(String)
     user_id = db.Column(Integer, ForeignKey('users.id'), nullable=False)
     event_id = db.Column(Integer, ForeignKey('events.id'), nullable=False)
 
-    user = db.relationship('User', back_populates='vendors')
-    event = db.relationship('Event', back_populates='vendors')
+    user = db.relationship('User', back_populates='booths')
+    event = db.relationship('Event', back_populates='booths')
 
     @validates('user_id')
     def validate_user_id(self, key, user_id):
@@ -178,44 +198,42 @@ class Vendor(db.Model, SerializerMixin):
         if not Event.query.get(event_id):
             raise ValueError('Event does not exist')
         
-        if Vendor.query.filter_by(user_id=self.user_id, event_id=event_id).first():
+        if Booth.query.filter_by(user_id=self.user_id, event_id=event_id).first():
             raise ValueError(f'User is already vending at this event.')
         
         return event_id
 
 
-class AttendeeSchema(ma.SQLAlchemyAutoSchema):
+class TicketSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
-        model = Attendee
+        model = Ticket
         load_instance = True
     
     user_id = fields.Integer()
     event_id = fields.Integer()
 
-class VendorSchema(ma.SQLAlchemyAutoSchema):
+    user = ma.Nested('UserSchema', exclude=('tickets', 'events', 'booths'))
+    event = ma.Nested('EventSchema', exclude=('tickets', 'booths', 'user'))
+
+class BoothSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
-        model = Vendor
+        model = Booth
         load_instance = True
+
+    user_id = fields.Integer()
+    event_id = fields.Integer()
+
+    user = ma.Nested('UserSchema', exclude=('tickets', 'events', 'booths'))
+    event = ma.Nested('EventSchema', exclude=('tickets', 'booths', 'user'))
 
 class EventSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = Event
         load_instance = True
-        field_order = ['id', 'title', 'event_type', 'start_date', 'end_date', 'creation_date', 'website_link', 'description', 'user_id', 'user', 'attendees', 'vendors']
 
-    id = fields.Integer()
-    title = fields.String()
-    event_type = fields.String()
-    start_date = fields.DateTime()
-    end_date = fields.DateTime()
-    creation_date = fields.DateTime()
-    website_link = fields.String()
-    description = fields.String()
-    user_id = fields.Integer()
-
-    # user = ma.Nested('UserSchema')
-    attendees = ma.Nested('AttendeeSchema', many=True)
-    vendors = ma.Nested('VendorSchema', many=True)
+    user = ma.Nested('UserSchema', exclude=('events', 'tickets', 'booths'))
+    tickets = ma.Nested('TicketSchema', many=True, exclude=('event', 'user'))
+    booths = ma.Nested('BoothSchema', many=True, exclude=('event', 'user'))
 
 class UserSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
@@ -223,7 +241,6 @@ class UserSchema(ma.SQLAlchemyAutoSchema):
         load_instance = True
         exclude = ('password',)
 
-    id = fields.Integer()
-    events = ma.Nested(EventSchema, many=True)
-    attendees = ma.Nested('AttendeeSchema', many=True)
-    vendors = ma.Nested('VendorSchema', many=True)
+    events = ma.Nested('EventSchema', many=True, exclude=('user', 'tickets', 'booths'))
+    tickets = ma.Nested('TicketSchema', many=True, exclude=('user', 'event'))
+    booths = ma.Nested('BoothSchema', many=True, exclude=('user', 'event'))

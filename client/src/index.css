@@ -39,21 +39,53 @@ body {
   color: #3A111A !important;
   font-family: 'Poppins', serif !important;
   font-optical-sizing: auto;
-  font-weight: 400 !important;
+  font-weight: 500 !important;
   font-style: normal;
   letter-spacing: .25px !important;
 }
 
 /* BUTTON STYLES */
-button {
+.ui.button {
   font-family: 'Poppins', serif !important;
   font-optical-sizing: auto;
   font-weight: 500 !important;
   font-style: normal;
   letter-spacing: .5px !important;
+  background-color: #410014 !important;
+  color: #EDD1A9 !important;
 }
 
 /* CONTAINER STYLES */
+
+.page {
+  background-image: url('http://localhost:5555/static/assets/login-hero-04.jpg') !important;
+  background-size: cover; /* image fills screen */
+  background-position: center; /* image horizontal alighment */
+  background-attachment: fixed;
+  height: 100vh; /* fits content to screen height */
+  overflow: auto;
+}
+
+.page::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.7); /* White with 50% opacity */
+  z-index: 0; /* Ensure overlay is above the image */
+}
+/* 
+.color-references {
+  background-color: #EDD1A9 ;
+  background-color: #EAA0D1 ;
+  background-color: #C14A16 ;
+  background-color: #410014 ;
+  background-color: #96720C ;
+  background-color: #9BA5C4 ;
+} */
+
 .login-container {
   display: flex; /* flexbox */
   background-image: url('http://localhost:5555/static/assets/login-hero-04.jpg') !important;

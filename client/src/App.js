@@ -39,7 +39,7 @@ function Routes() {
 
 	return (
 		<Router>
-			<div>
+			<div className='page'>
 				<div>
 					<TopNav />
 				</div>

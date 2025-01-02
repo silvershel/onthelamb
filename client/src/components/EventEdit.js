@@ -137,18 +137,18 @@ function EventEdit() {
                     </div>
                 </div>
                 <div>
-                    <h3>vendors</h3>
-                    {event.vendors && event.vendors.length > 0 ? (
-                        event.vendors.map((vendor) => (
-                            <div key={vendor.id}>
-                            <p>{vendor.user.username}</p>
+                    <h3>booths</h3>
+                    {event.booths && event.booths.length > 0 ? (
+                        event.booths.map((booth) => (
+                            <div key={booth.id}>
+                            <p>{booth.user.username}</p>
                             <p>(remove)</p>
                             </div>
                         ))
                     ) : (
-                        <p>no vendors have been assigned.</p>
+                        <p>no booths have been assigned.</p>
                     )}
-                    <button className='ui button' type='button'>add vendor</button>
+                    <button className='ui button' type='button'>add booth</button>
                 </div>
                 <button className='ui button' type='submit'>save edits</button>
             </form>

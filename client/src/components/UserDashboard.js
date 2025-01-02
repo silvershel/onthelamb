@@ -14,11 +14,11 @@ function UserDashboard() {
         
 
     return(
-        <div className='ui stackable grid'>
+        <div className='ui basic segment'>
             
-            <div className='ui center aligned row'>
+            <div className='ui center aligned basic segment'>
                 <div className='ui column'>
-				<h3>on the lamb</h3>
+				<h2>on the lamb</h2>
 				<p>Welcome, {currentUser.name}!</p>
                 <button className='ui button' onClick={() => openComponent('user details')}>Profile</button>
                 <button className='ui button' onClick={() => openComponent('my events')}>My Events</button>
@@ -26,20 +26,17 @@ function UserDashboard() {
                 </div>
 			</div> 
             
-            {open === 'user details'
-            ? <UserDetails /> 
-            : null
-            }
+            {open === 'user details' && (
+            <UserDetails open={open}/> 
+            )}
 
-            {open === 'my events'
-            ? <UserEvents /> 
-            : null
-            }
+            {open === 'my events' && (
+            <UserEvents /> 
+            )}
 
-            {open === 'create event'
-            ? <CreateEvent resetComponent={resetComponent}/> 
-            : null
-            }
+            {open === 'create event' && (
+            <CreateEvent resetComponent={resetComponent}/> 
+            )}
 
         </div>
     )

@@ -8,7 +8,7 @@ from faker import Faker
 
 # Local imports
 from app import app
-from models import db, User, Event, Attendee, Vendor
+from models import db, User, Event, Ticket, Booth
 
 if __name__ == '__main__':
     fake = Faker()
@@ -18,8 +18,8 @@ if __name__ == '__main__':
         # Delete Existing Data
         User.query.delete()
         Event.query.delete()
-        Attendee.query.delete()
-        Vendor.query.delete()
+        Ticket.query.delete()
+        Booth.query.delete()
         db.session.commit()
 
         # Seed Users
@@ -95,7 +95,7 @@ if __name__ == '__main__':
                     title=event_title,
                     start_date=fake.future_date(end_date=True),
                     end_date=fake.future_date(end_date=True),
-                    creation_date=fake.future_date(),
+                    creation_date=fake.future_date(end_date=True),
                     user_id=test_user.id,
                     website_link=fake.url(),
                     description=fake.sentence(),
@@ -114,7 +114,7 @@ if __name__ == '__main__':
                 title = event_title,
                 start_date = fake.future_date(end_date=True),
                 end_date = fake.future_date(end_date=True),
-                creation_date = fake.future_date(),
+                creation_date = fake.future_date(end_date=True),
                 user_id = user.id,
                 website_link = fake.url(),
                 description = fake.sentence(),
@@ -127,36 +127,35 @@ if __name__ == '__main__':
         db.session.commit()
         print(f'Created {len(events)} events.')
 
-        # Seed Attendees
-        attendees = []
-        for event in events:
-            attendees_for_event = []
-            attendees_for_event.append(Attendee(user_id=event.user_id, event_id=event.id))
-
-            for i in range(randint(1, 3)):
-                user = rc(users)
-                attendees_for_event.append(Attendee(user_id=user.id, event_id=event.id))
-
-            attendees.extend(attendees_for_event)
-
-        db.session.add_all(attendees)
-        db.session.commit()
-        print(f'Created {len(attendees)} attendees.')
-
-        # Seed Vendors
-        vendors = []
+        # Seed Tickets
+        tickets = []
         for event in events:
             for i in range(randint(3, 10)):
                 user = rc(users)
-                vendor = Vendor(
-                    user_id=user.id,
-                    event_id=event.id,
-                    comment=fake.sentence()
+                ticket = Ticket(
+                    user_id = user.id,
+                    event_id = event.id,
+                    comment = fake.sentence(),
                 )
-                vendors.append(vendor)
-
-        db.session.add_all(vendors)
+                tickets.append(ticket)
+                
+        db.session.add_all(tickets)
         db.session.commit()
-        print(f'Created {len(vendors)} vendors.')
+        print(f'Created {len(tickets)} tickets.')
+
+        # Seed Booths
+        booths = []
+        for event in events:
+            for i in range(randint(3, 10)):
+                user = rc(users)
+                booth = Booth(
+                    user_id = user.id,
+                    event_id = event.id,
+                )
+                booths.append(booth)
+
+        db.session.add_all(booths)
+        db.session.commit()
+        print(f'Created {len(booths)} booths.')
 
         print('Seeding complete.')

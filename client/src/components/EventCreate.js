@@ -38,8 +38,8 @@ function EventCreate({ resetComponent }) {
                 description: values.description,
                 website_link: values.website_link,
                 user_id: currentUser.id,
-                attendees: {},
-                vendors: {}
+                tickets: {},
+                booths: {}
             }
             console.log(newEvent);
             createEvent(newEvent);
