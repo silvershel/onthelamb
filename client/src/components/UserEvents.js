@@ -48,8 +48,8 @@ function UserEvents() {
 
             <div className='ui basic segment'>
             {count < userEvents.length && (
-                <div className="ui center aligned">
-                    <button className="ui button" onClick={loadMoreEvents}>
+                <div className='ui center aligned'>
+                    <button className='ui button' onClick={loadMoreEvents}>
                         Load More
                     </button>
                 </div>

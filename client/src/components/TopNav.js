@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useAppContext } from '../contexts/AppContext';
 
 
 function TopNav() {
 	const { currentUser, logout } = useAppContext();
+	const [season, setSeason] = useState('');
+	
     const navigate = useHistory()
 
 	return (
