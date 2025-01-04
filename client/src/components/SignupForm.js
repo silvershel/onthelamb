@@ -77,8 +77,8 @@ function SignupForm() {
                         value={formik.values.user_type}
                         onChange={formik.handleChange} >
                         <option value='' disabled>Please select a user type: </option>
-                        <option value='Sheep'>Sheep</option>
-                        <option value='Shepherd'>Shepherd</option>
+                        <option value='sheep'>sheep (standard user)</option>
+                        <option value='shepherd'>shepherd (business or organizer)</option>
                     </select>
                     <div className='ui error message'>
                         {formik.errors.user_type}
@@ -118,7 +118,7 @@ function SignupForm() {
                 </div>
                 <div className='required field'>
                     <input 
-                        type='text' 
+                        type='password' 
                         id='password'
                         name='password'
                         placeholder='Password'

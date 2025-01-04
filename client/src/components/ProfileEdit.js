@@ -45,8 +45,8 @@ function ProfileEdit() {
                         value={formik.values.user_type}
                         onChange={formik.handleChange} >
                         <option value='' disabled>please select a user type: </option>
-                        <option value='Sheep'>sheep</option>
-                        <option value='Shepherd'>shepherd</option>
+                        <option value='sheep'>sheep</option>
+                        <option value='shepherd'>shepherd</option>
                     </select>
                     <div className='ui error message'>
                         {formik.errors.user_type}

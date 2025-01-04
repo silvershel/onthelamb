@@ -9,6 +9,15 @@ export const AppProvider = ({ children }) => {
     const [events, setEvents] = useState([]);
     const [event, setEvent] = useState([]);
 
+    // FOR PAGE RELOAD
+    useEffect(() => {
+        const storedUser = JSON.parse(localStorage.getItem('currentUser'));
+        if (storedUser) {
+          setCurrentUser(storedUser);
+        }
+      }, []);
+
+
     // LOGIN
     const login = (user) => {
         fetch('/login', {
@@ -25,6 +34,7 @@ export const AppProvider = ({ children }) => {
         .then((user) => {
             console.log(user);
             setCurrentUser(user);
+            localStorage.setItem('currentUser', JSON.stringify(user));
         })
         .catch((error) => {
             console.error('Signup error:', error);
@@ -49,6 +59,7 @@ export const AppProvider = ({ children }) => {
         .then((user) => {
             console.log(user);
             setCurrentUser(user);
+            localStorage.setItem('currentUser', JSON.stringify(user));
         })
         .catch((error) => console.error('Signup form error:', error));
     };
@@ -60,6 +71,7 @@ export const AppProvider = ({ children }) => {
             .then((user) => {
                 console.log(user);
                 setCurrentUser(user);
+                localStorage.setItem('currentUser', JSON.stringify(user));
             })
             .catch((error) => console.error('Error checking session:', error));
     }, []);
@@ -70,6 +82,7 @@ export const AppProvider = ({ children }) => {
         .then((r) => {
             if (r.ok) {
                 setCurrentUser(null);
+                localStorage.removeItem('currentUser'); // Remove user from localStorage
             }
         });
     };
@@ -84,6 +97,7 @@ export const AppProvider = ({ children }) => {
         })
         .catch((error) => console.error('Error fetching users:', error));
     }, []);
+    
 
     // FETCH USER
     const fetchUser = (username) => {

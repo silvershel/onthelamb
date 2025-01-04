@@ -20,7 +20,7 @@ class User(db.Model, SerializerMixin):
                        '-booths.event')
 
     id = db.Column(Integer, primary_key=True)
-    user_type = db.Column(Enum('Sheep', 'Shepherd', name='user_type_enum'))
+    user_type = db.Column(Enum('sheep', 'shepherd', name='user_type_enum'))
     name = db.Column(String)
     username = db.Column(String, unique=True, nullable=False)
     password = db.Column(String, nullable=False)

@@ -14,58 +14,58 @@ import ErrorPage from './components/ErrorPage';
 import { AppProvider, useAppContext } from './contexts/AppContext';
 
 
+
 function Routes() {
 	const { currentUser } = useAppContext();
   
 	if (!currentUser) {
 		return (
-			<Router>
-				<div className='login-container'>
-					<Switch>
-						<Route path='/login' exact component={LoginForm} />
-						<Route path='/signup' exact component={SignupForm}/>
-						<Route path='/' exact>
-							<Redirect to='/login' />
-						</Route>
-						<Route path='*' exact component={ErrorPage}>
-							<Redirect to='/' />
-						</Route>
-					</Switch>				
-				</div>				
-			</Router>
+			<div id='app-container' className='body logged-out'>
+				<TopNav />
+				<div className='login-container'>				
+				<Switch>
+					<Route path='/login' exact component={LoginForm} />
+					<Route path='/signup' exact component={SignupForm}/>
+					<Route path='/' exact>
+						<Redirect to='/login' />
+					</Route>
+					<Route path='*' exact component={ErrorPage} />
+				</Switch>	
+				</div>			
+			</div>				
 	  	);
 	} 
 
 	return (
-		<Router>
-			<div className='page'>
-				<div>
-					<TopNav />
-				</div>
-				<div>
-					<Switch>
-						<Route path='/login' exact>
-							<Redirect to='/' />
-						</Route>
-						<Route path='/signup' exact>
-							<Redirect to='/' />
-						</Route>
-						<Route path='/' exact component={UserDashboard} />
-						<Route path='/dashboard' exact component={UserDashboard}/>
-						<Route path='/events' exact component={EventList} />
-						<Route path='/events/:eventId' exact component={EventDetails} />
-						<Route path='*' component={ErrorPage} />
-					</Switch>
-				</div>
+		<div id='app-container' className='body'>
+			<div>
+				<TopNav />
 			</div>
-		</Router>
+			<div>
+				<Switch>
+					<Route path='/login' exact>
+						<Redirect to='/' />
+					</Route>
+					<Route path='/signup' exact>
+						<Redirect to='/' />
+					</Route>
+					<Route path='/' exact component={UserDashboard} />
+					<Route path='/dashboard' exact component={UserDashboard}/>
+					<Route path='/events' exact component={EventList} />
+					<Route path='/events/:eventId' exact component={EventDetails} />
+					<Route path='*' component={ErrorPage} />
+				</Switch>
+			</div>
+		</div>
 	);
   }
   
   function App() {
 	return (
 		<AppProvider>
-			<Routes />
+			<Router>
+				<Routes />
+			</Router>
 		</AppProvider>
 	);
   }

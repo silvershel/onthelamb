@@ -58,7 +58,7 @@ function EventCreate({ resetComponent }) {
                     <select className='ui search dropdown' id='event_type' name='event_type' value={formik.values.event_type} onChange={formik.handleChange} >
                         <option value='' disabled>select an option:</option>
 
-                        {currentUser.user_type === 'Sheep' ? (
+                        {currentUser.user_type === 'sheep' ? (
                             <option value='Local Meetup'>local meetup</option>
                         ) : (
                             ['Local Meetup', 'Festival', 'Retreat', 'Popup', 'Trunk Show'].map((eventType) => (

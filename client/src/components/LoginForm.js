@@ -49,7 +49,7 @@ function LoginForm() {
                 </div>
                 <div className='field'>
                     <input 
-                        type='text'
+                        type='password'
                         id='password'
                         name='password'
                         placeholder='Password'

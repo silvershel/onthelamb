@@ -35,15 +35,6 @@ h5 {
   font-size: 16px !important;
 }
 
-body {
-  color: #3A111A !important;
-  font-family: 'Poppins', serif !important;
-  font-optical-sizing: auto;
-  font-weight: 500 !important;
-  font-style: normal;
-  letter-spacing: .25px !important;
-}
-
 /* BUTTON STYLES */
 .ui.button {
   font-family: 'Poppins', serif !important;
@@ -52,45 +43,13 @@ body {
   font-style: normal;
   letter-spacing: .5px !important;
   background-color: #410014 !important;
-  color: #EDD1A9 !important;
+  color: #fff !important;
 }
+
 
 /* CONTAINER STYLES */
-
-.page {
-  background-image: url('http://localhost:5555/static/assets/login-hero-04.jpg') !important;
-  background-size: cover; /* image fills screen */
-  background-position: center; /* image horizontal alighment */
-  background-attachment: fixed;
-  height: 100vh; /* fits content to screen height */
-  overflow: auto;
-}
-
-.page::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(255, 255, 255, 0.7); /* White with 50% opacity */
-  z-index: 0; /* Ensure overlay is above the image */
-}
-/* 
-.color-references {
-  background-color: #EDD1A9 ;
-  background-color: #EAA0D1 ;
-  background-color: #C14A16 ;
-  background-color: #410014 ;
-  background-color: #96720C ;
-  background-color: #9BA5C4 ;
-} */
-
 .login-container {
   display: flex; /* flexbox */
-  background-image: url('http://localhost:5555/static/assets/login-hero-04.jpg') !important;
-  background-size: cover; /* image fills screen */
-  background-position: center; /* image horizontal alighment */
   justify-content: center; /* content horizontal alighment */
   align-items: center; /* content vertical alighment */
   height: 100vh; /* fits content to screen height */
@@ -108,3 +67,63 @@ body {
   background-color: rgba(0, 0, 0, 0.3) !important; /* Adjust opacity here */
   backdrop-filter: blur(14px) !important;
 }
+
+/* PAGE STYLES */
+
+
+.body {
+  background-image: url('http://localhost:5555/static/assets/login-hero-04.jpg') !important;
+  background-size: cover; /* fills image to screen */
+  background-position: center; /* aligns image horizontally */
+  background-attachment: fixed; /* image won't move */
+  height: 100vh; /* fits all content to screen height */
+  /* overflow: auto; */
+
+  color: #3A111A !important;
+  font-family: 'Poppins', serif !important;
+  font-optical-sizing: auto;
+  font-weight: 500 !important;
+  font-style: normal;
+  letter-spacing: .25px !important;
+}
+
+.body::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.6);
+  z-index: 0;
+}
+
+.body.fall {
+  background-image: url('http://localhost:5555/static/assets/login-hero-01.jpg') !important;
+}
+
+.body.spring {
+  background-image: url('http://localhost:5555/static/assets/login-hero-02.jpg') !important;
+}
+
+.body.summer {
+  background-image: url('http://localhost:5555/static/assets/login-hero-03.jpg') !important;
+}
+
+.body.winter {
+  background-image: url('http://localhost:5555/static/assets/login-hero-04.jpg') !important;
+}
+
+.body.logged-out::before {
+  display: none;
+}
+
+/* STYLE REFERENCES */
+/* .colors {
+  ivory: #EDD1A9 ;
+  pink: #EAA0D1 ;
+  red: #C14A16 ;
+  eggplant: #410014 ;
+  green: #96720C ;
+  blue: #9BA5C4 ;
+} */

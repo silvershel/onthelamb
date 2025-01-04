@@ -16,7 +16,7 @@ function UserDashboard() {
     return(
         <div className='ui basic segment'>
             
-            <div className='ui center aligned basic segment'>
+            <div className='ui basic segment'>
                 <div className='ui column'>
 				<h2>on the lamb</h2>
 				<p>Welcome, {currentUser.name}!</p>

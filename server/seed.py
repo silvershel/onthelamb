@@ -27,7 +27,7 @@ if __name__ == '__main__':
             name = 'Sheep Test User',
             username = 'sheep',
             password = 'password',
-            user_type = 'Sheep',
+            user_type = 'sheep',
             profile_photo = 'http://localhost:5555/static/assets/default-profile-photo-04.jpg',
             latitude = '38.805496',
             longitude = '-77.04344'
@@ -39,7 +39,7 @@ if __name__ == '__main__':
             name = 'Shepherd Test User',
             username = 'shepherd',
             password = 'password',
-            user_type = 'Shepherd',
+            user_type = 'shepherd',
             profile_photo = 'http://localhost:5555/static/assets/default-profile-photo-04.jpg',
             latitude = '38.805496',
             longitude = '-77.04344'
@@ -58,7 +58,7 @@ if __name__ == '__main__':
 
         for i in range(10):
             username = generate_username()
-            user_type = rc(['Sheep', 'Shepherd'])
+            user_type = rc(['sheep', 'shepherd'])
             profile_photo = 'http://localhost:5555/static/assets/default-profile-photo-04.jpg'
 
             while username in used_usernames:
