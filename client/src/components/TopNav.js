@@ -5,8 +5,9 @@ import { useAppContext } from '../contexts/AppContext';
 
 function TopNav() {
 	const { logout, currentUser } = useAppContext();
-	const navigate = useHistory()
 	const [season, setSeason] = useState('winter');
+	const navigate = useHistory()
+	
 
 	useEffect(() => {
 		const savedSeason = localStorage.getItem('season');
@@ -17,17 +18,19 @@ function TopNav() {
 		}, []);
 
 	useEffect(() => {
+		localStorage.setItem('season', season);
 		const container = document.getElementById('app-container');
 		if (container) {
 			container.classList.remove('fall', 'spring', 'summer', 'winter');
 			container.classList.add(season);
 		}
-		localStorage.setItem('season', season);
 		}, [season]);
 
 	const handleThemeSelect = (e) => {
 		setSeason(e.target.value);
-		};
+	};
+
+	console.log(season)
 
 	return (
 		<div>

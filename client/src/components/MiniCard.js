@@ -8,30 +8,30 @@ function MiniCard({ event, toggleComponent }) {
         <div key={event.id} className='ui card'>  
             <div className='content'>
 
-            <div class='blurring dimmable image'>
-                <div class='ui inverted dimmer'>
-                    <div class='content'>
-                    <div class='center'>
-                        <div class='ui primary button'>view details</div>
+            <div className='blurring dimmable image'>
+                <div className='ui inverted dimmer'>
+                    <div className='content'>
+                    <div className='center'>
+                        <div className='ui primary button'>view details</div>
                     </div>
                     </div>
                 </div>
-                    <img src='/images/avatar/large/jenny.jpg'/>
+                    <img alt='' src='/images/avatar/large/jenny.jpg'/>
                 </div>
-                <div class='content'>
+                <div className='content'>
                     <h4>{event.title}</h4>
-                <div class='meta'>
+                <div className='meta'>
                     <p>{event.start_date}</p>
                 </div>
             </div>
             </div>
 
-            <div class='extra content'>
-                <button class='ui icon button' onClick={() => deleteEvent(event.id)}>
-                <i class='trash alternate icon'></i>
+            <div className='extra content'>
+                <button className='ui icon button' onClick={() => deleteEvent(event.id)}>
+                <i className='trash alternate icon'></i>
                 </button>
-                <button class='ui right floated icon button' onClick={() => toggleComponent(event)}>
-                <i class='open folder icon'></i>
+                <button className='ui right floated icon button' onClick={() => toggleComponent(event)}>
+                <i className='open folder icon'></i>
                 </button>
             </div>
         </div>
