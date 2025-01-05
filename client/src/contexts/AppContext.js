@@ -166,7 +166,6 @@ export const AppProvider = ({ children }) => {
         .catch((error) => console.error('Error updating event:', error));
     };
 
-
     // FETECH EVENTS
     useEffect(() => {
         fetch('/events')

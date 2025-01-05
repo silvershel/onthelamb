@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
-function EventCreate({ resetComponent }) {
+function CreateEvent({ resetComponent }) {
     const { currentUser, createEvent } = useAppContext();
     const navigate = useHistory()
     
@@ -159,4 +159,4 @@ function EventCreate({ resetComponent }) {
     );
 }
 
-export default EventCreate;
+export default CreateEvent;
