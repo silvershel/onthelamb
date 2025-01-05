@@ -9,6 +9,10 @@ export const AppProvider = ({ children }) => {
     const [user, setUser] = useState([]);
     const [events, setEvents] = useState([]);
     const [event, setEvent] = useState([]);
+    const [tickets, setTickets] = useState([]);
+    const [ticket, setTicket] = useState([]);
+    const [booths, setBooths] = useState([]);
+    const [booth, setBooth] = useState([]);
 
 
     useEffect(() => {
@@ -198,14 +202,18 @@ export const AppProvider = ({ children }) => {
         .then((r) => r.json())
         .then((newEvent) => {
             console.log(newEvent);
-            setEvents((prevEvents) => [...prevEvents, newEvent]);
+            setCurrentUser((currentUser) =>                
+                currentUser.map((event) =>
+                    event.id === newEvent.id ? newEvent : event
+                )
+            );
 
             const newTicket = {
                 comment: 'greetings, from your host!',
                 user_id: currentUser.id,
                 event_id: newEvent.id,
             }
-            createTicket( newTicket, newEvent.id);
+            createTicket(newTicket, newEvent.id);
         })
         .catch((error) => console.error('Error creating new event:', error));
     };
@@ -246,7 +254,29 @@ export const AppProvider = ({ children }) => {
         .catch((error) => console.error('Error deleting event:', error));
     };
 
-    // CREATE TICEKT
+    // FETCH TICKETS
+    useEffect(() => {
+        fetch('/tickets')
+        .then((r) => r.json())
+        .then((tickets) => {
+            console.log(tickets);
+            setTickets(tickets);
+        })
+        .catch((error) => console.error('Error fetching tickets:', error));
+    }, []);
+
+    // FETCH TICKET
+    const fetchTicket = (ticketId) => {
+        fetch(`/tickets/${ticketId}`)
+            .then((r) => r.json())
+            .then((ticket) => {
+                console.log(ticket);
+                setTicket(ticket);
+            })
+            .catch((error) => console.error('Error fetching ticket:', error));
+    };
+
+    // CREATE TICKET
     const createTicket = (newTicket, eventId) => {
         fetch('/tickets', {
             method: 'POST',
@@ -293,6 +323,29 @@ export const AppProvider = ({ children }) => {
         .catch((error) => console.error('Error deleting tickets:', error));
     };
 
+    // FETCH BOOTHS
+    useEffect(() => {
+        fetch('/booths')
+        .then((r) => r.json())
+        .then((booths) => {
+            console.log(booths);
+            setBooths(booths);
+        })
+        .catch((error) => console.error('Error fetching booths:', error));
+    }, []);
+
+    // FETCH BOOTH
+    const fetchBooth = (boothId) => {
+        fetch(`/booths/${boothId}`)
+            .then((r) => r.json())
+            .then((booth) => {
+                console.log(booth);
+                setBooth(booth);
+            })
+            .catch((error) => console.error('Error fetching booth:', error));
+    };
+
+
     return (
         <AppContext.Provider
             value={{
@@ -312,8 +365,16 @@ export const AppProvider = ({ children }) => {
                 deleteEvent,
                 events,
                 event,
+                fetchTicket,
                 createTicket,
                 deleteTicket,
+                tickets,
+                ticket,
+                fetchBooth,
+                createBooth, // make this
+                deleteBooth, // make this
+                booths,
+                booth,
             }}
         >
             {children}

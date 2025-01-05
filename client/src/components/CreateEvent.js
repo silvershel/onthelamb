@@ -44,7 +44,6 @@ function CreateEvent({ resetComponent }) {
             console.log(newEvent);
             createEvent(newEvent);
             resetComponent()
-
             navigate.push(`/dashboard`)
         }
     });

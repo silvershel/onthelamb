@@ -1,11 +1,6 @@
 import React from 'react';
-// import { useHistory } from 'react-router-dom';
-// import { useAppContext } from '../contexts/AppContext';
-
 
 function Footer() {
-	// const { season, handleThemeSelect, logout } = useAppContext();
-	// const navigate = useHistory()
 
 	return (
 		<div className='ui footer'>
