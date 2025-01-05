@@ -13,16 +13,12 @@ import ErrorPage from './components/ErrorPage';
 // context
 import { AppProvider, useAppContext } from './contexts/AppContext';
 
-
-
 function Routes() {
 	const { currentUser } = useAppContext();
   
 	if (!currentUser) {
 		return (
-			<div id='app-container' className='body logged-out'>
-				<TopNav />
-				<div className='login-container'>				
+			<div className='login'>
 				<Switch>
 					<Route path='/login' exact component={LoginForm} />
 					<Route path='/signup' exact component={SignupForm}/>
@@ -31,7 +27,6 @@ function Routes() {
 					</Route>
 					<Route path='*' exact component={ErrorPage} />
 				</Switch>	
-				</div>			
 			</div>				
 	  	);
 	} 

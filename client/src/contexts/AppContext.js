@@ -3,13 +3,14 @@ import React, { createContext, useState, useEffect } from 'react';
 export const AppContext = createContext();
 
 export const AppProvider = ({ children }) => {
+    const [season, setSeason] = useState('winter');
     const [currentUser, setCurrentUser] = useState(null);
     const [users, setUsers] = useState([]);
     const [user, setUser] = useState([]);
     const [events, setEvents] = useState([]);
     const [event, setEvent] = useState([]);
 
-    // FOR PAGE RELOAD
+
     useEffect(() => {
         const storedUser = JSON.parse(localStorage.getItem('currentUser'));
         if (storedUser) {
@@ -17,6 +18,34 @@ export const AppProvider = ({ children }) => {
         }
       }, []);
 
+    // THEME SETTER
+    useEffect(() => {
+        if (currentUser) {
+          const savedSeason = localStorage.getItem('season');
+          if (savedSeason) {
+            setSeason(savedSeason);
+          } else {
+            setSeason('winter');
+          }
+        } else {
+          setSeason('winter');
+        }
+      }, [currentUser]);
+
+    useEffect(() => {
+        if (currentUser) {
+            localStorage.setItem('season', season);
+            const container = document.getElementById('app-container');
+            if (container) {
+                container.classList.remove('fall', 'spring', 'summer', 'winter');
+                container.classList.add(season);
+            }
+        }
+    }, [season, currentUser]);
+
+    const handleThemeSelect = (e) => {
+        setSeason(e.target.value);
+    };
 
     // LOGIN
     const login = (user) => {
@@ -82,7 +111,7 @@ export const AppProvider = ({ children }) => {
         .then((r) => {
             if (r.ok) {
                 setCurrentUser(null);
-                localStorage.removeItem('currentUser'); // Remove user from localStorage
+                localStorage.removeItem('currentUser');
             }
         });
     };
@@ -268,6 +297,8 @@ export const AppProvider = ({ children }) => {
     return (
         <AppContext.Provider
             value={{
+                season,
+                handleThemeSelect,
                 login,
                 signup,
                 logout,

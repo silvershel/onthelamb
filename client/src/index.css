@@ -48,13 +48,6 @@ h5 {
 
 
 /* CONTAINER STYLES */
-.login-container {
-  display: flex; /* flexbox */
-  justify-content: center; /* content horizontal alighment */
-  align-items: center; /* content vertical alighment */
-  height: 100vh; /* fits content to screen height */
-}
-
 .ui.modal {
   position: fixed !important;
   top: 50% !important;
@@ -69,7 +62,17 @@ h5 {
 }
 
 /* PAGE STYLES */
-
+.login {
+  background-image: url('http://localhost:5555/static/assets/login-hero-04.jpg') !important;
+  background-size: cover; /* fills image to screen */
+  background-position: center; /* aligns image horizontally */
+  background-attachment: fixed; /* image won't move */
+  height: 100vh; /* fits all content to screen height */
+  display: flex; /* flexbox */
+  justify-content: center; /* content horizontal alighment */
+  align-items: center; /* content vertical alighment */
+  height: 100vh; /* fits content to screen height */
+}
 
 .body {
   background-image: url('http://localhost:5555/static/assets/login-hero-04.jpg') !important;
@@ -112,10 +115,6 @@ h5 {
 
 .body.winter {
   background-image: url('http://localhost:5555/static/assets/login-hero-04.jpg') !important;
-}
-
-.body.logged-out::before {
-  display: none;
 }
 
 /* STYLE REFERENCES */
