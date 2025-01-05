@@ -80,14 +80,14 @@ h5 {
   background-position: center; /* aligns image horizontally */
   background-attachment: fixed; /* image won't move */
   height: 100vh; /* fits all content to screen height */
-  /* overflow: auto; */
+  overflow: auto; /* image stays fixed on scroll */
 
   color: #3A111A !important;
   font-family: 'Poppins', serif !important;
   font-optical-sizing: auto;
   font-weight: 500 !important;
   font-style: normal;
-  letter-spacing: .25px !important;
+  letter-spacing: .25px !important;  
 }
 
 .body::before {
@@ -115,6 +115,12 @@ h5 {
 
 .body.winter {
   background-image: url('http://localhost:5555/static/assets/login-hero-04.jpg') !important;
+}
+
+.footer {
+  background-color: #fff ;
+  margin-top: 50px;
+  padding: 20px 10px 50px 10px;
 }
 
 /* STYLE REFERENCES */

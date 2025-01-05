@@ -9,6 +9,7 @@ import EventDetails from './components/EventDetails';
 import EventList from './components/EventList';
 import UserDashboard from './components/UserDashboard';
 import ErrorPage from './components/ErrorPage';
+import Footer from './components/Footer';
 
 // context
 import { AppProvider, useAppContext } from './contexts/AppContext';
@@ -50,6 +51,9 @@ function Routes() {
 					<Route path='/events/:eventId' exact component={EventDetails} />
 					<Route path='*' component={ErrorPage} />
 				</Switch>
+			</div>
+			<div>
+				<Footer />
 			</div>
 		</div>
 	);

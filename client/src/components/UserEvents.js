@@ -9,12 +9,14 @@ function UserEvents() {
     const [isEditing, setIsEditing] = useState(false); 
     const [count, setCount] = useState(4);
 
+    const userEvents = currentUser.events;
+    const userTickets = currentUser.tickets;
+    const userBooths = currentUser.booths;
+
     const toggleComponent = (event) => {
         setOpen(open === event.id ? null : event.id);
         setIsEditing(false);
     };
-
-    const userEvents = currentUser.events;
 
     const loadMoreEvents = () => {
         setCount((prevCount) => {
@@ -54,6 +56,29 @@ function UserEvents() {
                     </button>
                 </div>
             )}
+            </div>
+
+            <div className='ui center aligned basic segment'>
+                <div className='ui grid'>
+                    <div className='row'>
+                        <div className='eight wide column'>
+                            <div>
+                                <h3>my ticketed events</h3>
+                                {userTickets.map((ticket) => (
+                                    <p key={ticket.id}>{ticket.id}</p>
+                                ))}
+                            </div>
+                        </div>
+                        <div className='eight wide column'>
+                            <div>
+                                <h3>my booths</h3>
+                                {userBooths.map((booth) => (
+                                    <p key={booth.id}>{booth.id}</p>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                 </div>
             </div>
 
         </div>
