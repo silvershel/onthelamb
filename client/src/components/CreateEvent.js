@@ -58,16 +58,18 @@ function CreateEvent({ resetComponent }) {
             <form className='ui form error' onSubmit={formik.handleSubmit}>
                 <div className='required field'>
                     <label>event type</label>
-                    <select className='ui search dropdown' id='event_type' name='event_type' value={formik.values.event_type} onChange={formik.handleChange} >
-                        <option value='' disabled>select an option:</option>
-
+                    <select 
+                        className='ui search dropdown' 
+                        id='event_type' name='event_type' 
+                        value={formik.values.event_type} 
+                        onChange={formik.handleChange} >
+                        
+                        <option value='' disabled>select an option:</option>                        
                         {currentUser.user_type === 'sheep' ? (
-                            <option value='Local Meetup'>local meetup</option>
+                            <option value='local meetup'>local meetup</option>
                         ) : (
-                            ['Local Meetup', 'Festival', 'Retreat', 'Popup', 'Trunk Show'].map((eventType) => (
-                            <option key={eventType} value={eventType}>
-                                {eventType.charAt(0).toUpperCase() + eventType.slice(1)}
-                            </option>
+                            ['local meetup', 'festival', 'retreat', 'popup', 'trunk show',].map((eventType) => (
+                            <option key={eventType} value={eventType}>{eventType}</option>
                             ))
                         )}
                     </select>
@@ -88,7 +90,9 @@ function CreateEvent({ resetComponent }) {
                         onChange={formik.handleChange}
                     />
                     <div className='ui error message'>
-                        {formik.errors.title}  
+                        {formik.errors.title && formik.touched.title && (
+                            <p>{formik.errors.title}</p>
+                        )} 
                     </div>
                 </div>
                 <div className='two fields'>
@@ -102,7 +106,9 @@ function CreateEvent({ resetComponent }) {
                         onChange={formik.handleChange}
                     />
                     <div className='ui error message'>
-                        {formik.errors.start_date}
+                        {formik.errors.start_date && formik.touched.start_date && (
+                            <p>{formik.errors.start_date}</p>
+                        )}
                     </div>
                 </div>
                 <div className='required field'>
@@ -115,7 +121,9 @@ function CreateEvent({ resetComponent }) {
                         onChange={formik.handleChange}
                     />
                     <div className='ui error message'>
-                        {formik.errors.end_date}
+                        {formik.errors.end_date && formik.touched.end_date && (
+                            <p>{formik.errors.end_date}</p>
+                        )}
                     </div>
                 </div>
                 </div>
@@ -129,7 +137,9 @@ function CreateEvent({ resetComponent }) {
                         onChange={formik.handleChange}
                     />
                     <div className='ui error message'>
-                        {formik.errors.description}
+                        {formik.errors.description && formik.touched.description && (
+                            <p>{formik.errors.description}</p>
+                        )}
                     </div>
                 </div>
                 <div className='required field'>
@@ -142,7 +152,9 @@ function CreateEvent({ resetComponent }) {
                         onChange={formik.handleChange}
                     />
                     <div className='ui error message'>
-                        {formik.errors.website_link}
+                        {formik.errors.website_link && formik.touched.website_link && (
+                            <p>{formik.errors.website_link}</p>
+                        )}
                     </div>
                 </div>
                 <div className='ui error message'>

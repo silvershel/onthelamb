@@ -44,7 +44,9 @@ function LoginForm() {
                         value={formik.values.username}
                     />
                     <div className='ui error message'>
-                        {formik.errors.username}
+                        {formik.errors.username && formik.touched.username && (
+                            <p>{formik.errors.username}</p>
+                        )}
                     </div>
                 </div>
                 <div className='field'>
@@ -57,7 +59,9 @@ function LoginForm() {
                         value={formik.values.password}
                     />
                     <div className='ui error message'>
-                        {formik.errors.password}
+                        {formik.errors.password && formik.touched.password && (
+                            <p>{formik.errors.password}</p>
+                        )}
                     </div>
                 </div>
                 <div className='ui error message'>

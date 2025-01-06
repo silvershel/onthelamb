@@ -98,7 +98,7 @@ class Event(db.Model, SerializerMixin):
                        '-booths.user')
 
     id = db.Column(Integer, primary_key=True)
-    event_type = db.Column(Enum('Local Meetup', 'Festival', 'Retreat', 'Popup', 'Trunk Show', name='event_type_enum'), nullable=False)
+    event_type = db.Column(Enum('local meetup', 'festival', 'retreat', 'popup', 'trunk show', name='event_type_enum'), nullable=False)
     title = db.Column(String, nullable=False)
     address = db.Column(JSON)
     start_date = db.Column(Date, nullable=False)

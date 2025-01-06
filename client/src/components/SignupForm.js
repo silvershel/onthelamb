@@ -81,7 +81,9 @@ function SignupForm() {
                         <option value='shepherd'>shepherd (business or organizer)</option>
                     </select>
                     <div className='ui error message'>
-                        {formik.errors.user_type}
+                        {formik.errors.user_type && formik.touched.user_type && (
+                            <p>{formik.errors.user_type}</p>
+                        )}
                     </div>
                 </div>
                 <div className='required field'>
@@ -94,7 +96,9 @@ function SignupForm() {
                         value={formik.values.name}
                     />
                      <div className='ui error message'>
-                        {formik.errors.name}
+                        {formik.errors.name && formik.touched.name && (
+                            <p>{formik.errors.name}</p>
+                        )}
                     </div>
                 </div>
                 <div className='required field'>
@@ -126,7 +130,9 @@ function SignupForm() {
                         value={formik.values.password}
                     />
                      <div className='ui error message'>
-                        {formik.errors.password}
+                        {formik.errors.password && formik.touched.password && (
+                            <p>{formik.errors.password}</p>
+                        )}
                     </div>
                 </div>
                 <div className='ui error message'>

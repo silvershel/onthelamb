@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useAppContext } from '../contexts/AppContext';
-import UserEdit from './UserEdit';
+import UserProfileEdit from './UserProfileEdit';
 
-function UserDetails() {
+function UserProfile() {
     const { currentUser } = useAppContext();
     const [open, setOpen] = useState(null)
 
@@ -16,10 +16,10 @@ function UserDetails() {
             <div className='ui center aligned row'>
                 <div className='ui column'>
                 <h3>my info</h3>
-                <img class='ui medium middle aligned circular image' src={currentUser.profile_photo}></img>
+                <img className='ui medium middle aligned circular image' src={currentUser.profile_photo}></img>
 
                     {open === 'profile edit' 
-                    ? <UserEdit closeComponent={closeComponent}/> 
+                    ? <UserProfileEdit closeComponent={closeComponent}/> 
                     : <div className='ui basic segment'>
                         <p>Name: {currentUser.name}</p>
                         <p>User Type: {currentUser.user_type}</p>
@@ -34,4 +34,4 @@ function UserDetails() {
     )
 }
 
-export default UserDetails;
+export default UserProfile;

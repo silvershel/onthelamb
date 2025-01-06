@@ -6,9 +6,9 @@ function Modal({ open, closeComponent }) {
         <div className={`ui modal ${open ? 'active' : ''}`}>
             
             <button 
-                class='ui right floated icon button' 
+                className='ui right floated icon button' 
                 onClick={() => closeComponent()}>
-                <i class='close icon'></i>
+                <i className='close icon'></i>
             </button>
 
             <div>

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useAppContext } from '../contexts/AppContext';
-import UserDetails from './UserDetails';
+import UserProfile from './UserProfile';
 import UserEvents from './UserEvents';
 import CreateEvent from './CreateEvent';
 
@@ -27,7 +27,7 @@ function UserDashboard() {
 			</div> 
             
             {open === 'user details' && (
-            <UserDetails open={open}/> 
+            <UserProfile open={open}/> 
             )}
 
             {open === 'my events' && (

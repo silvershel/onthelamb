@@ -154,18 +154,6 @@ export const AppProvider = ({ children }) => {
         .then((updatedUser) => {
             console.log(updatedUser);
             setCurrentUser(updatedUser);
-
-            setEvents((prevEvents) =>
-                prevEvents.map((event) => ({
-                    ...event,
-                    tickets: event.tickets.map((ticket) =>
-                        ticket.user_id === updatedUser.id ?
-                            { ...ticket, user: updatedUser }
-                            : ticket
-                    ),
-                }))
-            );
-
         })
         .catch((error) => console.error('Error updating event:', error));
     };
@@ -371,8 +359,8 @@ export const AppProvider = ({ children }) => {
                 tickets,
                 ticket,
                 fetchBooth,
-                createBooth, // make this
-                deleteBooth, // make this
+                // createBooth,
+                // deleteBooth,
                 booths,
                 booth,
             }}

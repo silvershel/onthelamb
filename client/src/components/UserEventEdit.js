@@ -64,67 +64,84 @@ function UserEventEdit({ event, isEditing, setIsEditing }) {
                         )}
                     </select>
                     <div className='ui error message'>
-                        {formik.errors.event_type}
+                        {formik.errors.event_type && formik.touched.event_type && (
+                            <p>{formik.errors.event_type}</p>
+                        )}
                     </div>
                 </div>
                 <div className='field'>
                     <label>title</label>
                     <input
                         type='text'
+                        id='title'
                         name='title'
                         value={formik.values.title}
                         onChange={formik.handleChange}
                     />
                     <div className='ui error message'>
-                        {formik.errors.title}
+                        {formik.errors.title && formik.touched.title && (
+                            <p>{formik.errors.title}</p>
+                        )}
                     </div>
                 </div>
                 <div className='field'>
                     <label>starts</label>
                     <input
                         type='date'
+                        id='start_date'
                         name='start_date'
                         value={formik.values.start_date}
                         onChange={formik.handleChange}
                     />
                     <div className='ui error message'>
-                        {formik.errors.start_date}
+                        {formik.errors.start_date && formik.touched.start_date && (
+                            <p>{formik.errors.start_date}</p>
+                        )}
                     </div>
                 </div>
                 <div className='field'>
                     <label>ends</label>
                     <input
                         type='date'
+                        id='end_date'
                         name='end_date'
                         value={formik.values.end_date}
                         onChange={formik.handleChange}
                     />
                     <div className='ui error message'>
-                        {formik.errors.end_date}
+                        {formik.errors.end_date && formik.touched.end_date && (
+                            <p>{formik.errors.end_date}</p>
+                        )}
                     </div>
                 </div>
                 <div className='field'>
                     <label>description</label>
                     <input
                         type='text'
+                        id='description'
                         name='description'
                         value={formik.values.description}
                         onChange={formik.handleChange}
                     />
                     <div className='ui error message'>
-                        {formik.errors.description}
+                        {formik.errors.description && formik.touched.description && (
+                            <p>{formik.errors.description}</p>
+                        )}
                     </div>
                 </div>
                 <div className='field'>
                     <label>website</label>
                     <input
                         type='text'
+                        id='website_link'
                         name='website_link'
                         value={formik.values.website_link}
                         onChange={formik.handleChange}
                     />
                     <div className='ui error message'>
-                        {formik.errors.website_link}
+                        {formik.errors.website_link && formik.touched.website_link && (
+                            <p>{formik.errors.website_link}</p>
+                        )}
                     </div>
                 </div>
                 <button className='ui button' type='submit' >save edits</button>
