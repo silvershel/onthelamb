@@ -7,16 +7,21 @@ function UserEvent({ event, isEditing, setIsEditing }) {
     return (
         <div className='ui basic segment'>
 
-            <div className='ui basic segment'>
-                <div className='ui grid'>
+            <div>
+                <div className='ui stackable grid'>
+                    
+                    <div className='row'>
+                        <div className='sixteen wide column'>
+                            <h2>{event.title}</h2>
+                        </div>
+                    </div>
+
                     <div className='row'>
                         <div className='eight wide column'>
-                        {!isEditing 
-                        ? <div className='column'>
-                            <UserEventDetails event={event} isEditing={isEditing} setIsEditing={setIsEditing}/>
-                        </div>
-                        :  <UserEventEdit event={event} isEditing={isEditing} setIsEditing={setIsEditing}/>
-                        }
+                            {!isEditing 
+                            ? <UserEventDetails event={event} isEditing={isEditing} setIsEditing={setIsEditing}/>
+                            : <UserEventEdit event={event} isEditing={isEditing} setIsEditing={setIsEditing}/>
+                            }
                         </div>
 
                         <div className='four wide column'>
@@ -29,6 +34,7 @@ function UserEvent({ event, isEditing, setIsEditing }) {
                         <p>vendor list here</p>
                         </div>
                     </div>
+
                 </div>
             </div>           
             

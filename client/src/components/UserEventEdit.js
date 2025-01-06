@@ -45,8 +45,6 @@ function UserEventEdit({ event, isEditing, setIsEditing }) {
 
     return (
         <div>
-            <h2>edit {event.title}</h2>
-            <h3>event details</h3>
             <form className='ui form error' onSubmit={formik.handleSubmit}>
                 <div className='field'>
                     <label>type</label>

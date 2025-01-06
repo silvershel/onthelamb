@@ -71,8 +71,8 @@ function EventDetails() {
                 </div>
             </div>
                            
-            <div className='column'>
-                <div>
+            <div className='ui basic segment'>
+                <div className='column'>
                     {event.user_id !== currentUser.id && (
                         !userAttending() ? (
                             <button className='positive ui button' onClick={onAttendClick}>attend</button>

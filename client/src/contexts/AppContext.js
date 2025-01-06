@@ -25,7 +25,7 @@ export const AppProvider = ({ children }) => {
     // THEME SETTER
     useEffect(() => {
         if (currentUser) {
-          const savedSeason = localStorage.getItem('season');
+          const savedSeason = localStorage.getItem(`season-${currentUser.id}`);
           if (savedSeason) {
             setSeason(savedSeason);
           } else {
@@ -38,7 +38,7 @@ export const AppProvider = ({ children }) => {
 
     useEffect(() => {
         if (currentUser) {
-            localStorage.setItem('season', season);
+            localStorage.setItem(`season-${currentUser.id}`, season);
             const container = document.getElementById('app-container');
             if (container) {
                 container.classList.remove('fall', 'spring', 'summer', 'winter');
