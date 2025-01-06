@@ -7,29 +7,15 @@ function MiniCard({ event, toggleComponent }) {
     return (
         <div key={event.id} className='ui card'>  
             <div className='content'>
-
-                <div className='blurring dimmable image'>
-
-                    <div className='ui inverted dimmer'>
-                        <div className='content'>
-                        <div className='center'>
-                            <div className='ui primary button'>
-                                view details
-                            </div>
-                        </div>
-                        </div>
-                    </div>
-                        
-                    <img className='ui image' alt='' src='http://localhost:5555/static/assets/default-event-header.jpg'/>
-
-                    <div className='content'>
-                        <h4>{event.title}</h4>
-                    </div>
-                    <div className='meta'>
-                        <p>{event.start_date}</p>
-                    </div>
+                <img className='ui image' alt='' src='http://localhost:5555/static/assets/default-event-header.jpg'/>
+                <h4>{event.title}</h4>
+                <div className='meta'>
+                    <p>starts: {event.start_date}</p>
                 </div>
-
+                <div className='meta'>
+                <p>{event.description}</p>
+                </div>
+                
             </div>
 
             <div className='extra content'>

@@ -12,11 +12,13 @@ function UserProfile() {
     return (
         <div className='ui center aligned basic segment'>
 
-            <div className='ui center aligned row'>
+            <div className='ui center aligned grid'>
                 <div className='ui basic segment'>
                     <div className='ui column'>
-                    <h3>my info</h3>
-                    <img className='ui large middle aligned circular image' src={currentUser.profile_photo}></img>
+                    <h3>my profile</h3>
+                    <div className='ui basic segment'>
+                        <img className='ui medium middle aligned circular image' src={currentUser.profile_photo}></img>
+                    </div>
                 </div>
 
                     {open === 'profile edit' 

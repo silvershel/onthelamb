@@ -19,10 +19,10 @@ function UserDashboard() {
             <div className='ui basic segment'>
                 <div className='ui column'>
 				<h2>on the lamb</h2>
-				<p>Welcome, {currentUser.name}!</p>
-                <button className='ui button' onClick={() => openComponent('user details')}>Profile</button>
-                <button className='ui button' onClick={() => openComponent('my events')}>My Events</button>
-                <button className='ui button' onClick={() => openComponent('create event')} >Create Event</button>
+				<h3>Welcome, {currentUser.name}!</h3>
+                <button className='ui button' onClick={() => openComponent('user details')}>my profile</button>
+                <button className='ui button' onClick={() => openComponent('my events')}>my events</button>
+                <button className='ui button' onClick={() => openComponent('create event')} >create event</button>
                 </div>
 			</div> 
             

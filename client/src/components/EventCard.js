@@ -7,12 +7,11 @@ function EventCard({ event }) {
     return (
         <div className='ui card'>   
             <div className='content'>
-                <img src='' />                
+                <img className='ui image' alt='' src='http://localhost:5555/static/assets/default-event-header.jpg'/>
                 <h4>{event.title}</h4>
                 <p>{event.start_date} to {event.end_date}</p>
-                <p>organized by: (username)</p>
+                <p>organized by: {event.user.username}</p>
                 <p>{event.description}</p>
-                <a href={event.website_link}>Website</a>
             </div> 
             <button className='ui bottom attached button' onClick={() => navigate.push(`/events/${event.id}`)}>view details</button>
         </div>
