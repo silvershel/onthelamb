@@ -7,7 +7,6 @@ import * as Yup from 'yup';
 function SignupForm() {
     const { signup } = useAppContext();
 
-
     const checkUsername = (username) => {
         formik.setFieldError('username', '');
         formik.setStatus({usernameAvailable: ''});
@@ -25,7 +24,6 @@ function SignupForm() {
                 console.error('Username check error:', error.message);
             });
     };
-
     
     const formik = useFormik({
         initialValues: {
@@ -62,7 +60,6 @@ function SignupForm() {
             signup(newUser)
         },
     });
-
 
     return (
         <div className='ui basic center aligned segment'>
@@ -140,7 +137,7 @@ function SignupForm() {
                     ? (<div>{formik.errors.apiError}</div>)
                     : null}
                 </div>
-                <button className='ui button' type='submit'>sign up</button>
+                <button className='ui button' type='submit' disabled={!formik.isValid || formik.isSubmitting}>sign up</button>
                 <p>already have an account? <Link to='/login'>log in.</Link></p>
             </form>
         </div>
