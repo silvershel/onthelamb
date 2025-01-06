@@ -6,7 +6,6 @@ import * as Yup from 'yup';
 
 function UserEventEdit({ event, isEditing, setIsEditing }) {
     const { currentUser, updateEvent } = useAppContext();
-    const navigate = useHistory()
 
 
     const formik = useFormik({
@@ -39,7 +38,8 @@ function UserEventEdit({ event, isEditing, setIsEditing }) {
                 user_id: currentUser.id,
             };
             updateEvent(event.id, updatedEvent);
-            navigate.push(`/events/${event.id}`)
+            setIsEditing()
+            // navigate.push(`/events/${event.id}`)
         }
     });
 

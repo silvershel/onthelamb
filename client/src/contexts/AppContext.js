@@ -190,11 +190,11 @@ export const AppProvider = ({ children }) => {
         .then((r) => r.json())
         .then((newEvent) => {
             console.log(newEvent);
-            setCurrentUser((currentUser) =>                
-                currentUser.map((event) =>
-                    event.id === newEvent.id ? newEvent : event
-                )
-            );
+            setEvents((prevEvents) => [...prevEvents, newEvent]);
+            setCurrentUser((prevUser) => ({
+                ...prevUser,
+                events: [...prevUser.events, newEvent]
+            }));
 
             const newTicket = {
                 comment: 'greetings, from your host!',
@@ -216,11 +216,17 @@ export const AppProvider = ({ children }) => {
         .then((r) => r.json())
         .then((updatedEvent) => {
             console.log(updatedEvent);
-            setCurrentUser((currentUser) =>                
-                currentUser.map((event) =>
+            setEvents((prevEvents) =>                
+                prevEvents.map((event) =>
                     event.id === updatedEvent.id ? updatedEvent : event
                 )
             );
+            setCurrentUser((prevUser) => ({
+                ...prevUser,
+                 events: events.map((event) =>
+                    event.id === updatedEvent.id ? updatedEvent : event
+                )
+            }))
         })
         .catch((error) => console.error('Error updating event:', error));
     };

@@ -7,7 +7,7 @@ function UserEvents() {
     const { currentUser } = useAppContext();
     const [open, setOpen] = useState(null)
     const [isEditing, setIsEditing] = useState(false); 
-    const [count, setCount] = useState(4);
+    const [count, setCount] = useState(12);
 
     const userEvents = currentUser.events;
     const userTickets = currentUser.tickets;

@@ -34,6 +34,12 @@ function EventDetails() {
     return (
         <div className='ui basic segment'>
 
+            <div className='ui basic center aligned segment'>
+                <div className='ui column'>
+                    <h3>event details</h3>
+                </div>
+            </div>  
+
             <div className='ui basic segment'>
                 <div className='ui column'>
 				<h2>{event.title}</h2>
