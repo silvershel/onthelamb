@@ -238,8 +238,10 @@ export const AppProvider = ({ children }) => {
             if (r.ok) {
                 console.log(`Event ${eventId} deleted.`)
                 setEvents((prevEvents) => prevEvents.filter(event => event.id !== eventId));
+                // EVENT GETS DELETED BELOW FROM STATE BUT NOT TICKETS
                 setCurrentUser((prevUser) => ({
                     ...prevUser,
+                    events: prevUser.events.filter(event => event.id !== eventId),
                     tickets: prevUser.tickets.filter(ticket => ticket.event.id !== eventId)
                 }));
             } else {

@@ -28,7 +28,7 @@ function AttendForm({ event, setIsEditing }) {
     });
 
     return (
-        <div>
+        <div style={{ marginTop: '20px' }}>
             <h4>leave a comment to attend.</h4>
             <form className='ui form error' onSubmit={formik.handleSubmit}>
                 <div className='inline field'>

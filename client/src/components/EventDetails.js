@@ -47,7 +47,7 @@ function EventDetails() {
                             <p>starts: {event.start_date}</p>
                             <p>ends: {event.end_date}</p>
                             <a href={event.website_link}>{event.website_link}</a>
-                            <div style={{ marginTop: '30px' }}>
+                            <div>
                                 {event.user_id !== currentUser.id && (
                                     !userAttending() ? (
                                         !isEditing ? (

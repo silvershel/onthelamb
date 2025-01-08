@@ -16,7 +16,7 @@ function UserEventDetails({ event, setIsEditing}) {
                 <button 
                 className='ui button' 
                 onClick={() => setIsEditing(prevState => !prevState)}>
-                edit
+                edit details
                 </button>            
             </div>
 
