@@ -9,12 +9,7 @@ function MiniCard({ event, toggleComponent }) {
             <div className='content'>
                 <img className='ui image' alt='' src='http://localhost:5555/static/assets/default-event-header.jpg'/>
                 <h4>{event.title}</h4>
-                <div className='meta'>
-                    <p>starts: {event.start_date}</p>
-                </div>
-                <div className='meta'>
-                <p>{event.description}</p>
-                </div>
+                <p>{event.start_date}</p>
                 
             </div>
 

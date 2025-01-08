@@ -1,6 +1,6 @@
 import React from 'react';
 
-function UserEventDetails({ event, isEditing, setIsEditing}) {
+function UserEventDetails({ event, setIsEditing}) {
 
     return (
         <div>

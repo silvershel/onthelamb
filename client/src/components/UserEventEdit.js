@@ -4,9 +4,8 @@ import { useAppContext } from '../contexts/AppContext';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
-function UserEventEdit({ event, isEditing, setIsEditing }) {
+function UserEventEdit({ event, setIsEditing }) {
     const { currentUser, updateEvent } = useAppContext();
-
 
     const formik = useFormik({
         initialValues: {

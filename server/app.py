@@ -300,11 +300,13 @@ class Tickets(Resource):
 
         user_id = data.get('user_id')
         event_id = data.get('event_id')
+        comment = data.get('comment')
 
         try:
             new_ticket = Ticket(
                 user_id = user_id,
-                event_id = event_id
+                event_id = event_id,
+                comment = comment
             )
 
             db.session.add(new_ticket)

@@ -7,7 +7,7 @@ function EventList() {
 
     const renderCards = (events, attribute) => {
         const sortedEvents = [...events].sort((a, b) => new Date(a[attribute]) - new Date(b[attribute]));
-        return sortedEvents.slice(0, 4).map((event) => (
+        return sortedEvents.slice(0, 12).map((event) => (
             <EventCard event={event} key={event.id} />
         ));
     };
@@ -42,7 +42,7 @@ function EventList() {
                 </div>
             </div> 
             <div className='ui basic segment'>
-                <div className='ui four stackable cards'>
+                <div className='ui eight stackable cards'>
                     {renderCards(events, 'creation_date')}
                 </div>
             </div>

@@ -9,10 +9,6 @@ function UserEvents() {
     const [isEditing, setIsEditing] = useState(false); 
     const [count, setCount] = useState(12);
 
-    const userEvents = currentUser.events;
-    const userTickets = currentUser.tickets;
-    const userBooths = currentUser.booths;
-
     const toggleComponent = (event) => {
         setOpen(open === event.id ? null : event.id);
         setIsEditing(false);
@@ -21,7 +17,7 @@ function UserEvents() {
     const loadMoreEvents = () => {
         setCount((prevCount) => {
             const nextCount = prevCount + 4;
-            return Math.min(nextCount, userEvents.length);
+            return Math.min(nextCount, currentUser.events.length);
         });
     };
     
@@ -34,7 +30,7 @@ function UserEvents() {
 
             {open && (
                 <UserEvent 
-                    event={userEvents.find(event => event.id === open)}
+                    event={currentUser.events.find(event => event.id === open)}
                     isEditing={isEditing}
                     setIsEditing={setIsEditing}
                 />
@@ -42,14 +38,14 @@ function UserEvents() {
 
             <div className='ui basic segment'>
                 <div className='ui four stackable cards'>
-                    {userEvents.slice(0, count).map((event) => (
+                    {currentUser.events.slice(0, count).map((event) => (
                         <MiniCard event={event} key={event.id} toggleComponent={toggleComponent}/>
                     ))}
                 </div>
             </div>
 
             <div className='ui basic segment'>
-            {count < userEvents.length && (
+            {count < currentUser.events.length && (
                 <div className='ui center aligned'>
                     <button className='ui button' onClick={loadMoreEvents}>
                         Load More
@@ -64,17 +60,27 @@ function UserEvents() {
                         <div className='eight wide column'>
                             <div>
                                 <h3>my ticketed events</h3>
-                                {userTickets.map((ticket) => (
-                                    <p key={ticket.id}>{ticket.id}</p>
-                                ))}
+                                {currentUser.tickets && currentUser.tickets.length > 0 ? (
+                                    currentUser.tickets.map((ticket) => (
+                                        <div key={ticket.id}>
+                                            <p>{ticket.event.title}</p>
+                                        </div>
+                                    ))
+                                    ) : (
+                                    <p>No tickets available for this user.</p>
+                                )}
                             </div>
                         </div>
                         <div className='eight wide column'>
                             <div>
                                 <h3>my booths</h3>
-                                {userBooths.map((booth) => (
+                                {currentUser.booths && currentUser.booths.length > 0 ? (
+                                    currentUser.booths.map((booth) => (
                                     <p key={booth.id}>{booth.id}</p>
-                                ))}
+                                ))
+                                ) : (
+                                    <p>No booths yet</p>
+                                )}
                             </div>
                         </div>
                     </div>

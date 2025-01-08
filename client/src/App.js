@@ -26,7 +26,16 @@ function Routes() {
 					<Route path='/' exact>
 						<Redirect to='/login' />
 					</Route>
-					<Route path='*' exact component={ErrorPage} />
+					<Route path='/dashboard' exact>
+						<Redirect to='/login' />
+					</Route>
+					<Route path='/events' exact>
+						<Redirect to='/login' />
+					</Route>
+					<Route path='/events/:eventId' exact>
+						<Redirect to='/login' />
+					</Route>
+					<Route path='*' exact/>
 				</Switch>	
 			</div>				
 	  	);

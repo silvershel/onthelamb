@@ -237,9 +237,10 @@ export const AppProvider = ({ children }) => {
         .then((r) => {
             if (r.ok) {
                 console.log(`Event ${eventId} deleted.`)
-                setCurrentUser((currentUser) => ({
-                    ...currentUser,
-                    events: currentUser.events.filter(event => event.id !== eventId)
+                setEvents((prevEvents) => prevEvents.filter(event => event.id !== eventId));
+                setCurrentUser((prevUser) => ({
+                    ...prevUser,
+                    tickets: prevUser.tickets.filter(ticket => ticket.event.id !== eventId)
                 }));
             } else {
                 console.error('Unable to delete event.');
@@ -283,12 +284,25 @@ export const AppProvider = ({ children }) => {
             setEvents((prevEvents) =>
                 prevEvents.map((event) =>
                     event.id === newTicket.event_id ?
-                        { ...event, tickets: 
-                            { ...event.tickets, [newTicket.id]: newTicket}
+                        { ...event, 
+                            tickets: [ ...event.tickets, newTicket]
+
                         }
                         : event
                 )
             );
+            setCurrentUser((prevUser) => ({
+                ...prevUser,
+                tickets: [...prevUser.tickets, newTicket],
+                events: prevUser.events.map((event) => 
+                    event.id === newTicket.event_id
+                        ? { 
+                            ...event, 
+                            tickets: [...event.tickets, newTicket]
+                        }
+                        : event
+                ),
+            }));
             fetchEvent(eventId);
         })
         .catch((error) => console.error('Error creating new ticket:', error));
@@ -312,6 +326,15 @@ export const AppProvider = ({ children }) => {
                         : event
                 )
             );
+
+            setCurrentUser((prevUser) => ({
+                ...prevUser,
+                tickets: prevUser.tickets.filter((ticket) => ticket.id !== ticketToDelete.id),
+                events: prevUser.events.map((event) => ({
+                    ...event,
+                    tickets: event.tickets.filter((ticket) => ticket.id !== ticketToDelete.id)
+            })),
+        }));
             fetchEvent(eventId);
         })
         .catch((error) => console.error('Error deleting tickets:', error));
