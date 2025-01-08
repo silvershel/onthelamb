@@ -328,10 +328,10 @@ export const AppProvider = ({ children }) => {
                         : event
                 )
             );
-
             setCurrentUser((prevUser) => ({
                 ...prevUser,
                 tickets: prevUser.tickets.filter((ticket) => ticket.id !== ticketToDelete.id),
+                booths: prevUser.booths.filter((booth) => booth.event_id !== ticketToDelete.event_id),
                 events: prevUser.events.map((event) => ({
                     ...event,
                     tickets: event.tickets.filter((ticket) => ticket.id !== ticketToDelete.id)
@@ -339,7 +339,7 @@ export const AppProvider = ({ children }) => {
         }));
             fetchEvent(eventId);
         })
-        .catch((error) => console.error('Error deleting tickets:', error));
+        .catch((error) => console.error('Error deleting ticket:', error));
     };
 
     // FETCH BOOTHS
@@ -364,12 +364,82 @@ export const AppProvider = ({ children }) => {
             .catch((error) => console.error('Error fetching booth:', error));
     };
 
+    // CREATE BOOTH
+    const createBooth = (newBooth, eventId) => {
+        fetch('/booths', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(newBooth),
+        })
+        .then((r) => r.json())
+        .then((newBooth) => {
+            console.log(newBooth);
+            setEvents((prevEvents) =>
+                prevEvents.map((event) =>
+                    event.id === newBooth.event_id ?
+                        { ...event, 
+                            booths: [ ...event.booths, newBooth]
+
+                        }
+                        : event
+                )
+            );
+            setCurrentUser((prevUser) => ({
+                ...prevUser,
+                booths: [...prevUser.booths, newBooth],
+                events: prevUser.events.map((event) => 
+                    event.id === newBooth.event_id
+                        ? { 
+                            ...event, 
+                            booths: [...event.booths, newBooth]
+                        }
+                        : event
+                ),
+            }));
+            fetchEvent(eventId);
+        })
+        .catch((error) => console.error('Error creating new booth:', error));
+    };
+
+    // DELETE BOOTH
+    const deleteBooth = (boothToDelete, eventId) => {
+        fetch(`/booths/${boothToDelete.id}`, { 
+            method: 'DELETE' 
+        })
+        .then((r) => r.json())
+        .then(() => {
+            console.log(boothToDelete);
+            setEvents((prevEvents) =>
+                prevEvents.map((event) => 
+                    event.id === eventId ?
+                        {
+                            ...event,
+                            booths: event.booths.filter((booth) => booth.id !== boothToDelete.id)
+                        }
+                        : event
+                )
+            );
+            setCurrentUser((prevUser) => ({
+                ...prevUser,
+                booths: prevUser.booths.filter((booth) => booth.id !== boothToDelete.id),
+                tickets: prevUser.tickets.filter((ticket) => ticket.event_id !== boothToDelete.event_id),
+                events: prevUser.events.map((event) => ({
+                    ...event,
+                    booths: event.booths.filter((booth) => booth.id !== boothToDelete.id)
+                
+            })),
+        }));
+            fetchEvent(eventId);
+        })
+        .catch((error) => console.error('Error deleting booth:', error));
+    };
+
 
     return (
         <AppContext.Provider
             value={{
-                season,
                 handleThemeSelect,
+                season,
                 login,
                 signup,
                 logout,
@@ -390,8 +460,8 @@ export const AppProvider = ({ children }) => {
                 tickets,
                 ticket,
                 fetchBooth,
-                // createBooth,
-                // deleteBooth,
+                createBooth,
+                deleteBooth,
                 booths,
                 booth,
             }}

@@ -76,7 +76,9 @@ function UserEvents() {
                                 <h3>my booths</h3>
                                 {currentUser.booths && currentUser.booths.length > 0 ? (
                                     currentUser.booths.map((booth) => (
-                                    <p key={booth.id}>{booth.id}</p>
+                                        <div key={booth.id}>
+                                            <p>{booth.event.title}</p>
+                                        </div>
                                 ))
                                 ) : (
                                     <p>No booths yet</p>

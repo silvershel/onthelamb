@@ -1,16 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useAppContext } from '../contexts/AppContext';
 import UserEventDetails from './UserEventDetails';
 import UserEventEdit from './UserEventEdit';
+import AddVendorForm from './AddVendorForm';
 
 function UserEvent({ event, isEditing, setIsEditing }) {
-    const testEvent = {
-        title: 'Music Festival',
-        tickets: [
-          { id: 1 },
-          { id: 2 },
-          { id: 3 }
-        ],
-      };
+    const { deleteBooth } = useAppContext();
+    const [isEditingVendor, setIsEditingVendor] = useState(false);
+
+    if (!event) {
+        return <div className='ui very padded basic center aligned segment'>
+            <h4>Event not found</h4>
+        </div>;
+    }
 
     return (
         <div className='ui basic segment'>
@@ -26,8 +28,8 @@ function UserEvent({ event, isEditing, setIsEditing }) {
                 <div className='row'>
                     <div className='eight wide column'>
                         {!isEditing 
-                        ? <UserEventDetails event={event} isEditing={isEditing} setIsEditing={setIsEditing}/>
-                        : <UserEventEdit event={event} isEditing={isEditing} setIsEditing={setIsEditing}/>
+                        ? <UserEventDetails event={event} setIsEditing={setIsEditing}/>
+                        : <UserEventEdit event={event} setIsEditing={setIsEditing}/>
                         }
                     </div>
 
@@ -37,12 +39,12 @@ function UserEvent({ event, isEditing, setIsEditing }) {
                             event.tickets.map((ticket) => (
                                 <div key={ticket.id} className='ui comments'>
                                     <div className='comment'>
-                                        <a class='ui avatar image'>
+                                        <a className='ui avatar image'>
                                             <img src={ticket.user.profile_photo}/>
                                         </a>
-                                        <div class="content">
-                                            <a class="author">{ticket.user.name}</a>
-                                            <div class="text">
+                                        <div className='content'>
+                                            <a className='author'>{ticket.user.name}</a>
+                                            <div className='text'>
                                                 {ticket.comment}
                                             </div>
                                         </div>
@@ -60,12 +62,20 @@ function UserEvent({ event, isEditing, setIsEditing }) {
                         {event.booths && event.booths.length > 0 ? (
                             event.booths.map((booth) => (
                                 <div key={booth.id}>
+                                    <button class="circular mini ui icon button" onClick={() => deleteBooth(booth, booth.event_id)}>
+                                        <i class="icon close"></i>
+                                    </button>
                                     <span>{booth.user.name}</span>
                                 </div>
                             ))
                         ) : (
                             <p>No booths yet</p>
                         )}
+                        {!isEditingVendor 
+                        ? <button className='ui button' onClick={() => setIsEditingVendor(prevState => !prevState)}>add a vendor</button>
+                        : <AddVendorForm event={event} setIsEditingVendor={setIsEditingVendor}/>
+                        }
+                        
                     </div>
                 </div>
 
