@@ -22,7 +22,7 @@ class User(db.Model, SerializerMixin):
     name = db.Column(String)
     username = db.Column(String, unique=True, nullable=False)
     password = db.Column(String, nullable=False)
-    profile_photo = db.Column(String, default='http://localhost:5555/static/assets/default-profile-photo-04.jpg')
+    profile_photo = db.Column(String)
     profile_data = db.Column(JSON)
     latitude = db.Column(Float)
     longitude = db.Column(Float)
@@ -97,6 +97,7 @@ class Event(db.Model, SerializerMixin):
 
     id = db.Column(Integer, primary_key=True)
     event_type = db.Column(Enum('local meetup', 'festival', 'retreat', 'popup', 'trunk show', name='event_type_enum'), nullable=False)
+    event_hero = db.Column(String, default='http://localhost:5555/static/assets/default-event-header-01.jpg')
     title = db.Column(String, nullable=False)
     address = db.Column(JSON)
     start_date = db.Column(Date, nullable=False)

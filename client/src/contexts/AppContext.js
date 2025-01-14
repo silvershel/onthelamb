@@ -242,7 +242,8 @@ export const AppProvider = ({ children }) => {
                 setCurrentUser((prevUser) => ({
                     ...prevUser,
                     events: prevUser.events.filter(event => event.id !== eventId),
-                    tickets: prevUser.tickets.filter(ticket => ticket.event.id !== eventId)
+                    tickets: prevUser.tickets.filter(ticket => ticket.event.id !== eventId),
+                    booths: prevUser.booths.filter(booth => booth.event.id !== eventId)
                 }));
             } else {
                 console.error('Unable to delete event.');

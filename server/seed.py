@@ -40,7 +40,7 @@ if __name__ == '__main__':
             username = 'shepherd',
             password = 'password',
             user_type = 'shepherd',
-            profile_photo = 'http://localhost:5555/static/assets/default-profile-photo-01.jpg',
+            profile_photo = 'http://localhost:5555/static/assets/default-profile-photo-05.jpg',
             latitude = '38.805496',
             longitude = '-77.04344'
         )
@@ -59,7 +59,11 @@ if __name__ == '__main__':
         for i in range(10):
             username = generate_username()
             user_type = rc(['sheep', 'shepherd'])
-            profile_photo = 'http://localhost:5555/static/assets/default-profile-photo-01.jpg'
+            if user_type == 'sheep':
+                profile_photo = 'http://localhost:5555/static/assets/default-profile-photo-01.jpg'
+            if user_type == 'shepherd':
+                profile_photo = 'http://localhost:5555/static/assets/default-profile-photo-05.jpg'
+
 
             while username in used_usernames:
                 username = generate_username()
@@ -91,8 +95,20 @@ if __name__ == '__main__':
                 event_type = rc(['festival', 'retreat', 'local meetup', 'popup', 'trunk show'])
                 event_title = f'{fake.company()} {event_type}'
 
+                if event_type == 'festival':
+                    event_hero = 'http://localhost:5555/static/assets/default-event-header-01.jpg'
+                if event_type == 'retreat':
+                    event_hero = 'http://localhost:5555/static/assets/default-event-header-02.jpg'
+                if event_type == 'local meetup':
+                    event_hero = 'http://localhost:5555/static/assets/default-event-header-03.jpg'
+                if event_type == 'popup':
+                    event_hero = 'http://localhost:5555/static/assets/default-event-header-04.jpg'
+                if event_type == 'trunk show':
+                    event_hero = 'http://localhost:5555/static/assets/default-event-header-05.jpg'
+
                 event = Event(
                     title=event_title,
+                    event_hero=event_hero,
                     start_date=fake.future_date(end_date=True),
                     end_date=fake.future_date(end_date=True),
                     creation_date=fake.future_date(end_date=True),
