@@ -26,7 +26,7 @@ if __name__ == '__main__':
         test_user_sheep = User(
             name = 'Sheep Test User',
             username = 'sheep',
-            password = 'password',
+            password = 'shelli02!',
             user_type = 'sheep',
             profile_photo = 'http://localhost:5555/static/assets/default-profile-photo-01.jpg',
             latitude = '38.805496',
@@ -38,7 +38,7 @@ if __name__ == '__main__':
         test_user_shepherd = User(
             name = 'Shepherd Test User',
             username = 'shepherd',
-            password = 'password',
+            password = 'shelli02!',
             user_type = 'shepherd',
             profile_photo = 'http://localhost:5555/static/assets/default-profile-photo-05.jpg',
             latitude = '38.805496',
