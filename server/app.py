@@ -6,7 +6,7 @@ from flask_restful import Resource
 from config import app, db, api
 from models import User, Event, Ticket, Booth, UserSchema, TicketSchema, BoothSchema, EventSchema
 from datetime import datetime
-
+import pdb
 
 
 class Login(Resource):

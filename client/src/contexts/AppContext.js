@@ -374,29 +374,36 @@ export const AppProvider = ({ children }) => {
         })
         .then((r) => r.json())
         .then((newBooth) => {
-            console.log(newBooth);
-            setEvents((prevEvents) =>
-                prevEvents.map((event) =>
-                    event.id === newBooth.event_id ?
-                        { ...event, 
-                            booths: [ ...event.booths, newBooth]
-
-                        }
-                        : event
-                )
-            );
-            setCurrentUser((prevUser) => ({
-                ...prevUser,
-                booths: [...prevUser.booths, newBooth],
-                events: prevUser.events.map((event) => 
-                    event.id === newBooth.event_id
-                        ? { 
-                            ...event, 
-                            booths: [...event.booths, newBooth]
-                        }
-                        : event
-                ),
-            }));
+            // NOTES FROM TUTORING SESSION 
+            // using state and filter to go through usernames
+            // look at async/await (if/else works. it's fine.)
+            if (newBooth.error) {
+                alert(newBooth.error)
+            } else {
+                setEvents((prevEvents) =>
+                    prevEvents.map((event) =>
+                        event.id === newBooth.event_id ?
+                            { ...event, 
+                                booths: [ ...event.booths, newBooth]
+    
+                            }
+                            : event
+                    )
+                );
+                setCurrentUser((prevUser) => ({
+                    ...prevUser,
+                    booths: [...prevUser.booths, newBooth],
+                    events: prevUser.events.map((event) => 
+                        event.id === newBooth.event_id
+                            ? { 
+                                ...event, 
+                                booths: [...event.booths, newBooth]
+                            }
+                            : event
+                    ),
+                }));
+            }
+            
             fetchEvent(eventId);
         })
         .catch((error) => console.error('Error creating new booth:', error));
