@@ -8,7 +8,7 @@ function Footer() {
                 <div className='ui grid'>
                     <div className='row'>
                         <div className='sixteen wide column'>
-                            <p>development, design, and illustration by shelli silverstein</p>
+                        <p>development, design, and illustration by <a href="https://silvershel.com" target="_blank">silvershel</a></p>
                         </div>
                     </div>
                 </div>

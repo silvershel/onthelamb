@@ -38,7 +38,7 @@ function EventList() {
             {/* new events */}
             <div className='ui basic segment'>
                 <div className='ui column'>
-                    <h3>new</h3>
+                    <h3>new events</h3>
                 </div>
             </div> 
             <div className='ui basic segment'>

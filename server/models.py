@@ -19,6 +19,7 @@ class User(db.Model, SerializerMixin):
 
     id = db.Column(Integer, primary_key=True)
     user_type = db.Column(Enum('sheep', 'shepherd', name='user_type_enum'))
+    # business_name = if user_type is shepherd
     name = db.Column(String)
     username = db.Column(String, unique=True, nullable=False)
     password = db.Column(String, nullable=False)
